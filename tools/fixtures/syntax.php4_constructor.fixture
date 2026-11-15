@@ -1,0 +1,42 @@
+--RULE--
+syntax.php4_constructor
+--CLAIM--
+{ "deprecated_in": "7.0", "changed_in": "8.0" }
+--CODE--
+<?php
+class Legacy_Widget {
+	public $ready = 'no';
+
+	function Legacy_Widget( $name = 'widget' ) {
+		$this->ready = 'yes, ' . $name;
+	}
+}
+
+class Legacy_Child extends Legacy_Widget {
+}
+
+$widget = new Legacy_Widget( 'first' );
+$child  = new Legacy_Child();
+
+echo 'set up: ', $widget->ready, ' / ', $child->ready, "\n";
+--FIXED--
+<?php
+class Legacy_Widget {
+	public $ready = 'no';
+
+	function __construct( $name = 'widget' ) {
+		$this->ready = 'yes, ' . $name;
+	}
+
+	function Legacy_Widget( $name = 'widget' ) {
+		self::__construct( $name );
+	}
+}
+
+class Legacy_Child extends Legacy_Widget {
+}
+
+$widget = new Legacy_Widget( 'first' );
+$child  = new Legacy_Child();
+
+echo 'set up: ', $widget->ready, ' / ', $child->ready, "\n";

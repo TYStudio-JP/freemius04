@@ -1,0 +1,10 @@
+--RULE--
+function.deprecated
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+echo bin2hex( utf8_encode( "caf\xE9" ) ), "\n";
+--FIXED--
+<?php
+echo bin2hex( mb_convert_encoding( "caf\xE9", 'UTF-8', 'ISO-8859-1' ) ), "\n";

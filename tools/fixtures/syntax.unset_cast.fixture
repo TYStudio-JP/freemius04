@@ -1,0 +1,9 @@
+--RULE--
+syntax.unset_cast
+--CLAIM--
+{ "deprecated_in": "7.2", "breaks_in": "8.0" }
+--CODE--
+<?php
+$value = 'something';
+
+var_dump( (unset) $value );

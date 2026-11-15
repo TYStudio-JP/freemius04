@@ -1,0 +1,10 @@
+--RULE--
+function.removed
+--CLAIM--
+{ "deprecated_in": "7.2", "breaks_in": "8.0" }
+--CODE--
+<?php
+$pair  = array( 'key' => 'value' );
+$first = each( $pair );
+
+echo $first[0], '=', $first[1], "\n";

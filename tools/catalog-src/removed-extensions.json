@@ -1,0 +1,23 @@
+[
+	{
+		"ext": "mysql",
+		"version": "7.0",
+		"quote": "- ext/mysql",
+		"source": "PHP-5.6/ext/mysql/php_mysql.c",
+		"instead": "mysqli_*() or, inside WordPress, $wpdb"
+	},
+	{
+		"ext": "ereg",
+		"version": "7.0",
+		"quote": "- ext/ereg",
+		"source": "PHP-5.6/ext/ereg/ereg.c",
+		"instead": "preg_*()"
+	},
+	{
+		"ext": "mssql",
+		"version": "7.0",
+		"quote": "- ext/mssql",
+		"source": "PHP-5.6/ext/mssql/php_mssql.c",
+		"instead": "sqlsrv_*() or PDO"
+	}
+]

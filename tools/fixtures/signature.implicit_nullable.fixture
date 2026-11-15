@@ -1,0 +1,18 @@
+--RULE--
+signature.implicit_nullable
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+function describe( stdClass $item = null, array $extra = null ) {
+	return ( null === $item ? 'nothing' : 'object' ) . '/' . ( null === $extra ? 'nothing' : 'array' );
+}
+
+echo describe(), ' ', describe( new stdClass(), array() ), "\n";
+--FIXED--
+<?php
+function describe( ?stdClass $item = null, ?array $extra = null ) {
+	return ( null === $item ? 'nothing' : 'object' ) . '/' . ( null === $extra ? 'nothing' : 'array' );
+}
+
+echo describe(), ' ', describe( new stdClass(), array() ), "\n";

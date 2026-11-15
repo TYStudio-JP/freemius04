@@ -1,0 +1,11 @@
+--RULE--
+signature.required_after_optional
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+function join_parts( $glue = ', ', $parts ) {
+	return implode( $glue, $parts );
+}
+
+echo join_parts( '-', array( 'a', 'b' ) ), "\n";

@@ -1,0 +1,14 @@
+--RULE--
+syntax.real_cast
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+$price = '12.50';
+
+var_dump( (real) $price );
+--FIXED--
+<?php
+$price = '12.50';
+
+var_dump( (float) $price );

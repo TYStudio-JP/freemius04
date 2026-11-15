@@ -1,0 +1,18 @@
+--RULE--
+syntax.nested_ternary
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+function label( $first, $second ) {
+	return $first ? 'one' : $second ? 'two' : 'three';
+}
+
+echo label( true, false ), ' ', label( false, true ), ' ', label( false, false ), "\n";
+--FIXED--
+<?php
+function label( $first, $second ) {
+	return ( $first ? 'one' : $second ) ? 'two' : 'three';
+}
+
+echo label( true, false ), ' ', label( false, true ), ' ', label( false, false ), "\n";

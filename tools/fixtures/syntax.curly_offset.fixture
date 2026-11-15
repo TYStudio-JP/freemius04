@@ -1,0 +1,16 @@
+--RULE--
+syntax.curly_offset
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+$text  = 'warden';
+$items = array( 'a' => 'first', 'b' => 'second' );
+
+echo $text{0}, $text{ strlen( $text ) - 1 }, ' ', $items{'b'}, "\n";
+--FIXED--
+<?php
+$text  = 'warden';
+$items = array( 'a' => 'first', 'b' => 'second' );
+
+echo $text[0], $text[ strlen( $text ) - 1 ], ' ', $items['b'], "\n";

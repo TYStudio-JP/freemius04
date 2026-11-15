@@ -1,0 +1,33 @@
+{
+	"functions": [
+		{ "name": "spl_classes", "version": "8.6", "quote": "The spl_classes() function is now deprecated." },
+		{ "name": "spl_object_hash", "version": "8.6", "quote": "The spl_object_hash() function is now deprecated." },
+		{ "name": "metaphone", "version": "8.6", "quote": "metaphone() is deprecated." },
+		{ "name": "is_double", "version": "8.6", "quote": "The is_double() function is now deprecated." },
+		{ "name": "is_long", "version": "8.6", "quote": "The is_long() and is_integer() functions are now deprecated." },
+		{ "name": "is_integer", "version": "8.6", "quote": "The is_long() and is_integer() functions are now deprecated." },
+		{ "name": "doubleval", "version": "8.6", "quote": "The doubleval() function is now deprecated." },
+		{ "name": "strcoll", "version": "8.6", "quote": "The strcoll() function is now deprecated." },
+		{ "name": "mysqli_get_charset", "version": "8.6", "quote": "The mysqli_get_charset() function and mysqli::get_charset() method are now deprecated." },
+		{ "name": "mysqli_stmt_init", "version": "8.6", "quote": "The mysqli_stmt_init() function, mysqli::stmt_init() method, and calling the mysqli_stmt constructor without providing the $query parameter are now deprecated." },
+		{ "name": "mb_ereg", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_eregi", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_replace", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_eregi_replace", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_replace_callback", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_match", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search_pos", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search_regs", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search_init", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search_getregs", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search_getpos", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_ereg_search_setpos", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_split", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_regex_encoding", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." },
+		{ "name": "mb_regex_set_options", "version": "8.6", "quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained." }
+	],
+	"constants": [
+		{ "name": "SORT_LOCALE_STRING", "version": "8.6", "quote": "The SORT_LOCALE_STRING constant for the family of sort functions is now deprecated." }
+	]
+}

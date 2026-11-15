@@ -1,0 +1,11 @@
+--RULE--
+syntax.reserved_name
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+function match( $value ) {
+	return 'matched ' . $value;
+}
+
+echo match( 1 ), "\n";

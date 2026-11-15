@@ -1,0 +1,14 @@
+[
+	{
+		"kind": "functions",
+		"pattern": "^zip_(open|close|read|entry_[a-z]+)$",
+		"version": "8.0",
+		"quote": "The procedural API of Zip is deprecated. Use ZipArchive instead."
+	},
+	{
+		"kind": "constants",
+		"pattern": "^MYSQLI_REFRESH_",
+		"version": "8.4",
+		"quote": "All MYSQLI_REFRESH_* constants have been deprecated as well."
+	}
+]

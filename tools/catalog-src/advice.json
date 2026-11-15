@@ -1,0 +1,18 @@
+{
+	"functions": {
+		"each": "foreach",
+		"create_function": "function () { ... }",
+		"is_real": "is_float()",
+		"utf8_encode": "mb_convert_encoding( $text, 'UTF-8', 'ISO-8859-1' )",
+		"utf8_decode": "mb_convert_encoding( $text, 'ISO-8859-1', 'UTF-8' )",
+		"spl_object_hash": "spl_object_id()",
+		"is_double": "is_float()",
+		"is_long": "is_int()",
+		"is_integer": "is_int()",
+		"doubleval": "floatval()",
+		"mb_ereg_replace": "preg_replace() with the /u modifier",
+		"mb_split": "preg_split() with the /u modifier",
+		"mb_ereg": "preg_match() with the /u modifier"
+	},
+	"constants": {}
+}

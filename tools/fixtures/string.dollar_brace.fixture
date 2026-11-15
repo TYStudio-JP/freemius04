@@ -1,0 +1,16 @@
+--RULE--
+string.dollar_brace
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+$name = 'warden';
+$list = array( 'key' => 'value' );
+
+echo "plain ${name}, item ${list['key']}\n";
+--FIXED--
+<?php
+$name = 'warden';
+$list = array( 'key' => 'value' );
+
+echo "plain {$name}, item {$list['key']}\n";

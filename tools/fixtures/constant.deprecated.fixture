@@ -1,0 +1,7 @@
+--RULE--
+constant.deprecated
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+echo filter_var( '<b>bold</b> text', FILTER_SANITIZE_STRING ), "\n";
