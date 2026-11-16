@@ -10,6 +10,8 @@
  *   --CLAIM--   JSON: { "deprecated_in": "7.4", "changed_in": null, "breaks_in": "8.0" }
  *   --CODE--    PHP that uses the feature and prints something
  *   --FIXED--   the same program after the fix (optional)
+ *   --SCAN--    JSON read by the PHP tests only, for example { "guarded": true }
+ *               when the scanner must mark its findings as guarded (optional)
  *
  * The code runs on every runtime. The claim holds when:
  *

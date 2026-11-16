@@ -1,0 +1,10 @@
+--RULE--
+syntax.noncanonical_cast
+--CLAIM--
+{ "deprecated_in": "8.5" }
+--CODE--
+<?php
+var_dump( (binary) 'text' );
+--FIXED--
+<?php
+var_dump( (string) 'text' );

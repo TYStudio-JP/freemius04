@@ -1,0 +1,15 @@
+--RULE--
+function.deprecated
+--CLAIM--
+{}
+--SCAN--
+{ "guarded": true }
+--CODE--
+<?php
+$parser = xml_parser_create();
+
+if ( is_resource( $parser ) ) {
+	xml_parser_free( $parser );
+}
+
+echo "done\n";

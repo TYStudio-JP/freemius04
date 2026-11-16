@@ -5,9 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"dump": "node dump-runtimes.mjs",
-		"catalog": "node build-function-catalog.mjs",
+		"catalog": "node build-catalog.mjs",
 		"verify": "node verify-fixtures.mjs",
-		"all": "node dump-runtimes.mjs && node build-function-catalog.mjs && node verify-fixtures.mjs"
+		"all": "node dump-runtimes.mjs && node build-catalog.mjs && node verify-fixtures.mjs"
 	},
 	"dependencies": {
 		"@php-wasm/node": "3.1.64",

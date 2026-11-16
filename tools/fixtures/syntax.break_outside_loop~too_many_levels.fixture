@@ -1,0 +1,17 @@
+--RULE--
+syntax.break_outside_loop
+--CLAIM--
+{ "breaks_in": "7.4" }
+--CODE--
+<?php
+function first( $items ) {
+	foreach ( $items as $item ) {
+		if ( $item ) {
+			continue 2;
+		}
+	}
+
+	return 'done';
+}
+
+echo first( array( 0, 1 ) ), "\n";

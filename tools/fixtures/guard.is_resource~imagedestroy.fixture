@@ -1,0 +1,15 @@
+--RULE--
+function.deprecated
+--CLAIM--
+{}
+--SCAN--
+{ "guarded": true }
+--CODE--
+<?php
+$image = imagecreatetruecolor( 2, 2 );
+
+if ( is_resource( $image ) ) {
+	imagedestroy( $image );
+}
+
+echo "done\n";

@@ -1,0 +1,10 @@
+--RULE--
+syntax.noncanonical_cast
+--CLAIM--
+{ "deprecated_in": "8.5" }
+--CODE--
+<?php
+var_dump( (double) '1.5' );
+--FIXED--
+<?php
+var_dump( (float) '1.5' );

@@ -1,0 +1,15 @@
+--RULE--
+function.deprecated
+--CLAIM--
+{}
+--SCAN--
+{ "guarded": true }
+--CODE--
+<?php
+$finfo = finfo_open( FILEINFO_MIME_TYPE );
+
+if ( is_resource( $finfo ) ) {
+	finfo_close( $finfo );
+}
+
+echo "done\n";

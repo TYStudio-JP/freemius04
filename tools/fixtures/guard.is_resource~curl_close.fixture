@@ -1,0 +1,15 @@
+--RULE--
+function.deprecated
+--CLAIM--
+{}
+--SCAN--
+{ "guarded": true }
+--CODE--
+<?php
+$handle = curl_init();
+
+if ( is_resource( $handle ) ) {
+	curl_close( $handle );
+}
+
+echo "done\n";

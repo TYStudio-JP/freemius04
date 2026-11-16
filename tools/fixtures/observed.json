@@ -91,6 +91,78 @@
 			],
 			"problems": []
 		},
+		"guard.is_resource~curl_close.fixture": {
+			"rule": "function.deprecated",
+			"claim": {},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {},
+			"fix": "none",
+			"not_checked": [],
+			"problems": []
+		},
+		"guard.is_resource~finfo_close.fixture": {
+			"rule": "function.deprecated",
+			"claim": {},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {},
+			"fix": "none",
+			"not_checked": [],
+			"problems": []
+		},
+		"guard.is_resource~imagedestroy.fixture": {
+			"rule": "function.deprecated",
+			"claim": {},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {},
+			"fix": "none",
+			"not_checked": [],
+			"problems": []
+		},
+		"guard.is_resource~xml_parser_free.fixture": {
+			"rule": "function.deprecated",
+			"claim": {},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {},
+			"fix": "none",
+			"not_checked": [],
+			"problems": []
+		},
 		"signature.implicit_nullable.fixture": {
 			"rule": "signature.implicit_nullable",
 			"claim": {
@@ -163,6 +235,84 @@
 				"8.5": "E_DEPRECATED: Using ${var} in strings is deprecated, use {$var} instead"
 			},
 			"fix": "same output on every version",
+			"not_checked": [],
+			"problems": []
+		},
+		"syntax.backtick.fixture": {
+			"rule": "syntax.backtick",
+			"claim": {
+				"deprecated_in": "8.5"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "deprecated"
+			},
+			"messages": {
+				"8.5": "E_DEPRECATED: The backtick (`) operator is deprecated, use shell_exec() instead"
+			},
+			"fix": "none",
+			"not_checked": [],
+			"problems": []
+		},
+		"syntax.break_outside_loop.fixture": {
+			"rule": "syntax.break_outside_loop",
+			"claim": {
+				"breaks_in": "7.4"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "fatal",
+				"8.0": "fatal",
+				"8.1": "fatal",
+				"8.2": "fatal",
+				"8.3": "fatal",
+				"8.4": "fatal",
+				"8.5": "fatal"
+			},
+			"messages": {
+				"7.4": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context",
+				"8.0": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context",
+				"8.1": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context",
+				"8.2": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context",
+				"8.3": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context",
+				"8.4": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context",
+				"8.5": "E_COMPILE_ERROR: 'break' not in the 'loop' or 'switch' context"
+			},
+			"fix": "none",
+			"not_checked": [],
+			"problems": []
+		},
+		"syntax.break_outside_loop~too_many_levels.fixture": {
+			"rule": "syntax.break_outside_loop",
+			"claim": {
+				"breaks_in": "7.4"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "fatal",
+				"8.0": "fatal",
+				"8.1": "fatal",
+				"8.2": "fatal",
+				"8.3": "fatal",
+				"8.4": "fatal",
+				"8.5": "fatal"
+			},
+			"messages": {
+				"7.4": "E_COMPILE_ERROR: Cannot 'continue' 2 levels",
+				"8.0": "E_COMPILE_ERROR: Cannot 'continue' 2 levels",
+				"8.1": "E_COMPILE_ERROR: Cannot 'continue' 2 levels",
+				"8.2": "E_COMPILE_ERROR: Cannot 'continue' 2 levels",
+				"8.3": "E_COMPILE_ERROR: Cannot 'continue' 2 levels",
+				"8.4": "E_COMPILE_ERROR: Cannot 'continue' 2 levels",
+				"8.5": "E_COMPILE_ERROR: Cannot 'continue' 2 levels"
+			},
+			"fix": "none",
 			"not_checked": [],
 			"problems": []
 		},
@@ -246,7 +396,73 @@
 			"not_checked": [],
 			"problems": []
 		},
-		"syntax.noncanonical_cast.fixture": {
+		"syntax.noncanonical_cast~binary.fixture": {
+			"rule": "syntax.noncanonical_cast",
+			"claim": {
+				"deprecated_in": "8.5"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "deprecated"
+			},
+			"messages": {
+				"8.5": "E_DEPRECATED: Non-canonical cast (binary) is deprecated, use the (string) cast instead"
+			},
+			"fix": "same output on every version",
+			"not_checked": [],
+			"problems": []
+		},
+		"syntax.noncanonical_cast~boolean.fixture": {
+			"rule": "syntax.noncanonical_cast",
+			"claim": {
+				"deprecated_in": "8.5"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "deprecated"
+			},
+			"messages": {
+				"8.5": "E_DEPRECATED: Non-canonical cast (boolean) is deprecated, use the (bool) cast instead"
+			},
+			"fix": "same output on every version",
+			"not_checked": [],
+			"problems": []
+		},
+		"syntax.noncanonical_cast~double.fixture": {
+			"rule": "syntax.noncanonical_cast",
+			"claim": {
+				"deprecated_in": "8.5"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "ok",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "deprecated"
+			},
+			"messages": {
+				"8.5": "E_DEPRECATED: Non-canonical cast (double) is deprecated, use the (float) cast instead"
+			},
+			"fix": "same output on every version",
+			"not_checked": [],
+			"problems": []
+		},
+		"syntax.noncanonical_cast~integer.fixture": {
 			"rule": "syntax.noncanonical_cast",
 			"claim": {
 				"deprecated_in": "8.5"

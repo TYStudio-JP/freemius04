@@ -1,0 +1,13 @@
+--RULE--
+syntax.backtick
+--CLAIM--
+{ "deprecated_in": "8.5" }
+--CODE--
+<?php
+// The notice is raised when the file is compiled. The function is never
+// called, so no command is run.
+function list_files() {
+	return `ls`;
+}
+
+echo "done\n";

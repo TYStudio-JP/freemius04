@@ -1,0 +1,16 @@
+--RULE--
+syntax.break_outside_loop
+--CLAIM--
+{ "breaks_in": "7.4" }
+--CODE--
+<?php
+function pick( $value ) {
+	if ( $value > 1 ) {
+		return 'big';
+		break;
+	}
+
+	return 'small';
+}
+
+echo pick( 2 ), "\n";

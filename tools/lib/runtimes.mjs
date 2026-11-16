@@ -17,6 +17,7 @@ export const VERSIONS = ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5'];
 
 const MARKER = '@@UPGW-REPORT@@';
 const HARNESS = readFileSync(join(here, 'harness.php'), 'utf8');
+const COMPILE_ONLY = readFileSync(join(here, 'compile-only.php'), 'utf8');
 const WORK_DIR = '/upgw-work';
 
 let nextProcessId = 4000;
@@ -27,8 +28,21 @@ export async function startPhp(version) {
 
 	php.mkdir(WORK_DIR);
 	php.writeFile(`${WORK_DIR}/harness.php`, HARNESS);
+	php.writeFile(`${WORK_DIR}/compile-only.php`, COMPILE_ONLY);
 
 	return php;
+}
+
+/**
+ * Compiles a file that the runtime can see, executing nothing, and returns the
+ * same kind of report as runFixture(): a parse or compile error, or the
+ * notices the compiler raised.
+ */
+export async function compileOnly(php, path) {
+	return runFixture(
+		php,
+		`<?php require '${WORK_DIR}/compile-only.php'; upgw_compile_only( ${JSON.stringify(path)}, '${WORK_DIR}/compile-target.php' ); echo 'compiled';`
+	);
 }
 
 /** Runs code as is and returns its raw output. Throws if PHP itself fails. */
