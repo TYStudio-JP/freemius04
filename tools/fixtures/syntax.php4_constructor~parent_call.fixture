@@ -1,0 +1,50 @@
+--RULE--
+syntax.php4_constructor
+--CLAIM--
+{ "deprecated_in": "7.0", "changed_in": "8.0" }
+--CODE--
+<?php
+class Base_Thing {
+	public $name = 'not set';
+
+	function Base_Thing( $name ) {
+		$this->name = $name;
+	}
+}
+
+class Child_Thing extends Base_Thing {
+	function Child_Thing( $name ) {
+		parent::Base_Thing( strtoupper( $name ) );
+	}
+}
+
+$child = new Child_Thing( 'abc' );
+
+echo $child->name, "\n";
+--FIXED--
+<?php
+class Base_Thing {
+	public $name = 'not set';
+
+	function __construct( $name ) {
+		$this->name = $name;
+	}
+
+	function Base_Thing( $name ) {
+		self::__construct( $name );
+	}
+}
+
+class Child_Thing extends Base_Thing {
+	function __construct( $name ) {
+		parent::Base_Thing( strtoupper( $name ) );
+	}
+
+	function Child_Thing( $name ) {
+		self::__construct( $name );
+	}
+}
+
+$child = new Child_Thing( 'abc' );
+
+echo $child->name, "\n";

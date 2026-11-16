@@ -509,6 +509,81 @@
 			],
 			"problems": []
 		},
+		"syntax.php4_constructor~by_position.fixture": {
+			"rule": "syntax.php4_constructor",
+			"claim": {
+				"deprecated_in": "7.0",
+				"changed_in": "8.0"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "deprecated",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {
+				"7.4": "E_DEPRECATED: Methods with the same name as their class will not be constructors in a future version of PHP; Bag has a deprecated constructor"
+			},
+			"fix": "same output on every version",
+			"not_checked": [
+				"deprecated_in 7.0: seen from 7.4 on; the exact first version comes from the notes"
+			],
+			"problems": []
+		},
+		"syntax.php4_constructor~parent_call.fixture": {
+			"rule": "syntax.php4_constructor",
+			"claim": {
+				"deprecated_in": "7.0",
+				"changed_in": "8.0"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "deprecated",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {
+				"7.4": "E_DEPRECATED: Methods with the same name as their class will not be constructors in a future version of PHP; Base_Thing has a deprecated constructor"
+			},
+			"fix": "same output on every version",
+			"not_checked": [
+				"deprecated_in 7.0: seen from 7.4 on; the exact first version comes from the notes"
+			],
+			"problems": []
+		},
+		"syntax.php4_constructor~reference_and_rest.fixture": {
+			"rule": "syntax.php4_constructor",
+			"claim": {
+				"deprecated_in": "7.0",
+				"changed_in": "8.0"
+			},
+			"verdict": "verified",
+			"observed": {
+				"7.4": "deprecated",
+				"8.0": "ok",
+				"8.1": "ok",
+				"8.2": "ok",
+				"8.3": "ok",
+				"8.4": "ok",
+				"8.5": "ok"
+			},
+			"messages": {
+				"7.4": "E_DEPRECATED: Methods with the same name as their class will not be constructors in a future version of PHP; Counter_Bag has a deprecated constructor"
+			},
+			"fix": "same output on every version",
+			"not_checked": [
+				"deprecated_in 7.0: seen from 7.4 on; the exact first version comes from the notes"
+			],
+			"problems": []
+		},
 		"syntax.real_cast.fixture": {
 			"rule": "syntax.real_cast",
 			"claim": {

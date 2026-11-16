@@ -1,0 +1,34 @@
+--RULE--
+syntax.php4_constructor
+--CLAIM--
+{ "deprecated_in": "7.0", "changed_in": "8.0" }
+--CODE--
+<?php
+class Bag {
+	public $items = array();
+
+	function Bag() {
+		$this->items = func_get_args();
+	}
+}
+
+$bag = new Bag( 'x', 'y' );
+
+echo count( $bag->items ), ' ', implode( ',', $bag->items ), "\n";
+--FIXED--
+<?php
+class Bag {
+	public $items = array();
+
+	function __construct() {
+		$this->items = func_get_args();
+	}
+
+	function Bag() {
+		self::__construct( ...func_get_args() );
+	}
+}
+
+$bag = new Bag( 'x', 'y' );
+
+echo count( $bag->items ), ' ', implode( ',', $bag->items ), "\n";

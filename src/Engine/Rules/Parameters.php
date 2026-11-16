@@ -93,11 +93,9 @@ final class Parameters implements Rule {
 				}
 			}
 
-			$fix = array(
-				'kind' => 'insert',
-				'at'   => $type->getEndFilePos() + 1,
-				'text' => '|null',
-			);
+			// Reported without a fix: "A|B|null" would be the rewrite, but union
+			// types need PHP 8.0, so the fixture harness, which compares with
+			// PHP 7.4, cannot verify it yet.
 		} else {
 			if ( in_array( strtolower( $type->toString() ), array( 'mixed', 'null' ), true ) ) {
 				return;

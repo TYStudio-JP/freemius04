@@ -1,0 +1,38 @@
+--RULE--
+syntax.php4_constructor
+--CLAIM--
+{ "deprecated_in": "7.0", "changed_in": "8.0" }
+--CODE--
+<?php
+class Counter_Bag {
+	public $kept = array();
+
+	function Counter_Bag( &$count, ...$rest ) {
+		$count      = count( $rest );
+		$this->kept = $rest;
+	}
+}
+
+$count = 0;
+$bag   = new Counter_Bag( $count, 'a', 'b' );
+
+echo $count, ' ', implode( ',', $bag->kept ), "\n";
+--FIXED--
+<?php
+class Counter_Bag {
+	public $kept = array();
+
+	function __construct( &$count, ...$rest ) {
+		$count      = count( $rest );
+		$this->kept = $rest;
+	}
+
+	function Counter_Bag( &$count, ...$rest ) {
+		self::__construct( $count, ...$rest );
+	}
+}
+
+$count = 0;
+$bag   = new Counter_Bag( $count, 'a', 'b' );
+
+echo $count, ' ', implode( ',', $bag->kept ), "\n";
