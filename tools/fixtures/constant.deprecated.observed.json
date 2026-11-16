@@ -1,0 +1,35 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "constant.deprecated",
+	"claim": {
+		"deprecated_in": "8.1"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "ok",
+		"8.0": "ok",
+		"8.1": "deprecated",
+		"8.2": "deprecated",
+		"8.3": "deprecated",
+		"8.4": "deprecated",
+		"8.5": "deprecated"
+	},
+	"messages": {
+		"8.1": "E_DEPRECATED: Constant FILTER_SANITIZE_STRING is deprecated",
+		"8.2": "E_DEPRECATED: Constant FILTER_SANITIZE_STRING is deprecated",
+		"8.3": "E_DEPRECATED: Constant FILTER_SANITIZE_STRING is deprecated",
+		"8.4": "E_DEPRECATED: Constant FILTER_SANITIZE_STRING is deprecated",
+		"8.5": "E_DEPRECATED: Constant FILTER_SANITIZE_STRING is deprecated since 8.1, use htmlspecialchars() instead"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

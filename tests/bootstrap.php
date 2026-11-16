@@ -131,5 +131,11 @@ function upgw_fixtures() {
  * @return array
  */
 function upgw_observed() {
-	return json_decode( file_get_contents( UPGW_ROOT . '/tools/fixtures/observed.json' ), true );
+	$fixtures = array();
+
+	foreach ( glob( UPGW_ROOT . '/tools/fixtures/*.observed.json' ) as $path ) {
+		$fixtures[ basename( $path, '.observed.json' ) . '.fixture' ] = json_decode( file_get_contents( $path ), true );
+	}
+
+	return array( 'fixtures' => $fixtures );
 }

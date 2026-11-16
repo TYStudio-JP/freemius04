@@ -13,6 +13,7 @@ use TYStudio\UpgradeWarden\Vendor\PhpParser\Node\Stmt\Function_;
 use TYStudio\UpgradeWarden\Vendor\PhpParser\NodeFinder;
 use TYStudio\UpgradeWarden\Vendor\PhpParser\NodeTraverser;
 use TYStudio\UpgradeWarden\Vendor\PhpParser\NodeVisitor\NameResolver;
+use TYStudio\UpgradeWarden\Vendor\PhpParser\NodeVisitor\ParentConnectingVisitor;
 use TYStudio\UpgradeWarden\Vendor\PhpParser\ParserFactory;
 use TYStudio\UpgradeWarden\Vendor\PhpParser\PhpVersion;
 
@@ -69,20 +70,25 @@ final class Scanner {
 	 * @return Rules\Rule[]
 	 */
 	public static function default_rules() {
-		return array(
-			new Rules\InternalFunctions(),
-			new Rules\InternalConstants(),
-			new Rules\CurlyOffset(),
-			new Rules\Casts(),
-			new Rules\NestedTernary(),
-			new Rules\OldConstructor(),
-			new Rules\Parameters(),
-			new Rules\DollarBrace(),
-			new Rules\CaseSemicolon(),
-			new Rules\ReservedNames(),
-			new Rules\BreakOutsideLoop(),
-			new Rules\Backtick(),
-		);
+		// Every class file in Rules/ except the interface is a rule. A new rule
+		// only needs its own file, so no shared list has to be edited.
+		$rules = array();
+		$files = glob( __DIR__ . '/Rules/*.php' );
+
+		sort( $files );
+
+		foreach ( $files as $file ) {
+			$name = basename( $file, '.php' );
+
+			if ( 'Rule' === $name ) {
+				continue;
+			}
+
+			$class   = __NAMESPACE__ . '\\Rules\\' . $name;
+			$rules[] = new $class();
+		}
+
+		return $rules;
 	}
 
 	/**
@@ -120,6 +126,9 @@ final class Scanner {
 
 			$resolver = new NodeTraverser();
 			$resolver->addVisitor( new NameResolver( null, array( 'replaceNodes' => false ) ) );
+			// Gives every node a "parent" attribute, so a rule can look at what
+			// surrounds a node without the walker having to know about it.
+			$resolver->addVisitor( new ParentConnectingVisitor() );
 			$ast = $resolver->traverse( $ast );
 
 			$context = new Context( $code, $this->catalog );

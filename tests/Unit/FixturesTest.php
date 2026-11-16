@@ -30,6 +30,13 @@ $tests['there are fixtures, and each has a verified record'] = static function (
 };
 
 foreach ( upgw_fixtures() as $name => $fixture ) {
+	// A "runtime." fixture records behaviour that depends on values and cannot
+	// be seen in the source. It is evidence for the run-time monitor; the
+	// scanner has no rule for it.
+	if ( 0 === strpos( (string) $fixture['rule'], 'runtime.' ) ) {
+		continue;
+	}
+
 	$tests[ "{$name}: the scanner reports the verified claim" ] = static function () use ( $fixture ) {
 		$result = upgw_scanner()->scan( $fixture['code'] );
 		$claim  = $fixture['claim'] + array(

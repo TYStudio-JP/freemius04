@@ -1,0 +1,38 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "syntax.real_cast",
+	"claim": {
+		"deprecated_in": "7.4",
+		"breaks_in": "8.0"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "deprecated",
+		"8.0": "parse",
+		"8.1": "parse",
+		"8.2": "parse",
+		"8.3": "parse",
+		"8.4": "parse",
+		"8.5": "parse"
+	},
+	"messages": {
+		"7.4": "E_DEPRECATED: The (real) cast is deprecated, use (float) instead",
+		"8.0": "ParseError: The (real) cast has been removed, use (float) instead",
+		"8.1": "ParseError: The (real) cast has been removed, use (float) instead",
+		"8.2": "ParseError: The (real) cast has been removed, use (float) instead",
+		"8.3": "ParseError: The (real) cast has been removed, use (float) instead",
+		"8.4": "ParseError: The (real) cast has been removed, use (float) instead",
+		"8.5": "ParseError: The (real) cast has been removed, use (float) instead"
+	},
+	"fix": "same output on every version",
+	"not_checked": [],
+	"problems": []
+}

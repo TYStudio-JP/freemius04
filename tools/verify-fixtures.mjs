@@ -249,10 +249,14 @@ for (const fixture of fixtures) {
 	}
 }
 
-if (filter === '') {
+// One record per fixture, next to it, so that people working on different
+// rules at the same time never write to the same file.
+for (const fixture of fixtures) {
+	const runtimes = Object.fromEntries(VERSIONS.map((v) => [v, results[fixture.name].runs[v].version]));
+
 	writeFileSync(
-		join(dir, 'observed.json'),
-		JSON.stringify({ runtimes: Object.fromEntries(VERSIONS.map((v) => [v, results[fixtures[0].name].runs[v].version])), fixtures: observed }, null, '\t') + '\n'
+		join(dir, fixture.name.replace(/\.fixture$/, '.observed.json')),
+		JSON.stringify({ runtimes, ...observed[fixture.name] }, null, '\t') + '\n'
 	);
 }
 
