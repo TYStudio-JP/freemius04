@@ -1,0 +1,31 @@
+--RULE--
+constant.pdo_fetch_serialize
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Row implements Serializable {
+	public $data;
+
+	public function serialize() {
+		return $this->data;
+	}
+
+	public function unserialize( $data ) {
+		$this->data = $data;
+	}
+
+	public function __serialize(): array {
+		return array( $this->data );
+	}
+
+	public function __unserialize( array $data ): void {
+		$this->data = $data[0];
+	}
+}
+
+$pdo       = new PDO( 'sqlite::memory:' );
+$statement = $pdo->query( "SELECT 'hello'" );
+$rows      = $statement->fetchAll( PDO::FETCH_CLASS | PDO::FETCH_SERIALIZE, 'Row' );
+
+echo count( $rows ), ' ', $rows[0]->data, "\n";

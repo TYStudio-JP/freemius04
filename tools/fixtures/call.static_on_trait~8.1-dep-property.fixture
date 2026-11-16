@@ -1,0 +1,15 @@
+--RULE--
+call.static_on_trait
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+trait Counts {
+	public static $count = 3;
+}
+
+class Visitor {
+	use Counts;
+}
+
+echo Counts::$count, ' ', Visitor::$count, "\n";

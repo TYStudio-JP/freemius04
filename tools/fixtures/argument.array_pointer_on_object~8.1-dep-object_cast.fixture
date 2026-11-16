@@ -1,0 +1,9 @@
+--RULE--
+argument.array_pointer_on_object
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$settings = array( 'colour' => 'red' );
+
+echo key( (object) $settings ), '=', current( (object) $settings ), "\n";

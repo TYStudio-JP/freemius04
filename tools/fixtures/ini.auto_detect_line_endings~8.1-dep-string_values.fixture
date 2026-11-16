@@ -1,0 +1,15 @@
+--RULE--
+ini.auto_detect_line_endings
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+var_dump( ini_set( 'auto_detect_line_endings', '1' ) );
+ini_set( 'auto_detect_line_endings', '0' );
+var_dump( ini_set( 'auto_detect_line_endings', 'On' ) );
+ini_set( 'auto_detect_line_endings', '0' );
+var_dump( ini_set( 'auto_detect_line_endings', 'yes' ) );
+ini_set( 'auto_detect_line_endings', '0' );
+var_dump( ini_set( 'auto_detect_line_endings', 'true' ) );
+ini_set( 'auto_detect_line_endings', '0' );
+var_dump( ini_set( 'auto_detect_line_endings', 1 ) );

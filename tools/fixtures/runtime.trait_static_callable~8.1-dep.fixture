@@ -1,0 +1,13 @@
+--RULE--
+runtime.trait_static_callable
+--CLAIM--
+{}
+--CODE--
+<?php
+trait Greets {
+	public static function greet() {
+		return 'hello';
+	}
+}
+
+echo call_user_func( array( 'Greets', 'greet' ) ), ' ', call_user_func( 'Greets::greet' ), "\n";

@@ -1,0 +1,448 @@
+[
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Implicitly nullable parameter types are now deprecated.",
+		"disposition": "rule",
+		"rule": "signature.implicit_nullable",
+		"fixtures": [
+			"signature.implicit_nullable.fixture"
+		],
+		"reason": "Already covered by the existing rule in Parameters.php with a verified fixture; nothing new written."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Passing E_USER_ERROR to trigger_error() is now deprecated.",
+		"disposition": "rule",
+		"rule": "call.trigger_error_e_user_error",
+		"fixtures": [
+			"call.trigger_error_e_user_error~8.4-dep.fixture"
+		],
+		"reason": "Reported when the level is written as E_USER_ERROR or 256 in trigger_error()/user_error(); a level from a variable is known at run time only and is not reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using \"_\" as a class name is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.underscore_class_name",
+		"fixtures": [
+			"syntax.underscore_class_name~8.4-dep-interface.fixture",
+			"syntax.underscore_class_name~8.4-dep-trait.fixture",
+			"syntax.underscore_class_name~8.4-dep.fixture"
+		],
+		"reason": "Compile-time notice for a class, interface or trait named \"_\" (all three seen on 8.4/8.5); an enum named \"_\" is left out because enums do not parse before 8.1 and no fixture can show it on every runtime."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Raising zero to the power of negative number is deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.zero_pow_negative",
+		"fixtures": [
+			"runtime.zero_pow_negative~8.4-dep-pow.fixture",
+			"runtime.zero_pow_negative~8.4-dep.fixture"
+		],
+		"reason": "Depends on the values of base and exponent; a literal 0 ** -1 is not something plugin code contains. Both ** and pow() raise the deprecation from 8.4 and still return INF."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The E_STRICT constant was deprecated and its corresponding error level was removed.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "E_STRICT is in data/catalog/constants.php (deprecated 8.4, verified); the removal of the error level itself has no source form."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Curl",
+		"quote": "The CURLOPT_BINARYTRANSFER constant is deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "CURLOPT_BINARYTRANSFER is in data/catalog/constants.php (deprecated 8.4, verified)."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Date",
+		"quote": "Calling DatePeriod::__construct(string $isostr, int $options = 0) is deprecated.",
+		"disposition": "rule",
+		"rule": "call.dateperiod_iso_constructor",
+		"fixtures": [
+			"call.dateperiod_iso_constructor~8.4-dep-with_options.fixture",
+			"call.dateperiod_iso_constructor~8.4-dep.fixture"
+		],
+		"reason": "new DatePeriod() with one or two arguments can only be the ISO string form (the other form needs three), so the argument count decides; parent::__construct( $iso ) in a subclass raises it too but is not reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Date",
+		"quote": "Constants SUNFUNCS_RET_TIMESTAMP, SUNFUNCS_RET_STRING, and SUNFUNCS_RET_DOUBLE are now deprecated, following the deprecation of the associated date_sunset() and date_sunrise() functions in PHP 8.1.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "SUNFUNCS_RET_TIMESTAMP, SUNFUNCS_RET_STRING and SUNFUNCS_RET_DOUBLE are in data/catalog/constants.php (deprecated 8.4, verified)."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "DBA",
+		"quote": "Passing null or false to dba_key_split() is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The dba extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "DOM",
+		"quote": "Deprecated DOM_PHP_ERR constant.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "DOM_PHP_ERR is in data/catalog/constants.php (deprecated 8.4, verified)."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "DOM",
+		"quote": "DOMDocument::$actualEncoding, DOMDocument::config, DOMEntity::$actualEncoding, DOMEntity::$encoding, DOMEntity::$version have been deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dom_deprecated_property",
+		"fixtures": [
+			"runtime.dom_deprecated_property~8.4-dep-actualEncoding.fixture",
+			"runtime.dom_deprecated_property~8.4-dep-config.fixture"
+		],
+		"reason": "A property read such as $doc->actualEncoding only counts when the object is a DOMDocument or DOMEntity, and the class of a variable is not visible in the source; DOMDocument::$actualEncoding and ::$config shown on the runtimes, the DOMEntity properties were not run."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Hash",
+		"quote": "Deprecated passing incorrect data types for options to ext/hash functions.",
+		"disposition": "runtime-only",
+		"rule": "runtime.hash_option_type",
+		"fixtures": [
+			"runtime.hash_option_type~8.4-dep.fixture"
+		],
+		"reason": "Depends on the type of the value inside the $options array at run time (shown with a string seed for murmur3a); the $options parameter itself only exists from 8.1."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Intl",
+		"quote": "Calling intlcal_set() as well as calling IntlCalendar::set() with more than 2 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Intl",
+		"quote": "Calling intlgregcal_create_instance() as well as calling IntlGregorianCalendar::__construct() with more than 2 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "LDAP",
+		"quote": "Calling ldap_connect() with more than 2 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ldap extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "LDAP",
+		"quote": "Calling ldap_exop() with more than 4 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ldap extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Mysqli",
+		"quote": "The mysqli_ping() function and mysqli::ping() method are now deprecated, as the reconnect feature was removed in PHP 8.2.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [
+			"runtime.mysqli_method~8.4-dep-ping.fixture"
+		],
+		"reason": "mysqli_ping() is in data/catalog/functions.php (deprecated 8.4, verified); the method form $db->ping() is real (runtime fixture) but not reported because the class of the object is not visible in the source."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Mysqli",
+		"quote": "The mysqli_kill() function and mysqli::kill() method are now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [
+			"runtime.mysqli_method~8.4-dep-kill.fixture"
+		],
+		"reason": "mysqli_kill() is in data/catalog/functions.php (deprecated 8.4, verified); the method form $db->kill() is real (runtime fixture) but not reported because the class of the object is not visible in the source."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Mysqli",
+		"quote": "The mysqli_refresh() function and mysqli::refresh() method are now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [
+			"runtime.mysqli_method~8.4-dep-refresh.fixture"
+		],
+		"reason": "mysqli_refresh() and all ten MYSQLI_REFRESH_* constants are in data/catalog/ (deprecated 8.4, verified); the method form $db->refresh() is real (runtime fixture) but not reported because the class of the object is not visible in the source."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Mysqli",
+		"quote": "Passing explicitly the $mode parameter to mysqli_store_result() has been deprecated.",
+		"disposition": "rule",
+		"rule": "call.mysqli_store_result_mode",
+		"fixtures": [
+			"call.mysqli_store_result_mode~8.4-dep.fixture",
+			"runtime.mysqli_method~8.4-dep-store_result_mode.fixture"
+		],
+		"reason": "mysqli_store_result() with two written-out arguments is reported; MYSQLI_STORE_RESULT_COPY_DATA is already in the catalog; the method form $db->store_result( $mode ) is real (runtime fixture) but the class of the object is not visible."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "PDO_PGSQL",
+		"quote": "Using escaped question marks (??) inside dollar-quoted strings is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pdo_pgsql extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "PgSQL",
+		"quote": "Calling pg_fetch_result() with 2 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "PgSQL",
+		"quote": "Calling pg_field_prtlen() with 2 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "PgSQL",
+		"quote": "Calling pg_field_is_null() with 2 arguments is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Random",
+		"quote": "lcg_value() is deprecated, as the function is broken in multiple ways.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "lcg_value() is in data/catalog/functions.php (deprecated 8.4, verified)."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "Calling ReflectionMethod::__construct() with 1 argument is deprecated.",
+		"disposition": "rule",
+		"rule": "call.reflectionmethod_one_argument",
+		"fixtures": [
+			"call.reflectionmethod_one_argument~8.4-dep.fixture"
+		],
+		"reason": "new ReflectionMethod() with exactly one written-out argument is the deprecated \"Class::method\" form; the argument count decides."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Session",
+		"quote": "Calling session_set_save_handler() with more than 2 arguments is deprecated.",
+		"disposition": "rule",
+		"rule": "call.session_set_save_handler_callbacks",
+		"fixtures": [
+			"call.session_set_save_handler_callbacks~8.4-dep.fixture"
+		],
+		"reason": "session_set_save_handler() with more than two written-out arguments is the callback form; the argument count decides."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Session",
+		"quote": "Changing the INI settings session.sid_length and session.sid_bits_per_character is deprecated.",
+		"disposition": "rule",
+		"rule": "ini.session_deprecated_setting",
+		"fixtures": [
+			"ini.session_deprecated_setting~8.4-dep-sid_bits_per_character.fixture",
+			"ini.session_deprecated_setting~8.4-dep-sid_length.fixture",
+			"ini.session_deprecated_setting~8.4-dep-ini_alter.fixture"
+		],
+		"reason": "Reported for ini_set()/ini_alter()/session_start() options with a literal setting name and a literal value other than the default (32 and 4): the runtimes raise nothing when the default value is set again; php.ini itself is not source code and is out of reach."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Session",
+		"quote": "Changing the INI settings session.use_only_cookies, session.use_trans_sid, session.trans_sid_tags, session.trans_sid_hosts, and session.referer_check is deprecated.",
+		"disposition": "rule",
+		"rule": "ini.session_deprecated_setting",
+		"fixtures": [
+			"ini.session_deprecated_setting~8.4-dep-use_only_cookies.fixture",
+			"ini.session_deprecated_setting~8.4-dep-use_trans_sid.fixture",
+			"ini.session_deprecated_setting~8.4-dep-trans_sid_hosts.fixture",
+			"ini.session_deprecated_setting~8.4-dep-trans_sid_tags.fixture",
+			"ini.session_deprecated_setting~8.4-dep-referer_check.fixture",
+			"ini.session_deprecated_setting~8.4-dep-session_start.fixture",
+			"ini.session_deprecated_setting~8.4-dep-session_start_use_only_cookies.fixture",
+			"constant.session_sid~8.4-dep.fixture"
+		],
+		"reason": "Literal ini_set()/session_start() values that switch use_only_cookies off, use_trans_sid on, or give trans_sid_tags, trans_sid_hosts or referer_check a non-default value are reported; the SID constant has its own rule constant.session_sid because the generated catalog does not have it."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "SOAP",
+		"quote": "Passing an int to SoapServer::addFunction() is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.soap_addfunction_int",
+		"fixtures": [
+			"runtime.soap_addfunction_int~8.4-dep.fixture"
+		],
+		"reason": "Depends on the run-time type of the argument and on the object being a SoapServer; the usual spelling, SOAP_FUNCTIONS_ALL, is already reported through the catalog."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "SOAP",
+		"quote": "The SOAP_FUNCTIONS_ALL constant is now deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "SOAP_FUNCTIONS_ALL is in data/catalog/constants.php (deprecated 8.4, verified)."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The SplFixedArray::__wakeup() method has been deprecated as it implements __serialize() and __unserialize() which need to be overwritten instead.",
+		"disposition": "runtime-only",
+		"rule": "runtime.splfixedarray_wakeup",
+		"fixtures": [
+			"runtime.splfixedarray_wakeup~8.4-dep.fixture"
+		],
+		"reason": "Only a direct call of __wakeup() on an SplFixedArray raises it, and the class of the object is not visible in the source; unserialize() and a subclass calling parent::__wakeup() during unserialize() raised nothing on the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "Using the default value for $escape parameter of: - SplFileObject::setCsvControl() - SplFileObject::fputcsv() - SplFileObject::fgetcsv() is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.splfileobject_csv_escape",
+		"fixtures": [
+			"runtime.splfileobject_csv_escape~8.4-dep-fgetcsv.fixture",
+			"runtime.splfileobject_csv_escape~8.4-dep-fputcsv.fixture",
+			"runtime.splfileobject_csv_escape~8.4-dep-setCsvControl.fixture"
+		],
+		"reason": "Method calls on an object whose class is not visible in the source; $x->fgetcsv() cannot be told from a method of another class."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Calling stream_context_set_option() with 2 arguments is deprecated.",
+		"disposition": "rule",
+		"rule": "call.stream_context_set_option_two_arguments",
+		"fixtures": [
+			"call.stream_context_set_option_two_arguments~8.4-dep.fixture"
+		],
+		"reason": "stream_context_set_option() with exactly two written-out arguments is reported; the fallback branch of a function_exists( \"stream_context_set_options\" ) check is marked as guarded."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Unserializing strings using the uppercase 'S' tag is deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.unserialize_uppercase_s",
+		"fixtures": [
+			"runtime.unserialize_uppercase_s~8.4-dep.fixture"
+		],
+		"reason": "Depends on the content of the serialized string, which is data and not source code."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Using the default value for $escape parameter of: - fputcsv() - fgetcsv() - str_getcsv() is now deprecated.",
+		"disposition": "rule",
+		"rule": "call.csv_escape_default",
+		"fixtures": [
+			"call.csv_escape_default~8.4-dep-fgetcsv.fixture",
+			"call.csv_escape_default~8.4-dep-fputcsv.fixture",
+			"call.csv_escape_default~8.4-dep-str_getcsv.fixture"
+		],
+		"reason": "fputcsv(), fgetcsv() and str_getcsv() calls that write out fewer arguments than reach $escape, and do not pass it by name, are reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "XML",
+		"quote": "The xml_set_object() function has been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "xml_set_object() is in data/catalog/functions.php (deprecated 8.4, verified)."
+	},
+	{
+		"version": "8.4",
+		"section": "Deprecated Functionality",
+		"area": "XML",
+		"quote": "Passing non-callable strings to the xml_set_*_handler() functions is now deprecated.",
+		"disposition": "rule",
+		"rule": "call.xml_handler_method_name",
+		"fixtures": [
+			"call.xml_handler_method_name~8.4-dep-character_data.fixture",
+			"call.xml_handler_method_name~8.4-dep.fixture",
+			"runtime.xml_handler_string~8.4-dep-before_object.fixture",
+			"runtime.xml_handler_string~8.4-dep-empty.fixture"
+		],
+		"reason": "Detected in part: a literal method-like name given to xml_set_element_handler() or xml_set_character_data_handler() in a file that mentions xml_set_object and declares no function of that name; other handler functions, handlers from variables and the empty string are not reported, and the runtime showed a ValueError (not a deprecation) when the names are set before xml_set_object()."
+	}
+]

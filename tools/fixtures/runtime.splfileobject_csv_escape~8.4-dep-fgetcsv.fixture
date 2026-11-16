@@ -1,0 +1,11 @@
+--RULE--
+runtime.splfileobject_csv_escape
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$file = new SplFileObject( 'php://memory', 'w+' );
+$file->fwrite( "a,\"b c\"\n" );
+$file->rewind();
+
+echo json_encode( $file->fgetcsv() ), "\n";

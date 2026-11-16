@@ -1,0 +1,10 @@
+--RULE--
+runtime.splfixedarray_wakeup
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$list = new SplFixedArray( 2 );
+$list->__wakeup();
+
+echo $list->getSize(), "\n";

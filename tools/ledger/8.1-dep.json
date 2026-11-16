@@ -1,0 +1,354 @@
+[
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Implementing the Serializable interface without also implementing __serialize() and __unserialize() has been deprecated.",
+		"disposition": "rule",
+		"rule": "class.serializable_only",
+		"fixtures": [
+			"class.serializable_only~8.1-dep-anonymous.fixture",
+			"class.serializable_only~8.1-dep-one_new_method.fixture",
+			"class.serializable_only~8.1-dep.fixture",
+			"runtime.serializable_inherited~8.1-dep.fixture",
+			"runtime.serializable_methods_from_elsewhere~8.1-dep.fixture"
+		],
+		"reason": "A class declaration shows it; reported for a non-abstract class that names Serializable itself and has no parent or trait that could supply the new methods, while Serializable reached through another interface or a parent (runtime.serializable_inherited) is not seen in one file."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Implicit conversion of floats to integers that result in loss of precision, e.g. a truncation from 1.9 to 1, is deprecated.",
+		"disposition": "rule",
+		"rule": "conversion.float_literal_as_int",
+		"fixtures": [
+			"conversion.float_literal_as_int~8.1-dep-array_key.fixture",
+			"conversion.float_literal_as_int~8.1-dep-assign_op.fixture",
+			"conversion.float_literal_as_int~8.1-dep-bitwise.fixture",
+			"conversion.float_literal_as_int~8.1-dep-bitwise_not.fixture",
+			"conversion.float_literal_as_int~8.1-dep-list_key.fixture",
+			"conversion.float_literal_as_int~8.1-dep-modulo.fixture",
+			"conversion.float_literal_as_int~8.1-dep-shift.fixture",
+			"runtime.float_to_int_precision_loss~8.1-dep.fixture"
+		],
+		"reason": "Only a fractional float literal written as an array key or as an operand of % | & ^ << >> ~ is visible in the source; a float held in a variable, passed to an int parameter or used as an offset is runtime-only (runtime.float_to_int_precision_loss), and floats too large for an int are left out because 8.5 raises a warning instead."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Calling a static method or accessing a static property directly on a trait is deprecated.",
+		"disposition": "rule",
+		"rule": "call.static_on_trait",
+		"fixtures": [
+			"call.static_on_trait~8.1-dep-method.fixture",
+			"call.static_on_trait~8.1-dep-namespaced.fixture",
+			"call.static_on_trait~8.1-dep-property.fixture",
+			"runtime.trait_static_callable~8.1-dep.fixture"
+		],
+		"reason": "Name::method() and Name::$property are reported when the same file declares Name as a trait; a trait from another file cannot be told from a class, and callables naming the trait raise nothing on any runtime."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Returning a non-array from __sleep will raise a warning",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.sleep_non_array~8.1-dep.fixture"
+		],
+		"reason": "Depends on the value __sleep() returns; the runtimes show a notice on 7.4 and the warning already from 8.0, never a deprecation, with the same output on every version, so there is nothing to claim for 8.1."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Returning by reference from a void function is deprecated.",
+		"disposition": "rule",
+		"rule": "signature.reference_return_void",
+		"fixtures": [
+			"signature.reference_return_void~8.1-dep-abstract.fixture",
+			"signature.reference_return_void~8.1-dep.fixture"
+		],
+		"reason": "A declaration: function &name(): void, also for methods, closures, abstract and interface methods; raised at compile time."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Automatic conversion of \"false\" into an empty array on write operands is deprecated.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.false_to_array~8.1-dep.fixture",
+			"runtime.null_to_array~8.1-dep.fixture"
+		],
+		"reason": "Whether the variable holds false when it is written to as an array is known only at run time; null still converts silently."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Ctype",
+		"quote": "Passing a non-string value to ctype_*() functions is deprecated.",
+		"disposition": "rule",
+		"rule": "argument.ctype_non_string",
+		"fixtures": [
+			"argument.ctype_non_string~8.1-dep-bool.fixture",
+			"argument.ctype_non_string~8.1-dep-every_function.fixture",
+			"argument.ctype_non_string~8.1-dep-float.fixture",
+			"argument.ctype_non_string~8.1-dep-int.fixture",
+			"argument.ctype_non_string~8.1-dep-int_cast.fixture",
+			"argument.ctype_non_string~8.1-dep-int_function.fixture",
+			"argument.ctype_non_string~8.1-dep-null.fixture",
+			"runtime.ctype_non_string~8.1-dep.fixture"
+		],
+		"reason": "Reported when the single argument is written as an int or float literal, an (int) or (float) cast, true, false, null, or a call to intval(), strlen() or count(); an argument in a variable is runtime-only (runtime.ctype_non_string)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Date",
+		"quote": "The date_sunrise() and date_sunset() functions have been deprecated in favor of date_sun_info().",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/functions.php lists date_sunrise and date_sunset as deprecated in 8.1, verified."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Date",
+		"quote": "The strftime() and gmstrftime() functions have been deprecated in favor of date()/DateTime::format() (for locale-independent formatting) or IntlDateFormatter::format() (for locale-dependent formatting).",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/functions.php lists strftime and gmstrftime as deprecated in 8.1, verified."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Filter",
+		"quote": "The FILTER_SANITIZE_STRING and FILTER_SANITIZE_STRIPPED filters have been deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/constants.php lists both constants as deprecated in 8.1, verified."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Filter",
+		"quote": "The filter.default ini setting is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [
+			"runtime.ini_filter_default~8.1-dep.fixture"
+		],
+		"reason": "An INI setting that code cannot change: ini_set( 'filter.default', ... ) returns false and raises nothing on every runtime."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "GD",
+		"quote": "The $num_points parameter of image(open|filled)polygon has been deprecated.",
+		"disposition": "rule",
+		"rule": "argument.polygon_num_points",
+		"fixtures": [
+			"argument.polygon_num_points~8.1-dep-imagefilledpolygon.fixture",
+			"argument.polygon_num_points~8.1-dep-imageopenpolygon.fixture",
+			"argument.polygon_num_points~8.1-dep-imagepolygon.fixture"
+		],
+		"reason": "A call to imagepolygon(), imageopenpolygon() or imagefilledpolygon() with four arguments shows it; no automatic fix because PHP 7.4 rejects the three-argument form."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Hash",
+		"quote": "The mhash(), mhash_keygen_s2k(), mhash_count(), mhash_get_block_size() and mhash_get_hash_name() functions are deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "None of the runtimes is built with mhash (function_exists( 'mhash' ) is false on all seven), so nothing could be shown."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "IMAP",
+		"quote": "The NIL constant has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The imap extension is in none of the runtimes (NIL is not defined on any of them)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Intl",
+		"quote": "Calling IntlCalendar::roll() with bool argument is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes (IntlCalendar does not exist), and the call is a method on a variable of unknown class."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Mbstring",
+		"quote": "Calling mb_check_encoding() without an argument is deprecated.",
+		"disposition": "rule",
+		"rule": "argument.mb_check_encoding_none",
+		"fixtures": [
+			"argument.mb_check_encoding_none~8.1-dep-null.fixture",
+			"argument.mb_check_encoding_none~8.1-dep.fixture"
+		],
+		"reason": "A call with no argument, or with a literal null, shows it."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "MySQLi",
+		"quote": "The mysqli_driver::$driver_version property has been deprecated.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [
+			"runtime.mysqli_driver_version~8.1-dep.fixture"
+		],
+		"reason": "The runtimes confirm the deprecation, but $object->driver_version is a property read on a variable whose class the syntax tree does not show."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "MySQLi",
+		"quote": "Calling mysqli::get_client_info in OO style or passing $mysqli argument to mysqli_get_client_info() function has been deprecated.",
+		"disposition": "rule",
+		"rule": "argument.mysqli_get_client_info_link",
+		"fixtures": [
+			"argument.mysqli_get_client_info_link~8.1-dep.fixture",
+			"runtime.mysqli_get_client_info_method~8.1-dep.fixture"
+		],
+		"reason": "mysqli_get_client_info() with an argument is reported; $link->get_client_info() is a method on a variable of unknown class and is not (runtime.mysqli_get_client_info_method)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "MySQLi",
+		"quote": "The mysqli::init() method has been deprecated.",
+		"disposition": "rule",
+		"rule": "call.mysqli_parent_init",
+		"fixtures": [
+			"call.mysqli_parent_init~8.1-dep.fixture",
+			"runtime.mysqli_init_method~8.1-dep.fixture"
+		],
+		"reason": "parent::init() inside a class that extends mysqli is reported; $link->init() on a variable of unknown class is not (runtime.mysqli_init_method)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "OCI8",
+		"quote": "The INI directive oci8.old_oci_close_semantics has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "An INI directive of the oci8 extension, which none of the runtimes has."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "ODBC",
+		"quote": "odbc_result_all() has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The odbc extension is in none of the runtimes (function_exists( 'odbc_result_all' ) is false on all seven)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "PDO",
+		"quote": "The PDO::FETCH_SERIALIZE mode has been deprecated.",
+		"disposition": "rule",
+		"rule": "constant.pdo_fetch_serialize",
+		"fixtures": [
+			"constant.pdo_fetch_serialize~8.1-dep-query.fixture",
+			"constant.pdo_fetch_serialize~8.1-dep-set_fetch_mode.fixture",
+			"constant.pdo_fetch_serialize~8.1-dep.fixture"
+		],
+		"reason": "Reported where PDO::FETCH_SERIALIZE is written in an argument of fetchAll(), setFetchMode() or query(), the calls the runtimes showed to raise the notice; reading the constant elsewhere raises nothing and a mode kept in a variable is not followed."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "PgSQL",
+		"quote": "Not passing the connection argument to PgSQL functions and using the default connection is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is in none of the runtimes (function_exists( 'pg_query' ) is false on all seven)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "SOAP",
+		"quote": "The ssl_method option for the SoapClient constructor has been deprecated in favor of ssl stream context options.",
+		"disposition": "rule",
+		"rule": "argument.soap_ssl_method",
+		"fixtures": [
+			"argument.soap_ssl_method~8.1-dep.fixture",
+			"runtime.soap_ssl_method_variable~8.1-dep.fixture"
+		],
+		"reason": "Reported when 'ssl_method' is a key of an array literal passed as the options of new SoapClient(); options built in a variable, or a subclass of SoapClient, are not followed (runtime.soap_ssl_method_variable)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Calling key(), current(), next(), prev(), reset(), or end() on objects is deprecated.",
+		"disposition": "rule",
+		"rule": "argument.array_pointer_on_object",
+		"fixtures": [
+			"argument.array_pointer_on_object~8.1-dep-new.fixture",
+			"argument.array_pointer_on_object~8.1-dep-object_cast.fixture",
+			"argument.array_pointer_on_object~8.1-dep-this.fixture",
+			"runtime.array_pointer_on_object~8.1-dep.fixture"
+		],
+		"reason": "Reported when the argument is certainly an object: $this for all six functions, and an (object) cast or new for key() and current(); any other variable is runtime-only (runtime.array_pointer_on_object)."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The strptime() function has been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/functions.php lists strptime as deprecated in 8.1, verified."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The auto_detect_line_endings ini setting has been deprecated.",
+		"disposition": "rule",
+		"rule": "ini.auto_detect_line_endings",
+		"fixtures": [
+			"ini.auto_detect_line_endings~8.1-dep-ini_alter.fixture",
+			"ini.auto_detect_line_endings~8.1-dep-string_values.fixture",
+			"ini.auto_detect_line_endings~8.1-dep-suppressed.fixture",
+			"ini.auto_detect_line_endings~8.1-dep.fixture",
+			"runtime.ini_auto_detect_line_endings_off~8.1-dep.fixture"
+		],
+		"reason": "ini_set() or ini_alter() with the literal name and a literal value that switches it on raises the notice; switching it off or reading it raises nothing, and a setting in php.ini is outside the code."
+	},
+	{
+		"version": "8.1",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The FILE_BINARY and FILE_TEXT constants are deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/constants.php lists FILE_BINARY and FILE_TEXT as deprecated in 8.1, verified."
+	}
+]

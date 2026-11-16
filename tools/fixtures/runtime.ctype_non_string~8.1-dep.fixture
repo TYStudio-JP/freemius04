@@ -1,0 +1,11 @@
+--RULE--
+runtime.ctype_non_string
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+function is_number( $value ) {
+	return ctype_digit( $value );
+}
+
+var_dump( is_number( '300' ), is_number( 300 ) );

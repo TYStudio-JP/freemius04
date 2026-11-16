@@ -1,0 +1,12 @@
+--RULE--
+conversion.float_literal_as_int
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$sizes = array(
+	1.5  => 'medium',
+	-2.5 => 'below',
+);
+
+echo implode( ',', array_keys( $sizes ) ), "\n";

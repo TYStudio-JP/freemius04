@@ -1,0 +1,11 @@
+--RULE--
+syntax.underscore_class_name
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+interface _ {
+	public function label();
+}
+
+echo interface_exists( '_' ) ? "declared\n" : "missing\n";

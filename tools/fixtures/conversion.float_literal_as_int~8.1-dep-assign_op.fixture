@@ -1,0 +1,16 @@
+--RULE--
+conversion.float_literal_as_int
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$count  = 7;
+$count %= 2.5;
+$flags  = 7;
+$flags |= 1.5;
+$flags &= 6.5;
+$flags ^= 1.5;
+$flags <<= 1.5;
+$flags >>= 0.5;
+
+echo $count, ' ', $flags, "\n";

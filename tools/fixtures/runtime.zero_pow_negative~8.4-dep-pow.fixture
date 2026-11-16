@@ -1,0 +1,10 @@
+--RULE--
+runtime.zero_pow_negative
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$base     = 0;
+$exponent = -2;
+
+echo var_export( pow( $base, $exponent ), true ), "\n";

@@ -1,0 +1,18 @@
+--RULE--
+argument.array_pointer_on_object
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Bag {
+	public $first = 1;
+	public $last  = 2;
+
+	public function summary() {
+		return key( $this ) . '=' . current( $this ) . ' ' . next( $this ) . prev( $this ) . end( $this ) . reset( $this );
+	}
+}
+
+$bag = new Bag();
+
+echo $bag->summary(), "\n";

@@ -1,0 +1,13 @@
+--RULE--
+syntax.underscore_class_name
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+trait _ {
+	public function label() {
+		return 'placeholder';
+	}
+}
+
+echo trait_exists( '_' ) ? "declared\n" : "missing\n";

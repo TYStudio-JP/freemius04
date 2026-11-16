@@ -1,0 +1,9 @@
+--RULE--
+runtime.splfileobject_csv_escape
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$file = new SplFileObject( 'php://memory', 'w+' );
+
+echo $file->fputcsv( array( 'a', 'b c' ) ), "\n";

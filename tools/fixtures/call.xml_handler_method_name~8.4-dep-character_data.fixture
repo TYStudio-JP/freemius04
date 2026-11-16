@@ -1,0 +1,24 @@
+--RULE--
+call.xml_handler_method_name
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+class Text_Reader {
+	public $text = '';
+
+	public function text( $parser, $data ) {
+		$this->text .= $data;
+	}
+}
+
+$reader = new Text_Reader();
+$parser = xml_parser_create();
+
+$attach = 'xml_set_object';
+$attach( $parser, $reader );
+
+xml_set_character_data_handler( $parser, 'text' );
+xml_parse( $parser, '<a>hello</a>', true );
+
+echo $reader->text, "\n";

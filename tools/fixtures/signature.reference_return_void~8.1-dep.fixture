@@ -1,0 +1,18 @@
+--RULE--
+signature.reference_return_void
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+function &reset_counter(): void {
+}
+
+class Counter {
+	public function &clear(): void {
+	}
+}
+
+$closure = function &(): void {
+};
+
+echo "done\n";

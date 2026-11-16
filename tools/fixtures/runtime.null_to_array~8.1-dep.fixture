@@ -1,0 +1,10 @@
+--RULE--
+runtime.null_to_array
+--CLAIM--
+{}
+--CODE--
+<?php
+$list   = null;
+$list[] = 'first';
+
+echo count( $list ), "\n";

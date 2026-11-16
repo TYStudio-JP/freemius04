@@ -1,0 +1,27 @@
+--RULE--
+class.serializable_only
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Basket implements Countable, \Serializable {
+	public $items = array( 'apple' );
+
+	public function count(): int {
+		return count( $this->items );
+	}
+
+	public function serialize() {
+		return implode( ',', $this->items );
+	}
+
+	public function unserialize( $data ) {
+		$this->items = explode( ',', $data );
+	}
+
+	public function __serialize(): array {
+		return $this->items;
+	}
+}
+
+echo count( new Basket() ), "\n";

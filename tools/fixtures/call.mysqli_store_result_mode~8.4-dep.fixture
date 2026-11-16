@@ -1,0 +1,17 @@
+--RULE--
+call.mysqli_store_result_mode
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+// No database server is reachable here. The notice about the second argument
+// is raised before PHP looks at the connection, so an unconnected handle shows it.
+$link = mysqli_init();
+
+try {
+	mysqli_store_result( $link, 0 );
+} catch ( Error $error ) {
+	unset( $error );
+}
+
+echo "done\n";

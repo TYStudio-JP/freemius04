@@ -1,0 +1,10 @@
+--RULE--
+argument.polygon_num_points
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$image = imagecreatetruecolor( 20, 20 );
+$red   = imagecolorallocate( $image, 255, 0, 0 );
+
+var_dump( imagefilledpolygon( $image, array( 1, 1, 10, 1, 5, 10 ), 3, $red ) );

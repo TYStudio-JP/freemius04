@@ -1,0 +1,9 @@
+--RULE--
+argument.mysqli_get_client_info_link
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$link = mysqli_init();
+
+var_dump( is_string( mysqli_get_client_info( $link ) ) );

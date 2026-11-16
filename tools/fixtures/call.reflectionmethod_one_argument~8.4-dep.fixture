@@ -1,0 +1,9 @@
+--RULE--
+call.reflectionmethod_one_argument
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$method = new ReflectionMethod( 'ArrayObject::count' );
+
+echo $method->class, '::', $method->getName(), "\n";

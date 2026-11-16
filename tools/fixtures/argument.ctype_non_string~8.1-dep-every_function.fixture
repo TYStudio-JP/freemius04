@@ -1,0 +1,8 @@
+--RULE--
+argument.ctype_non_string
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+echo (int) ctype_alnum( 65 ), (int) ctype_alpha( 65 ), (int) ctype_cntrl( 65 ), (int) ctype_digit( 65 ), (int) ctype_graph( 65 ), (int) ctype_lower( 65 );
+echo (int) ctype_print( 65 ), (int) ctype_punct( 65 ), (int) ctype_space( 65 ), (int) ctype_upper( 65 ), (int) ctype_xdigit( 65 ), "\n";

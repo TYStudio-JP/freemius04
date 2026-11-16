@@ -1,0 +1,9 @@
+--RULE--
+ini.session_deprecated_setting
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+ini_alter( 'session.sid_length', '48' );
+
+echo "configured\n";

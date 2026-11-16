@@ -1,0 +1,19 @@
+--RULE--
+call.static_on_trait
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+namespace Shop\Util;
+
+trait Greets {
+	public static function greet() {
+		return 'hello';
+	}
+}
+
+class Visitor {
+	use Greets;
+}
+
+echo Greets::greet(), ' ', \Shop\Util\Greets::greet(), ' ', Visitor::greet(), "\n";

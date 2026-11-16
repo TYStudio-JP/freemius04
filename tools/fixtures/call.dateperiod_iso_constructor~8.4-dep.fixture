@@ -1,0 +1,11 @@
+--RULE--
+call.dateperiod_iso_constructor
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$period = new DatePeriod( 'R2/2012-07-01T00:00:00Z/P7D' );
+
+foreach ( $period as $day ) {
+	echo $day->format( 'Y-m-d' ), "\n";
+}

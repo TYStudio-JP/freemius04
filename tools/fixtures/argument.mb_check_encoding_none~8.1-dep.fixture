@@ -1,0 +1,7 @@
+--RULE--
+argument.mb_check_encoding_none
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+var_dump( mb_check_encoding() );

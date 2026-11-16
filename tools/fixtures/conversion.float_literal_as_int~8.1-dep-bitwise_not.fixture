@@ -1,0 +1,7 @@
+--RULE--
+conversion.float_literal_as_int
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+echo ~1.5, "\n";

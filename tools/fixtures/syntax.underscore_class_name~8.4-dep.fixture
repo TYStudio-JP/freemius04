@@ -1,0 +1,14 @@
+--RULE--
+syntax.underscore_class_name
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+class _ {
+	public function label() {
+		return 'placeholder';
+	}
+}
+
+$object = new _();
+echo $object->label(), "\n";

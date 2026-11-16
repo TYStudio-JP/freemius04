@@ -1,0 +1,15 @@
+--RULE--
+runtime.mysqli_method
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$link = new mysqli();
+
+try {
+	$link->store_result( 0 );
+} catch ( Error $error ) {
+	unset( $error );
+}
+
+echo "done\n";

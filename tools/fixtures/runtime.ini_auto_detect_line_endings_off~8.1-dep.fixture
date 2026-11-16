@@ -1,0 +1,7 @@
+--RULE--
+runtime.ini_auto_detect_line_endings_off
+--CLAIM--
+{}
+--CODE--
+<?php
+var_dump( ini_set( 'auto_detect_line_endings', '0' ), ini_set( 'auto_detect_line_endings', false ), ini_get( 'auto_detect_line_endings' ) );

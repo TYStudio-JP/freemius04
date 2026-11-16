@@ -1,0 +1,15 @@
+--RULE--
+runtime.sleep_non_array
+--CLAIM--
+{}
+--CODE--
+<?php
+class Session_Data {
+	public $value = 1;
+
+	public function __sleep() {
+		return 'value';
+	}
+}
+
+echo serialize( new Session_Data() ), "\n";

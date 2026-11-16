@@ -1,0 +1,15 @@
+--RULE--
+call.mysqli_parent_init
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Shop_Database extends mysqli {
+	public function __construct() {
+		parent::init();
+	}
+}
+
+$database = new Shop_Database();
+
+echo get_class( $database ), "\n";

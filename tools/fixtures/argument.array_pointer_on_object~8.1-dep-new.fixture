@@ -1,0 +1,7 @@
+--RULE--
+argument.array_pointer_on_object
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+var_dump( current( new ArrayObject( array( 'red' ) ) ), key( new stdClass() ) );

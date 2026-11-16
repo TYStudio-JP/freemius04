@@ -1,0 +1,32 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "runtime.soap_addfunction_int",
+	"claim": {
+		"deprecated_in": "8.4"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "ok",
+		"8.0": "ok",
+		"8.1": "ok",
+		"8.2": "ok",
+		"8.3": "ok",
+		"8.4": "deprecated",
+		"8.5": "deprecated"
+	},
+	"messages": {
+		"8.4": "E_DEPRECATED: SoapServer::addFunction(): Enabling all functions via SOAP_FUNCTIONS_ALL is deprecated since 8.4, due to possible security concerns. If all PHP functions should be enabled, the flattened return value of get_defined_functions() can be used",
+		"8.5": "E_DEPRECATED: SoapServer::addFunction(): Enabling all functions via SOAP_FUNCTIONS_ALL is deprecated since 8.4, due to possible security concerns. If all PHP functions should be enabled, the flattened return value of get_defined_functions() can be used"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

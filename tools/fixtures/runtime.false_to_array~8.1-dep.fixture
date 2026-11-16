@@ -1,0 +1,13 @@
+--RULE--
+runtime.false_to_array
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$list   = false;
+$list[] = 'first';
+
+$nested                = false;
+$nested['a']['b'] = 'deep';
+
+echo count( $list ), ' ', count( $nested ), "\n";

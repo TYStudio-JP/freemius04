@@ -1,0 +1,16 @@
+--RULE--
+argument.soap_ssl_method
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$client = new SoapClient(
+	null,
+	array(
+		'location'   => 'http://localhost/',
+		'uri'        => 'urn:example',
+		'ssl_method' => SOAP_SSL_METHOD_TLS,
+	)
+);
+
+echo get_class( $client ), "\n";

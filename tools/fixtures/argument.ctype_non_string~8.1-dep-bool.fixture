@@ -1,0 +1,7 @@
+--RULE--
+argument.ctype_non_string
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+var_dump( ctype_digit( true ), ctype_alpha( false ) );

@@ -1,0 +1,10 @@
+--RULE--
+runtime.mysqli_init_method
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$link = new mysqli();
+$link->init();
+
+echo get_class( $link ), "\n";

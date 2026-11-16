@@ -1,0 +1,19 @@
+--RULE--
+runtime.serializable_inherited
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+interface Storable extends Serializable {
+}
+
+class Basket implements Storable {
+	public function serialize() {
+		return 'apple';
+	}
+
+	public function unserialize( $data ) {
+	}
+}
+
+echo ( new Basket() )->serialize(), "\n";

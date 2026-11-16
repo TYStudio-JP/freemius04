@@ -1,0 +1,7 @@
+--RULE--
+runtime.unserialize_uppercase_s
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+echo unserialize( 'S:3:"a\62c";' ), "\n";

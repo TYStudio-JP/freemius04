@@ -1,0 +1,14 @@
+--RULE--
+runtime.array_pointer_on_object
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+function first_of( $collection ) {
+	return reset( $collection );
+}
+
+$object      = new stdClass();
+$object->one = 1;
+
+echo first_of( array( 5 ) ), first_of( $object ), "\n";

@@ -1,0 +1,11 @@
+--RULE--
+constant.session_sid
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+session_start();
+
+$link = 'page.php?' . SID;
+
+echo strlen( $link ), "\n";

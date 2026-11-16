@@ -1,0 +1,7 @@
+--RULE--
+call.csv_escape_default
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+echo json_encode( str_getcsv( 'a,"b c",d', ',', '"' ) ), "\n";

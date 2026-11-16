@@ -1,0 +1,7 @@
+--RULE--
+runtime.ini_filter_default
+--CLAIM--
+{}
+--CODE--
+<?php
+var_dump( ini_set( 'filter.default', 'special_chars' ) );

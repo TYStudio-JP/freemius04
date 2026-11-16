@@ -1,0 +1,12 @@
+--RULE--
+runtime.hash_option_type
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+// The $options parameter of hash() exists from PHP 8.1.
+if ( PHP_VERSION_ID >= 80100 ) {
+	$digest = hash( 'murmur3a', 'x', false, array( 'seed' => '7' ) );
+}
+
+echo "done\n";

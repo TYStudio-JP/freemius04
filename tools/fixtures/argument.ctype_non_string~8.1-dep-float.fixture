@@ -1,0 +1,9 @@
+--RULE--
+argument.ctype_non_string
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$input = '2';
+
+var_dump( ctype_digit( 1.5 ), ctype_digit( (float) $input ) );

@@ -1,0 +1,9 @@
+--RULE--
+conversion.float_literal_as_int
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$flags = 7;
+
+echo $flags | 1.5, ' ', $flags & 2.5, ' ', $flags ^ 1.5, "\n";

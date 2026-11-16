@@ -1,0 +1,9 @@
+--RULE--
+ini.session_deprecated_setting
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+session_start( array( 'use_only_cookies' => 0 ) );
+
+echo "configured\n";

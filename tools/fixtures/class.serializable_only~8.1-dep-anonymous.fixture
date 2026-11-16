@@ -1,0 +1,16 @@
+--RULE--
+class.serializable_only
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$basket = new class() implements Serializable {
+	public function serialize() {
+		return 'apple';
+	}
+
+	public function unserialize( $data ) {
+	}
+};
+
+echo $basket->serialize(), "\n";

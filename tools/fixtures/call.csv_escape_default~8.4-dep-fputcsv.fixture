@@ -1,0 +1,12 @@
+--RULE--
+call.csv_escape_default
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$handle = fopen( 'php://memory', 'w+' );
+
+fputcsv( $handle, array( 'a', 'b c' ) );
+rewind( $handle );
+
+echo stream_get_contents( $handle );

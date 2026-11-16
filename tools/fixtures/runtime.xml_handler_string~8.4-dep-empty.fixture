@@ -1,0 +1,12 @@
+--RULE--
+runtime.xml_handler_string
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+$parser = xml_parser_create();
+
+// An empty string used to be the way to remove a handler.
+xml_set_character_data_handler( $parser, '' );
+
+echo "done\n";

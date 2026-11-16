@@ -1,0 +1,9 @@
+--RULE--
+argument.ctype_non_string
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$input = '1234';
+
+var_dump( ctype_digit( (int) $input ) );

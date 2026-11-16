@@ -1,0 +1,17 @@
+--RULE--
+runtime.float_to_int_precision_loss
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+function half( $number ) {
+	return $number / 2;
+}
+
+function label( int $index ) {
+	return 'item ' . $index;
+}
+
+$items = array( 'a', 'b', 'c' );
+
+echo $items[ half( 3 ) ], ' ', label( half( 5 ) ), "\n";

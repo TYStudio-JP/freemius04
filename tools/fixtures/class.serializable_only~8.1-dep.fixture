@@ -1,0 +1,20 @@
+--RULE--
+class.serializable_only
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Basket implements Serializable {
+	public $items = array( 'apple' );
+
+	public function serialize() {
+		return implode( ',', $this->items );
+	}
+
+	public function unserialize( $data ) {
+		$this->items = explode( ',', $data );
+	}
+}
+
+$copy = unserialize( serialize( new Basket() ) );
+echo $copy->items[0], "\n";

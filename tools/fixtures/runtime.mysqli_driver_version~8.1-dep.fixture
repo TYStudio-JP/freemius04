@@ -1,0 +1,9 @@
+--RULE--
+runtime.mysqli_driver_version
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$driver = new mysqli_driver();
+
+var_dump( is_int( $driver->driver_version ) );

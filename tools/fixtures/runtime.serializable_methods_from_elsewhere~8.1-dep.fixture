@@ -1,0 +1,43 @@
+--RULE--
+runtime.serializable_methods_from_elsewhere
+--CLAIM--
+{}
+--CODE--
+<?php
+trait New_Serialization {
+	public function __serialize(): array {
+		return array();
+	}
+
+	public function __unserialize( array $data ): void {
+	}
+}
+
+class Base {
+	use New_Serialization;
+}
+
+class From_Trait implements Serializable {
+	use New_Serialization;
+
+	public function serialize() {
+		return 'trait';
+	}
+
+	public function unserialize( $data ) {
+	}
+}
+
+class From_Parent extends Base implements Serializable {
+	public function serialize() {
+		return 'parent';
+	}
+
+	public function unserialize( $data ) {
+	}
+}
+
+abstract class Unfinished implements Serializable {
+}
+
+echo ( new From_Trait() )->serialize(), ' ', ( new From_Parent() )->serialize(), "\n";
