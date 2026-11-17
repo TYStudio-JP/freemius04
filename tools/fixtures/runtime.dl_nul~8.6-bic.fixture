@@ -1,0 +1,11 @@
+--RULE--
+runtime.dl_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// 7.4-8.5 cut the name at the NUL byte and look for "upgw_missing" (a warning,
+// then false). The 8.6 notes: "dl() now raises a ValueError when the
+// $extension_filename argument contains NUL bytes."
+var_dump( @dl( "upgw_missing\0.so" ) );
+echo "after\n";

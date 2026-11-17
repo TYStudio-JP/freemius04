@@ -1,0 +1,17 @@
+--RULE--
+syntax.constructor_return_value
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Counter {
+	public $ready = false;
+
+	public function __construct() {
+		$this->ready = true;
+		return null;
+	}
+}
+
+$counter = new Counter();
+var_dump( $counter->ready );

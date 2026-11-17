@@ -1,0 +1,8 @@
+--RULE--
+runtime.linkinfo_empty
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// 7.4-8.5 warn and return -1.
+var_dump( linkinfo( '' ) );

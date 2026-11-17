@@ -1,0 +1,11 @@
+--RULE--
+class.attribute_on_non_instantiable
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+#[\Attribute(\Attribute::TARGET_CLASS)]
+interface Upgw_Marker_Interface {
+}
+
+echo "declared\n";

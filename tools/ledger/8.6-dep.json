@@ -1,0 +1,458 @@
+[
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using \"namespace\" as a class constant name is deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.class_constant_namespace",
+		"fixtures": [
+			"syntax.class_constant_namespace~8.6-dep-interface.fixture",
+			"syntax.class_constant_namespace~8.6-dep-lowercase.fixture",
+			"syntax.class_constant_namespace~8.6-dep.fixture",
+			"runtime.enum_case_namespace~8.6-dep.fixture"
+		],
+		"reason": "A class, interface or trait constant named namespace is visible in the declaration; it is reported in any case (const NAMESPACE too, as the php-8.6.0RC7 source compares without case), and the fixtures show PHP 7.4-8.5 accept it silently, so the 8.6 claim is documented only. An enum case named namespace is a class constant too (php-8.6.0RC7 Zend/tests/deprecate_namespace_class_constant.phpt) and is reported; its fixture is runtime.* because enums go through eval() to run on 7.4 and 8.0."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using the return statement in a finally block is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.return_in_finally",
+		"fixtures": [
+			"syntax.return_in_finally~8.6-dep-bare.fixture",
+			"syntax.return_in_finally~8.6-dep.fixture"
+		],
+		"reason": "Any return statement inside a finally block of the same function is visible in the syntax tree; the fixtures show 7.4-8.5 run it silently (the finally value wins), 8.6 is documented only."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Specifying a return type of array|null / ?array for __debugInfo() is now deprecated.",
+		"disposition": "rule",
+		"rule": "signature.debuginfo_nullable_return",
+		"fixtures": [
+			"signature.debuginfo_nullable_return~8.6-dep.fixture",
+			"runtime.debuginfo_union_null_return~8.6-dep.fixture"
+		],
+		"reason": "The return type ?array / array|null / null|array of __debugInfo() is in the declaration; ?array has a rule fixture, array|null only parses from 8.0 so it is shown through eval() in a runtime fixture, and both run silently on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Returning values from __construct() and __destruct() is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.constructor_return_value",
+		"fixtures": [
+			"syntax.constructor_return_value~8.6-dep-destructor.fixture",
+			"syntax.constructor_return_value~8.6-dep-null.fixture",
+			"syntax.constructor_return_value~8.6-dep.fixture"
+		],
+		"reason": "A return with a value (null included) written directly in __construct() or __destruct() is visible; a bare return; and returns of nested closures are not reported. True positives seen in the WordPress 4.0 corpus."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Making __construct() and __destruct() a Generator is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.constructor_generator",
+		"fixtures": [
+			"syntax.constructor_generator~8.6-dep-destructor.fixture",
+			"syntax.constructor_generator~8.6-dep.fixture"
+		],
+		"reason": "A yield or yield from written directly in __construct() or __destruct() makes it a generator and is visible in the syntax tree; 7.4-8.5 run it silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Naming a function readonly is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.function_named_readonly",
+		"fixtures": [
+			"syntax.function_named_readonly~8.6-dep.fixture"
+		],
+		"reason": "A function declaration named readonly is visible; the fixture shows it compiles and runs silently on 7.4-8.5. WordPress 7.1.4 has one, wp-includes/php-compat/readonly.php, which it only includes on PHP < 8.1."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using \"let\" or \"is\" as the name of a class, interface, trait, enum, function, or constant (including via define()), as the alias passed to class_alias(), or as the alias name in a use, use function, or use const declaration is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.let_is_name",
+		"fixtures": [
+			"syntax.let_is_name~8.6-dep-class.fixture",
+			"syntax.let_is_name~8.6-dep-class_alias.fixture",
+			"syntax.let_is_name~8.6-dep-const.fixture",
+			"syntax.let_is_name~8.6-dep-define.fixture",
+			"syntax.let_is_name~8.6-dep-function.fixture",
+			"syntax.let_is_name~8.6-dep-interface.fixture",
+			"syntax.let_is_name~8.6-dep-namespaced_const.fixture",
+			"syntax.let_is_name~8.6-dep-trait.fixture",
+			"syntax.let_is_name~8.6-dep-use.fixture",
+			"syntax.let_is_name~8.6-dep-use_const.fixture",
+			"syntax.let_is_name~8.6-dep-use_function.fixture",
+			"runtime.let_is_enum_name~8.6-dep.fixture"
+		],
+		"reason": "Declarations of classes, interfaces, traits, enums, functions and constants, define() and class_alias() with a literal name, and use aliases are visible; an enum only parses from 8.1, so it is shown through eval() in a runtime fixture. A name from a variable is not reported."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using \"_\" as a constant name (via const or define()), or as the alias name for a class or constant in a use declaration, is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.underscore_constant_name",
+		"fixtures": [
+			"syntax.underscore_constant_name~8.6-dep-const.fixture",
+			"syntax.underscore_constant_name~8.6-dep-define.fixture",
+			"syntax.underscore_constant_name~8.6-dep-use_class.fixture",
+			"syntax.underscore_constant_name~8.6-dep-use_const.fixture"
+		],
+		"reason": "const _, define( '_' ) with a literal name and use ... as _ for a class or constant are visible; the fixtures show 8.4 and 8.5 do not yet deprecate the use alias (only the 8.4 class-name case), as the notes say. A function alias \"_\" is not in the notes and is not reported."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Passing a 3rd argument to define() is now deprecated.",
+		"disposition": "rule",
+		"rule": "call.define_third_argument",
+		"fixtures": [
+			"call.define_third_argument~8.6-dep-variable.fixture",
+			"call.define_third_argument~8.6-dep.fixture"
+		],
+		"reason": "Any third argument to define() is visible in the call; a literal true is left out because 7.3 already deprecated it and 8.0 made it a warning (call.define_case_insensitive covers where that changes behaviour), so one claim cannot describe it."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Calling is_a() or is_subclass_of() with a string as the first argument when $allow_string is false is now deprecated.",
+		"disposition": "rule",
+		"rule": "call.is_a_string_without_allow_string",
+		"fixtures": [
+			"call.is_a_string_without_allow_string~8.6-dep-get_class.fixture",
+			"call.is_a_string_without_allow_string~8.6-dep-is_a.fixture",
+			"call.is_a_string_without_allow_string~8.6-dep-is_a_false.fixture",
+			"call.is_a_string_without_allow_string~8.6-dep-is_subclass_of.fixture",
+			"runtime.is_a_string_variable~8.6-dep.fixture"
+		],
+		"reason": "Reported when the first argument is written as a string (literal, interpolated, Foo::class, get_class( $x )) and $allow_string is false (omitted for is_a(), literal false for both); a string from a variable is run-time only and has a runtime fixture. 7.4-8.5 silently return false."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "BZ2",
+		"quote": "Passing an object for the Bzip2 {de}compression stream filter is now deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "None of the runtimes has the bz2 extension (stream_filter_append() cannot locate \"bzip2.compress\" on 7.4-8.5), so nothing can be shown; the filter parameters are also a run-time value."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "GMP",
+		"quote": "The shift (<<, >>) and exponentiation (**) operators on GMP objects now emit a deprecation warning when converting a float right operand to int loses precision.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "None of the runtimes has the gmp extension (extension_loaded( 'gmp' ) is false), and the loss of precision depends on run-time float values."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Mbstring",
+		"quote": "Mbregex has been deprecated, because the underlying Oniguruma library is no longer maintained.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "The 16 mb_ereg*() / mb_regex_*() / mb_split() functions are in data/catalog/functions.php as deprecated in 8.6 (documented) and are reported by InternalFunctions."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Mbstring",
+		"quote": "Passing objects to mb_convert_variables() is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.object_instead_of_array_variable",
+		"fixtures": [
+			"runtime.object_instead_of_array_variable~8.6-dep-mb_convert_variables.fixture"
+		],
+		"reason": "The variables are passed by reference, so the object always comes from a variable whose type is known at run time only; the fixture shows 7.4-8.5 accept an object silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "MySQLi",
+		"quote": "The mysqli_get_charset() function and mysqli::get_charset() method are now deprecated.",
+		"disposition": "rule",
+		"rule": "call.mysqli_deprecated_method",
+		"fixtures": [
+			"call.mysqli_deprecated_method~8.6-dep-get_charset.fixture"
+		],
+		"reason": "mysqli_get_charset() is in the catalog (function.deprecated); ->get_charset() is reported only where the receiver is certainly a mysqli object (new mysqli or a mysqli parameter); the fixture only compiles the call, as there is no database server."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "MySQLi",
+		"quote": "The mysqli_stmt_init() function, mysqli::stmt_init() method, and calling the mysqli_stmt constructor without providing the $query parameter are now deprecated.",
+		"disposition": "rule",
+		"rule": "call.mysqli_deprecated_method",
+		"fixtures": [
+			"call.mysqli_deprecated_method~8.6-dep-stmt_init.fixture",
+			"call.mysqli_stmt_without_query~8.6-dep.fixture"
+		],
+		"reason": "mysqli_stmt_init() is in the catalog; ->stmt_init() on a known mysqli object is call.mysqli_deprecated_method and new mysqli_stmt( $link ) without a query (or with a literal null) is call.mysqli_stmt_without_query; the fixtures only compile the code, as there is no database server."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "Calling ReflectionProperty::setValue() with an object that is not an instance of the class on which the property was declared is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_set_value_foreign_object",
+		"fixtures": [
+			"runtime.reflection_set_value_foreign_object~8.6-dep.fixture"
+		],
+		"reason": "Which object reaches setValue() and which class declared the property are run-time values; the fixture shows 7.4-8.5 silently write the property of the foreign object."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "Calling ReflectionProperty::setRawValue() with an object that is not an instance of the class on which the property was declared is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_set_value_foreign_object",
+		"fixtures": [
+			"runtime.reflection_set_value_foreign_object~8.6-dep-raw.fixture"
+		],
+		"reason": "Same as setValue(), for setRawValue(), which exists from 8.4; the fixture calls it where it exists and shows 8.4-8.5 accept a foreign object silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "Calling ReflectionMethod::invoke() or ReflectionMethod::invokeArgs() with an object and a static method is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_invoke_static_with_object",
+		"fixtures": [
+			"runtime.reflection_invoke_static_with_object~8.6-dep-invoke_args.fixture",
+			"runtime.reflection_invoke_static_with_object~8.6-dep.fixture"
+		],
+		"reason": "Whether the reflected method is static is not visible at the call of invoke() / invokeArgs(); the fixtures show 7.4-8.5 ignore the object silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Session",
+		"quote": "It is now deprecated to pass an object that does not implement the create_sid() and validateId() methods.",
+		"disposition": "rule",
+		"rule": "class.session_handler_missing_methods",
+		"fixtures": [
+			"class.session_handler_missing_methods~8.6-dep-save_handler.fixture"
+		],
+		"reason": "Only an object implementing SessionHandlerInterface can be passed, so the missing methods are reported at its class declaration (no extends, no traits); the fixture passes such an object to session_set_save_handler() and 7.4-8.5 accept it silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Session",
+		"quote": "A deprecation is now emitted when implementing SessionHandlerInterface on a class which doesn't define the create_sid() or validateId() methods, as those will be moved from SessionUpdateTimestampHandlerInterface and SessionIdInterface to SessionHandlerInterface.",
+		"disposition": "rule",
+		"rule": "class.session_handler_missing_methods",
+		"fixtures": [
+			"class.session_handler_missing_methods~8.6-dep.fixture"
+		],
+		"reason": "A class that implements SessionHandlerInterface and declares no create_sid() or validateId() is visible; note that the php-8.6.0RC7 source raises E_WARNING, not E_DEPRECATED, at the declaration, while the notes say deprecation, so the finding follows the notes and is documented only."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The spl_classes() function is now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "spl_classes() is in data/catalog/functions.php as deprecated in 8.6 (documented)."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The spl_object_hash() function is now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "spl_object_hash() is in data/catalog/functions.php as deprecated in 8.6 (documented, instead spl_object_id())."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The following ArrayIterator methods are now deprecated:",
+		"disposition": "rule",
+		"rule": "call.arrayiterator_method",
+		"fixtures": [
+			"call.arrayiterator_method~8.6-dep-asort.fixture",
+			"call.arrayiterator_method~8.6-dep-getFlags.fixture",
+			"call.arrayiterator_method~8.6-dep-ksort.fixture",
+			"call.arrayiterator_method~8.6-dep-natcasesort.fixture",
+			"call.arrayiterator_method~8.6-dep-natsort.fixture",
+			"call.arrayiterator_method~8.6-dep-serialize.fixture",
+			"call.arrayiterator_method~8.6-dep-setFlags.fixture",
+			"call.arrayiterator_method~8.6-dep-uasort.fixture",
+			"call.arrayiterator_method~8.6-dep-uksort.fixture",
+			"call.arrayiterator_method~8.6-dep-unserialize.fixture"
+		],
+		"reason": "The ten methods are reported where the receiver is certainly an ArrayIterator or RecursiveArrayIterator (Php85DepMethods::known_class()); ArrayObject keeps its methods. One fixture per method, all silent on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The following SplFileObject methods are now deprecated:",
+		"disposition": "rule",
+		"rule": "call.splfileobject_csv_method",
+		"fixtures": [
+			"call.splfileobject_csv_method~8.6-dep-fgetcsv.fixture",
+			"call.splfileobject_csv_method~8.6-dep-fputcsv.fixture",
+			"call.splfileobject_csv_method~8.6-dep-getCsvControl.fixture",
+			"call.splfileobject_csv_method~8.6-dep-setCsvControl.fixture"
+		],
+		"reason": "The four methods are reported where the receiver is certainly an SplFileObject or SplTempFileObject; the fixtures pass $escape explicitly so that the 8.4 deprecation of its default does not show up, and are silent on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "metaphone() is deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "metaphone() is in data/catalog/functions.php as deprecated in 8.6 (documented)."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Using more than 16 filters in a php://filter URL without configuring the \"filter.max_filter_count\" stream context option now emits an E_DEPRECATED warning.",
+		"disposition": "runtime-only",
+		"rule": "runtime.php_filter_chain_limit",
+		"fixtures": [
+			"runtime.php_filter_chain_limit~8.6-dep.fixture"
+		],
+		"reason": "The filter chain is a run-time string, almost always built from values, and plugin code has no reason to write one out; the fixture shows 17 filters run silently on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Passing an object to array_walk{_recursive} is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.object_instead_of_array_variable",
+		"fixtures": [
+			"runtime.object_instead_of_array_variable~8.6-dep-array_walk.fixture",
+			"runtime.object_instead_of_array_variable~8.6-dep-array_walk_recursive.fixture"
+		],
+		"reason": "The array is passed by reference, so an object always comes from a variable whose type is known at run time only; the fixtures show 7.4-8.5 walk the object properties silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Passing an object as the $data argument to http_build_query() is now deprecated.",
+		"disposition": "rule",
+		"rule": "argument.object_instead_of_array",
+		"fixtures": [
+			"argument.object_instead_of_array~8.6-dep-http_build_query.fixture",
+			"runtime.object_instead_of_array_variable~8.6-dep-http_build_query.fixture",
+			"runtime.object_instead_of_array_variable~8.6-dep-nested.fixture"
+		],
+		"reason": "Only an object written in the call (new, (object), $this) is reported; an object in a variable and an object nested in the array (the second sentence of the bullet) are run-time values with runtime fixtures, all silent on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The is_double() function is now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "is_double() is in data/catalog/functions.php as deprecated in 8.6 (documented, instead is_float())."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The is_long() and is_integer() functions are now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "is_long() and is_integer() are in data/catalog/functions.php as deprecated in 8.6 (documented, instead is_int())."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The doubleval() function is now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "doubleval() is in data/catalog/functions.php as deprecated in 8.6 (documented, instead floatval())."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The strcoll() function is now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "strcoll() is in data/catalog/functions.php as deprecated in 8.6 (documented)."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The SORT_LOCALE_STRING constant for the family of sort functions is now deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "SORT_LOCALE_STRING is in data/catalog/constants.php as deprecated in 8.6 (documented) and is reported by InternalConstants."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Zlib",
+		"quote": "Passing an object for the zlib deflate and inflate stream filter is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.zlib_filter_object_params",
+		"fixtures": [
+			"runtime.zlib_filter_object_params~8.6-dep.fixture"
+		],
+		"reason": "The filter name and parameters of stream_filter_append() / stream_filter_prepend() are run-time values; the fixture shows 7.4-8.5 accept an object for zlib.deflate silently."
+	},
+	{
+		"version": "8.6",
+		"section": "Deprecated Functionality",
+		"area": "Zlib",
+		"quote": "Passing an object as the $option argument to deflate_init and inflate_init is now deprecated.",
+		"disposition": "rule",
+		"rule": "argument.object_instead_of_array",
+		"fixtures": [
+			"argument.object_instead_of_array~8.6-dep-deflate_init.fixture",
+			"argument.object_instead_of_array~8.6-dep-inflate_init.fixture",
+			"runtime.object_instead_of_array_variable~8.6-dep-deflate_init.fixture"
+		],
+		"reason": "An object written as the $options argument (new, (object), $this) is reported; an object in a variable is a run-time value with a runtime fixture; 7.4-8.5 accept both silently."
+	}
+]

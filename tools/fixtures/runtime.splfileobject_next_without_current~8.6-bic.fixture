@@ -1,0 +1,12 @@
+--RULE--
+runtime.splfileobject_next_without_current
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+$file = new SplTempFileObject();
+$file->fwrite( "one\ntwo\nthree\n" );
+$file->rewind();
+$file->next();
+// 7.4-8.5: "one" (the stream did not move); 8.6: "two".
+echo json_encode( $file->current() ), "\n";

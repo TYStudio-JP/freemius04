@@ -1,0 +1,30 @@
+--RULE--
+call.is_resource_finfo
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+function plugin_mime_type( $data ) {
+	$info = finfo_open( FILEINFO_MIME_TYPE );
+
+	if ( ! is_resource( $info ) ) {
+		return 'application/octet-stream';
+	}
+
+	return finfo_buffer( $info, $data );
+}
+
+echo plugin_mime_type( 'plain words' ), "\n";
+--FIXED--
+<?php
+function plugin_mime_type( $data ) {
+	$info = finfo_open( FILEINFO_MIME_TYPE );
+
+	if ( ! ( false !== $info ) ) {
+		return 'application/octet-stream';
+	}
+
+	return finfo_buffer( $info, $data );
+}
+
+echo plugin_mime_type( 'plain words' ), "\n";

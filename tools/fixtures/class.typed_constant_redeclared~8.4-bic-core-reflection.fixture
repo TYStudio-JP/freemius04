@@ -1,0 +1,11 @@
+--RULE--
+class.typed_constant_redeclared
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+class Local_Method extends ReflectionMethod {
+	const IS_PUBLIC = 1;
+}
+
+echo Local_Method::IS_PUBLIC, "\n";

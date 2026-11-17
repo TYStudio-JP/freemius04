@@ -1,0 +1,13 @@
+--RULE--
+syntax.globals_whole_write
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+function plugin_walk_all( array $sets ) {
+	foreach ( $sets as $GLOBALS ) {
+		echo count( $GLOBALS );
+	}
+}
+
+echo "loaded\n";

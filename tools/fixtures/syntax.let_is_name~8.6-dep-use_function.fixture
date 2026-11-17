@@ -1,0 +1,11 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+namespace Shop;
+
+use function strlen as is;
+
+echo is( 'abc' ), "\n";

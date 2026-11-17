@@ -1,0 +1,11 @@
+--RULE--
+class.typed_constant_redeclared
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+class Local_Iterator extends ArrayIterator {
+	const STD_PROP_LIST = 1;
+}
+
+echo Local_Iterator::STD_PROP_LIST, "\n";

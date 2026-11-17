@@ -1,0 +1,9 @@
+--RULE--
+runtime.object_instead_of_array_variable
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$item       = new stdClass();
+$item->name = 'shop';
+echo mb_convert_variables( 'UTF-8', 'ASCII', $item ), ' ', $item->name, "\n";

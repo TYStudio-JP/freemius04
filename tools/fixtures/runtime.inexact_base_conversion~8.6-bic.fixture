@@ -1,0 +1,9 @@
+--RULE--
+runtime.inexact_base_conversion
+--CLAIM--
+{}
+--CODE--
+<?php
+// Too large for an int: a float on every version. 8.6 adds an E_NOTICE, which
+// changes neither the result nor whether the code runs.
+echo gettype( hexdec( 'ffffffffffffffffff' ) ), "\n";

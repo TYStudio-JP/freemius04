@@ -1,0 +1,10 @@
+--RULE--
+call.exit_argument_type
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+declare( strict_types = 1 );
+
+echo "saved\n";
+exit( false );

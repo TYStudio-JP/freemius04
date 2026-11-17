@@ -1,0 +1,14 @@
+--RULE--
+syntax.constructor_generator
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Lazy {
+	public function __construct() {
+		yield 1;
+	}
+}
+
+$lazy = new Lazy();
+echo get_class( $lazy ), "\n";

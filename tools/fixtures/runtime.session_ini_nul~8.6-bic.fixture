@@ -1,0 +1,9 @@
+--RULE--
+runtime.session_ini_nul
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+// 7.4-8.5 store the value with the NUL byte; 8.6 warns and keeps "/".
+ini_set( 'session.cookie_path', "/a\0b" );
+echo json_encode( ini_get( 'session.cookie_path' ) ), "\n";

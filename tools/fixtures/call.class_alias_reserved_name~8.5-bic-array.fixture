@@ -1,0 +1,11 @@
+--RULE--
+call.class_alias_reserved_name
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+class Upgw_List {
+}
+
+class_alias( 'Upgw_List', 'array' );
+echo "aliased\n";

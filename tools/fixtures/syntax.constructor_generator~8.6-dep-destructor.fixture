@@ -1,0 +1,15 @@
+--RULE--
+syntax.constructor_generator
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Lazy {
+	public function __destruct() {
+		yield from array( 1, 2 );
+	}
+}
+
+$lazy = new Lazy();
+unset( $lazy );
+echo "done\n";

@@ -1,0 +1,12 @@
+--RULE--
+class.attribute_on_non_instantiable
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// PHP 7.4 reads the attribute line as a comment.
+#[Attribute]
+abstract class Upgw_Base_Marker {
+}
+
+echo "declared\n";

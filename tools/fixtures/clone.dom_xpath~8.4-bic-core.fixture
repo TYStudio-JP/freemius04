@@ -1,0 +1,17 @@
+--RULE--
+clone.dom_xpath
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+function count_items( $xml ) {
+	$document = new DOMDocument();
+	$document->loadXML( $xml );
+
+	$xpath = new DOMXPath( $document );
+	$copy  = clone $xpath;
+
+	return $xpath->query( '//item' )->length;
+}
+
+echo count_items( '<root><item>a</item></root>' ), "\n";

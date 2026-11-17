@@ -1,0 +1,12 @@
+--RULE--
+runtime.phar_include_directory_name
+--CLAIM--
+{}
+--CODE--
+<?php
+// A plain PHP file inside a directory whose name ends in ".phar" is included
+// as a plain file on 7.4-8.5.
+$dir = sys_get_temp_dir() . '/upgw86-dir.phar';
+@mkdir( $dir );
+file_put_contents( $dir . '/a.php', '<?php echo "included\n";' );
+include $dir . '/a.php';

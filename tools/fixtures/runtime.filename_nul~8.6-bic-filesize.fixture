@@ -1,0 +1,7 @@
+--RULE--
+runtime.filename_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+echo false === @filesize( "upgw\0x" ) || null === @filesize( "upgw\0x" ) ? "no size\n" : "size\n";

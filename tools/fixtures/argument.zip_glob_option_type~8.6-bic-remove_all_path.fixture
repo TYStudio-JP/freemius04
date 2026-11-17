@@ -1,0 +1,14 @@
+--RULE--
+argument.zip_glob_option_type
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+$dir = sys_get_temp_dir() . '/upgw86-glob';
+@mkdir( $dir );
+file_put_contents( $dir . '/a.txt', 'a' );
+$zip = new ZipArchive();
+$zip->open( sys_get_temp_dir() . '/upgw86-glob.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE );
+// 7.4 accepts 1 silently, 8.0-8.5 warn "must be of type bool, int given".
+$added = $zip->addGlob( $dir . '/*.txt', 0, array( 'remove_all_path' => 1 ) );
+echo count( $added ), "\n";

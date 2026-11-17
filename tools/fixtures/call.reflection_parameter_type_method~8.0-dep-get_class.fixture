@@ -1,0 +1,26 @@
+--RULE--
+call.reflection_parameter_type_method
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+class Mailer {}
+
+class Newsletter {
+	public function __construct( Mailer $mailer, $subject = 'News' ) {}
+}
+
+function dependencies( $class ) {
+	$reflector   = new ReflectionClass( $class );
+	$constructor = $reflector->getConstructor();
+	$names       = array();
+
+	foreach ( $constructor->getParameters() as $parameter ) {
+		$dependency = $parameter->getClass();
+		$names[]    = null === $dependency ? '-' : $dependency->getName();
+	}
+
+	return $names;
+}
+
+echo implode( ',', dependencies( 'Newsletter' ) ), "\n";

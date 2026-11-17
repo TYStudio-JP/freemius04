@@ -1,0 +1,13 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+trait Let {
+	public function label() {
+		return 'let';
+	}
+}
+
+echo trait_exists( 'Let' ) ? "declared\n" : "missing\n";

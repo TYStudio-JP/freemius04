@@ -1,0 +1,9 @@
+--RULE--
+runtime.splfileobject_fwrite_signature_default
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// The declared type of $length is ?int from 8.5 (int before, none on 7.4).
+$length = ( new ReflectionMethod( 'SplFileObject', 'fwrite' ) )->getParameters()[1];
+var_dump( '?int' === (string) $length->getType() );

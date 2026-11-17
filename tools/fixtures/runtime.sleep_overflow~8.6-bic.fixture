@@ -1,0 +1,11 @@
+--RULE--
+runtime.sleep_overflow
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// UINT_MAX + 1 seconds: 7.4-8.5 let it overflow to 0 and return at once. The
+// 8.6 notes: "sleep() now raises a ValueError when $seconds is greater than
+// the platform limit".
+var_dump( sleep( 4294967296 ) );
+echo "after\n";

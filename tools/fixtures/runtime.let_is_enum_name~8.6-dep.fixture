@@ -1,0 +1,13 @@
+--RULE--
+runtime.let_is_enum_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// Enums parse from PHP 8.1 only, so the declaration goes through eval().
+if ( PHP_VERSION_ID >= 80100 ) {
+	eval( 'enum Is { case Yes; }' );
+	echo enum_exists( 'Is' ) ? "declared\n" : "missing\n";
+} else {
+	echo "declared\n";
+}

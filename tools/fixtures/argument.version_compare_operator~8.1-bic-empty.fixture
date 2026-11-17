@@ -1,0 +1,8 @@
+--RULE--
+argument.version_compare_operator
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+// Not in the notes: an empty operator string is refused from 8.1 as well.
+var_dump( version_compare( '1.0', '2.0', "" ) );

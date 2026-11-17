@@ -1,0 +1,13 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Plugin_Exception extends Exception {
+	public function __wakeup() {
+	}
+}
+
+$copy = unserialize( serialize( new Plugin_Exception( 'failed' ) ) );
+echo $copy->getMessage(), "\n";

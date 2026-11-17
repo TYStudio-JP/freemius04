@@ -1,0 +1,13 @@
+--RULE--
+class.mysqli_stmt_execute_signature
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+class Logged_Statement extends mysqli_stmt {
+	public function execute() {
+		return parent::execute();
+	}
+}
+
+echo "declared\n";

@@ -1,0 +1,12 @@
+--RULE--
+runtime.phar_offset_unset_return
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+$archive = new PharData( sys_get_temp_dir() . '/upgw-offset-unset.tar' );
+
+$archive['readme.txt'] = 'hello';
+
+// bool(true) before 8.1, NULL from 8.1.
+var_dump( $archive->offsetUnset( 'readme.txt' ) );

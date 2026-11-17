@@ -1,0 +1,18 @@
+--RULE--
+runtime.pdo_set_fetch_mode_while_fetching
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+class Upgw_Fetch_Row {
+	public $a;
+
+	public function __construct( $statement ) {
+		$statement->setFetchMode( PDO::FETCH_NUM );
+	}
+}
+
+$db        = new PDO( 'sqlite::memory:' );
+$statement = $db->query( 'SELECT 1 AS a UNION SELECT 2' );
+$statement->setFetchMode( PDO::FETCH_CLASS, 'Upgw_Fetch_Row', array( $statement ) );
+echo get_class( $statement->fetch() ), "\n";

@@ -1,0 +1,15 @@
+--RULE--
+syntax.return_in_finally
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function attempt() {
+	try {
+		return 'try';
+	} finally {
+		return 'finally';
+	}
+}
+
+echo attempt(), "\n";

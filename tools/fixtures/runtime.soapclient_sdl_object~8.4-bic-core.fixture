@@ -1,0 +1,37 @@
+--RULE--
+runtime.soapclient_sdl_object
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// SoapClient::$sdl is a resource up to 8.3 and a Soap\Sdl object from 8.4.
+// The property is private since 8.1, so ordinary code cannot read it; a
+// cast of the object to an array can, and that is what this fixture does.
+$wsdl = sys_get_temp_dir() . '/upgw-8.4-bic-core.wsdl';
+
+file_put_contents(
+	$wsdl,
+	'<?xml version="1.0"?>
+<definitions name="Hello" targetNamespace="urn:hello" xmlns:tns="urn:hello" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/">
+<message name="HiRequest"><part name="name" type="xsd:string"/></message>
+<message name="HiResponse"><part name="greeting" type="xsd:string"/></message>
+<portType name="HelloPort"><operation name="hi"><input message="tns:HiRequest"/><output message="tns:HiResponse"/></operation></portType>
+<binding name="HelloBinding" type="tns:HelloPort"><soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+<operation name="hi"><soap:operation soapAction="urn:hello#hi"/><input><soap:body use="encoded" namespace="urn:hello" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input><output><soap:body use="encoded" namespace="urn:hello" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output></operation></binding>
+<service name="HelloService"><port name="HelloPort" binding="tns:HelloBinding"><soap:address location="http://localhost/hello"/></port></service>
+</definitions>'
+);
+
+$client = new SoapClient( $wsdl, array( 'cache_wsdl' => WSDL_CACHE_NONE ) );
+$sdl    = null;
+
+// An array cast shows private properties too, under "\0SoapClient\0sdl".
+foreach ( (array) $client as $key => $value ) {
+	if ( 'sdl' === substr( $key, -3 ) ) {
+		$sdl = $value;
+	}
+}
+
+var_dump( is_resource( $sdl ), is_object( $sdl ) );
+
+unlink( $wsdl );

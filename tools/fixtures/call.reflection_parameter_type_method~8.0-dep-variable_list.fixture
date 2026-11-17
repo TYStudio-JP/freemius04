@@ -1,0 +1,25 @@
+--RULE--
+call.reflection_parameter_type_method
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+class Handler {
+	public function handle( array $data, $context ) {}
+}
+
+function array_parameters( $class, $method ) {
+	$reflection = new ReflectionMethod( $class, $method );
+	$parameters = $reflection->getParameters();
+	$found      = 0;
+
+	foreach ( $parameters as $parameter ) {
+		if ( $parameter->isArray() ) {
+			++$found;
+		}
+	}
+
+	return $found;
+}
+
+echo array_parameters( 'Handler', 'handle' ), "\n";

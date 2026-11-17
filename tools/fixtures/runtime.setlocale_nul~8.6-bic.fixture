@@ -1,0 +1,8 @@
+--RULE--
+runtime.setlocale_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// 7.4-8.5 cut the name at the NUL byte.
+var_dump( setlocale( LC_ALL, "C\0junk" ) );

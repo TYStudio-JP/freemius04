@@ -1,0 +1,11 @@
+--RULE--
+syntax.function_named_readonly
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function readonly() {
+	return 'value';
+}
+
+echo readonly(), "\n";

@@ -1,0 +1,22 @@
+--RULE--
+runtime.openssl_ec_key_pkcs8
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+$config = sys_get_temp_dir() . '/upgw-ec.cnf';
+file_put_contents( $config, "[ req ]\ndistinguished_name = dn\n[ dn ]\n" );
+
+$key = openssl_pkey_new(
+	array(
+		'private_key_type' => OPENSSL_KEYTYPE_EC,
+		'curve_name'       => 'prime256v1',
+		'private_key_bits' => 384,
+		'config'           => $config,
+	)
+);
+
+openssl_pkey_export( $key, $pem, null, array( 'config' => $config ) );
+
+// "BEGIN EC PRIVATE KEY" before 8.1, "BEGIN PRIVATE KEY" (PKCS#8) from 8.1.
+echo strtok( $pem, "\n" ), "\n";

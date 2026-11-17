@@ -1,0 +1,12 @@
+--RULE--
+runtime.gd_argument_range
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// An unknown mode made imagescale() return false up to 8.3; from 8.4 it is a
+// ValueError. Modes are written as IMG_* constants in practice.
+$image  = imagecreatetruecolor( 4, 4 );
+$scaled = imagescale( $image, 2, -1, 99 );
+
+echo "done\n";

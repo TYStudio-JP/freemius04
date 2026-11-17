@@ -1,0 +1,7 @@
+--RULE--
+argument.printf_empty_precision
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+var_dump( sprintf( '%.G', 1234.5678 ) );

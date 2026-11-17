@@ -1,0 +1,16 @@
+--RULE--
+argument.soap_classmap_integer_keys
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// A classmap that is not an array: accepted (ignored) on 7.4-8.5.
+$client = new SoapClient(
+	null,
+	array(
+		'location' => 'http://localhost/',
+		'uri'      => 'urn:upgw',
+		'classmap' => 'stdClass',
+	)
+);
+echo "created\n";

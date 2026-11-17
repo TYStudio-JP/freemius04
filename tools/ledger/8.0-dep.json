@@ -1,0 +1,160 @@
+[
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Declaring a required parameter after an optional one is deprecated.",
+		"disposition": "rule",
+		"rule": "signature.required_after_optional",
+		"fixtures": [
+			"signature.required_after_optional.fixture",
+			"signature.null_default_before_required~8.0-dep-untyped.fixture",
+			"signature.null_default_before_required~8.0-dep-method.fixture",
+			"signature.null_default_before_required~8.0-dep-closure.fixture",
+			"signature.null_default_before_required~8.0-dep-nullable_type.fixture",
+			"signature.null_default_before_required~8.0-dep-mixed.fixture"
+		],
+		"reason": "Non-null defaults are the existing signature.required_after_optional (Parameters, 8.0); null defaults, which Parameters skips, are the new signature.null_default_before_required (Php80DepNullDefaultBeforeRequired): the runtimes show untyped '$a = null' deprecated from 8.0, '?T $a = null' from 8.1, 'mixed $a = null' from 8.3, while 'T $a = null' (the allowed exception) only gets signature.implicit_nullable from 8.4; a union naming null (8.3 on the runtimes) is not reported because PHP 7.4 cannot parse a fixture for it."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Calling get_defined_functions() with $exclude_disabled explicitly set to false is deprecated.",
+		"disposition": "rule",
+		"rule": "call.get_defined_functions_argument",
+		"fixtures": [
+			"call.get_defined_functions_argument~8.5-dep-false.fixture"
+		],
+		"reason": "The existing Php85DepFunctionArguments reports a literal false as deprecated in 8.0 (verified fixture); a value from a variable is not known from the syntax tree."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Enchant",
+		"quote": "enchant_broker_set_dict_path and enchant_broker_get_dict_path not available in libenchant < 1.5 nor in libenchant-2",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has the enchant extension (none lists it in tools/out/runtime-*.json), so nothing about it can be shown; the catalog has no enchant entries."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Enchant",
+		"quote": "enchant_dict_add_to_personal, use enchant_dict_add instead",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has the enchant extension (none lists it in tools/out/runtime-*.json), so nothing about it can be shown; the catalog has no enchant entries."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Enchant",
+		"quote": "enchant_dict_is_in_session, use enchant_dict_is_added instead",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has the enchant extension (none lists it in tools/out/runtime-*.json), so nothing about it can be shown; the catalog has no enchant entries."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Enchant",
+		"quote": "enchant_broker_free and enchant_broker_free_dict, unset the object instead",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has the enchant extension (none lists it in tools/out/runtime-*.json), so nothing about it can be shown; the catalog has no enchant entries."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Enchant",
+		"quote": "ENCHANT_MYSPELL and ENCHANT_ISPELL constants",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has the enchant extension (none lists it in tools/out/runtime-*.json), so nothing about it can be shown; the catalog has no enchant entries."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "LibXML",
+		"quote": "libxml_disable_entity_loader() has been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/functions.php lists libxml_disable_entity_loader as deprecated in 8.0 (verified); a probe on the runtimes confirmed the notice from 8.0 through 8.5."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "PGSQL / PDO PGSQL",
+		"quote": "The constant PGSQL_LIBPQ_VERSION_STR has now the same value as PGSQL_LIBPQ_VERSION, and thus is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has pgsql (defined('PGSQL_LIBPQ_VERSION_STR') is false on all of them), so the claim cannot be shown; the catalog has no entry."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "PGSQL / PDO PGSQL",
+		"quote": "Function aliases in the pgsql extension have been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "No runtime here has pgsql (function_exists('pg_exec') is false on all of them), so the aliases cannot be shown deprecated; the catalog has no entry."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Zip",
+		"quote": "Using empty file as ZipArchive is deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.zip_empty_file",
+		"fixtures": [
+			"runtime.zip_empty_file~8.0-dep.fixture"
+		],
+		"reason": "Whether the file opened is empty is a run-time fact; the runtimes show ZipArchive::open() on an empty file deprecated from 8.0 and still succeeding (returns true) through 8.5, although the notes say the workaround would be removed in the next version."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Zip",
+		"quote": "The procedural API of Zip is deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/functions.php lists zip_open, zip_read, zip_close and the zip_entry_* functions as deprecated in 8.0 (verified); a probe confirmed zip_open() raising the notice from 8.0 through 8.5."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "ReflectionFunction::isDisabled() is deprecated, as it is no longer possible to create a ReflectionFunction for a disabled function.",
+		"disposition": "rule",
+		"rule": "call.reflection_function_is_disabled",
+		"fixtures": [
+			"call.reflection_function_is_disabled~8.0-dep.fixture"
+		],
+		"reason": "New Php80DepReflectionMethods reports ->isDisabled() only where the receiver is certainly a ReflectionFunction (new ReflectionFunction, a typed parameter, or a local variable only ever assigned one), since isDisabled is a common method name."
+	},
+	{
+		"version": "8.0",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "ReflectionParameter::getClass(), ReflectionParameter::isArray(), and ReflectionParameter::isCallable() are deprecated.",
+		"disposition": "rule",
+		"rule": "call.reflection_parameter_type_method",
+		"fixtures": [
+			"call.reflection_parameter_type_method~8.0-dep-get_class.fixture",
+			"call.reflection_parameter_type_method~8.0-dep-is_array.fixture",
+			"call.reflection_parameter_type_method~8.0-dep-is_callable.fixture",
+			"call.reflection_parameter_type_method~8.0-dep-variable_list.fixture"
+		],
+		"reason": "New Php80DepReflectionMethods reports these calls only where the receiver is certainly a ReflectionParameter (new ReflectionParameter, a typed parameter, or the getConstructor()/getMethod()/getMethods() -> getParameters() chain through local variables); calls on objects of unknown class are not reported."
+	}
+]

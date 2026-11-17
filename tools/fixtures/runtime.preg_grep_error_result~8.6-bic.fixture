@@ -1,0 +1,8 @@
+--RULE--
+runtime.preg_grep_error_result
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+// Malformed UTF-8 with /u: 7.4-8.5 return the partial array; 8.6 returns false.
+var_dump( preg_grep( '/./u', array( 'a', "\xff", 'b' ) ) );

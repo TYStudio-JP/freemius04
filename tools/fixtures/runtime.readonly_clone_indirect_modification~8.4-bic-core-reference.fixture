@@ -1,0 +1,27 @@
+--RULE--
+runtime.readonly_clone_indirect_modification
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// Readonly properties need PHP 8.1, and changing one in __clone() needs 8.3,
+// so the class is declared through eval() on 8.3 and later only. On 8.3 the
+// reference works; from 8.4 it is an Error. The scanner cannot carry this as
+// a rule: the same source does not parse before 8.1 and fails on 8.1 and 8.2,
+// which the fixture claim cannot express.
+if ( PHP_VERSION_ID >= 80300 ) {
+	eval(
+		'final class Tagged {
+			public function __construct( public readonly array $tags ) {}
+
+			public function __clone() {
+				$tags   = &$this->tags;
+				$tags[] = "copy";
+			}
+		}
+
+		$copy = clone new Tagged( array( "original" ) );'
+	);
+}
+
+echo "done\n";

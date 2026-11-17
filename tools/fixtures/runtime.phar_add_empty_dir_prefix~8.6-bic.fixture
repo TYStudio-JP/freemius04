@@ -1,0 +1,17 @@
+--RULE--
+runtime.phar_add_empty_dir_prefix
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// ".pharx" only shares the prefix. 7.4-8.3 reject it as the magic directory;
+// 8.4 and 8.5 already create it, which the 8.6 notes list as new.
+$path = sys_get_temp_dir() . '/upgw86-prefix.tar';
+@unlink( $path );
+$archive = new PharData( $path );
+try {
+	$archive->addEmptyDir( '.pharx' );
+	echo "created\n";
+} catch ( BadMethodCallException $e ) {
+	echo "rejected\n";
+}

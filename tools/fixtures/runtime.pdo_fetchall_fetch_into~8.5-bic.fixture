@@ -1,0 +1,13 @@
+--RULE--
+runtime.pdo_fetchall_fetch_into
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// In silent error mode 7.4 to 8.4 warn and return an empty array; 8.5 throws
+// a ValueError. (In the default exception mode of 8.0 and later the call
+// already threw a PDOException, so the version depends on the connection.)
+$db = new PDO( 'sqlite::memory:' );
+$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT );
+$statement = $db->query( 'SELECT 1 AS a' );
+var_dump( $statement->fetchAll( PDO::FETCH_INTO ) );

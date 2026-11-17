@@ -1,0 +1,14 @@
+--RULE--
+signature.null_default_before_required
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+class Greeter {
+	public function greet( $greeting = NULL, $name ) {
+		return ( null === $greeting ? 'Hello' : $greeting ) . ', ' . $name;
+	}
+}
+
+$greeter = new Greeter();
+echo $greeter->greet( null, 'Ann' ), "\n";

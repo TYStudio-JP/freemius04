@@ -1,0 +1,7 @@
+--RULE--
+argument.html_default_flags
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+echo html_entity_decode( 'Don&#39;t &amp; stop' ), "\n";

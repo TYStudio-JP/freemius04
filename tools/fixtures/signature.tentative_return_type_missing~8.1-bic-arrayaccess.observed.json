@@ -1,0 +1,35 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "signature.tentative_return_type_missing",
+	"claim": {
+		"deprecated_in": "8.1"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "ok",
+		"8.0": "ok",
+		"8.1": "deprecated",
+		"8.2": "deprecated",
+		"8.3": "deprecated",
+		"8.4": "deprecated",
+		"8.5": "deprecated"
+	},
+	"messages": {
+		"8.1": "E_DEPRECATED: Return type of Settings::offsetExists($offset) should either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice",
+		"8.2": "E_DEPRECATED: Return type of Settings::offsetExists($offset) should either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice",
+		"8.3": "E_DEPRECATED: Return type of Settings::offsetExists($offset) should either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice",
+		"8.4": "E_DEPRECATED: Return type of Settings::offsetExists($offset) should either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice",
+		"8.5": "E_DEPRECATED: Return type of Settings::offsetExists($offset) should either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice"
+	},
+	"fix": "same output on every version",
+	"not_checked": [],
+	"problems": []
+}

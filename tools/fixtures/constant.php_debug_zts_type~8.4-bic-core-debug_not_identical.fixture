@@ -1,0 +1,9 @@
+--RULE--
+constant.php_debug_zts_type
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+$debug_build = 0 !== PHP_DEBUG;
+
+echo $debug_build ? "debug build\n" : "release build\n";

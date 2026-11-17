@@ -1,0 +1,15 @@
+--RULE--
+runtime.object_instead_of_array_variable
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$item        = new stdClass();
+$item->price = 10;
+array_walk_recursive(
+	$item,
+	function ( &$value ) {
+		$value = $value * 2;
+	}
+);
+echo $item->price, "\n";

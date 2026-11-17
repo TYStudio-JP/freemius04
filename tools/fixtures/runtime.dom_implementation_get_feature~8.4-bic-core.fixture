@@ -1,0 +1,14 @@
+--RULE--
+runtime.dom_implementation_get_feature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+// DOMImplementation::getFeature() gave a warning on 7.4 and has thrown an
+// Error ("Not yet implemented") since 8.0; 8.4 removed it, so the Error is
+// now "Call to undefined method". No working code calls it, and the class of
+// the object behind ->getFeature() is not visible in the source.
+$document = new DOMDocument();
+$feature  = $document->implementation->getFeature( 'Core', '3.0' );
+
+echo "done\n";

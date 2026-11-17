@@ -1,0 +1,17 @@
+--RULE--
+signature.session_validate_id_return_type
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+namespace Upgw86\Session;
+
+use SessionHandler;
+
+class Handler extends SessionHandler {
+	public function VALIDATEID( $id ) {
+		return true;
+	}
+}
+
+echo "declared\n";

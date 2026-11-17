@@ -1,0 +1,11 @@
+--RULE--
+signature.null_default_before_required
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+function describe( ?stdClass $item = null, $fallback ) {
+	return null === $item ? $fallback : get_class( $item );
+}
+
+echo describe( null, 'none' ), "\n", describe( new stdClass(), 'none' ), "\n";

@@ -1,0 +1,11 @@
+--RULE--
+signature.null_default_before_required
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+$join = function ( $glue = null, $parts ) {
+	return implode( null === $glue ? ',' : $glue, $parts );
+};
+
+echo $join( null, array( 'a', 'b' ) ), "\n";

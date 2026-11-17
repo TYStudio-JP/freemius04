@@ -1,0 +1,12 @@
+--RULE--
+call.arrayiterator_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_flags() {
+	$items = new ArrayIterator( array( 'b' => 2, 'a' => 1 ) );
+	return $items->getFlags();
+}
+
+echo shop_flags(), "\n";

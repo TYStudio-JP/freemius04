@@ -1,0 +1,11 @@
+--RULE--
+class.typed_constant_redeclared
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+class Local_Database extends SQLite3 {
+	const OK = 'ok';
+}
+
+echo Local_Database::OK, "\n";

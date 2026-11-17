@@ -1,0 +1,16 @@
+--RULE--
+runtime.dom_readonly_property_write
+--CLAIM--
+{}
+--CODE--
+<?php
+// Writing a DOM read-only property already throws Error on 7.4-8.5; 8.6 only
+// changes the message. The class of the throwable stays Error.
+$doc = new DOMDocument();
+$doc->loadXML( '<a/>' );
+try {
+	$doc->xmlEncoding = 'UTF-8';
+	echo "written\n";
+} catch ( Error $e ) {
+	echo get_class( $e ), "\n";
+}

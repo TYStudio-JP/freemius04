@@ -1,0 +1,9 @@
+--RULE--
+argument.object_instead_of_array
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$packed  = gzdeflate( 'hello' );
+$context = inflate_init( ZLIB_ENCODING_RAW, (object) array( 'window' => 15 ) );
+echo inflate_add( $context, $packed, ZLIB_FINISH ), "\n";

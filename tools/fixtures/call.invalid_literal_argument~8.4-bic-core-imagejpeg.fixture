@@ -1,0 +1,13 @@
+--RULE--
+call.invalid_literal_argument
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+$image = imagecreatetruecolor( 2, 2 );
+
+ob_start();
+imagejpeg( $image, null, 150 );
+ob_end_clean();
+
+echo "done\n";

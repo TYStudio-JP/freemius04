@@ -1,0 +1,9 @@
+--RULE--
+argument.object_instead_of_array
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$context = deflate_init( ZLIB_ENCODING_DEFLATE, (object) array( 'level' => 6 ) );
+$packed  = deflate_add( $context, 'hello', ZLIB_FINISH );
+echo strlen( $packed ) > 0 ? "packed\n" : "empty\n";

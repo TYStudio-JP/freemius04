@@ -1,0 +1,12 @@
+--RULE--
+syntax.globals_whole_write
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+function plugin_drop_last_global() {
+	return array_pop( $GLOBALS );
+}
+
+$plugin_last = 'value';
+echo null !== plugin_drop_last_global() ? "popped\n" : "empty\n";

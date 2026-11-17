@@ -1,0 +1,37 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "runtime.phar_add_empty_dir_magic",
+	"claim": {
+		"breaks_in": "8.4"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "warning",
+		"8.0": "warning",
+		"8.1": "warning",
+		"8.2": "warning",
+		"8.3": "warning",
+		"8.4": "fatal",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"7.4": "E_WARNING: unlink(/tmp/upgw86-magic.tar): No such file or directory",
+		"8.0": "E_WARNING: unlink(/tmp/upgw86-magic.tar): No such file or directory",
+		"8.1": "E_WARNING: unlink(/tmp/upgw86-magic.tar): No such file or directory",
+		"8.2": "E_WARNING: unlink(/tmp/upgw86-magic.tar): No such file or directory",
+		"8.3": "E_WARNING: unlink(/tmp/upgw86-magic.tar): No such file or directory",
+		"8.4": "BadMethodCallException: Cannot create a directory in magic \".phar\" directory",
+		"8.5": "BadMethodCallException: Cannot create a directory in magic \".phar\" directory"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

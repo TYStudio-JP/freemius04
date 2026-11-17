@@ -1,0 +1,12 @@
+--RULE--
+runtime.debug_zval_dump_reference
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+$list      = array( 1 + mt_rand( 0, 0 ) );
+$reference = &$list[0];
+
+// "&int(1)" before 8.1, "reference refcount(2) { int(1) }" from 8.1.
+debug_zval_dump( $list[0] );
+debug_zval_dump( $list );

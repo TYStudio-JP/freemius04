@@ -1,0 +1,10 @@
+--RULE--
+call.is_resource_finfo
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+var_dump( is_resource( finfo_open() ) );
+--FIXED--
+<?php
+var_dump( ( false !== finfo_open() ) );

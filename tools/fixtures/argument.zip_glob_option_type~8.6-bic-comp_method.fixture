@@ -1,0 +1,14 @@
+--RULE--
+argument.zip_glob_option_type
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+$dir = sys_get_temp_dir() . '/upgw86-pattern';
+@mkdir( $dir );
+file_put_contents( $dir . '/a.txt', 'a' );
+$zip = new ZipArchive();
+$zip->open( sys_get_temp_dir() . '/upgw86-pattern.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE );
+// A non-numeric string for an int option: 8.0-8.5 warn and go on.
+$added = $zip->addPattern( '/\.txt$/', $dir, array( 'comp_method' => 'deflate' ) );
+echo count( $added ), "\n";

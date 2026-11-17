@@ -1,0 +1,11 @@
+--RULE--
+runtime.splfileobject_fwrite_null_length
+--CLAIM--
+{ "deprecated_in": "8.1", "changed_in": "8.5" }
+--CODE--
+<?php
+// null for $length: 8.1 to 8.4 deprecate it and write nothing; 8.5 accepts
+// null as "the whole string".
+$file   = new SplTempFileObject();
+$length = null;
+var_dump( $file->fwrite( 'abc', $length ) );

@@ -1,0 +1,19 @@
+--RULE--
+runtime.array_intersect_conversion
+--CLAIM--
+{}
+--CODE--
+<?php
+// Counts __toString() calls. The 8.6 notes say the number "can change" without
+// giving one, so this only records 7.4-8.5.
+class Upgw86_Str {
+	public static $calls = 0;
+	private $value;
+	public function __construct( $value ) { $this->value = $value; }
+	public function __toString() { self::$calls++; return $this->value; }
+}
+$kept = array_intersect(
+	array( new Upgw86_Str( 'a' ), new Upgw86_Str( 'b' ), new Upgw86_Str( 'c' ) ),
+	array( new Upgw86_Str( 'c' ), new Upgw86_Str( 'a' ) )
+);
+echo count( $kept ), ' ', Upgw86_Str::$calls, "\n";

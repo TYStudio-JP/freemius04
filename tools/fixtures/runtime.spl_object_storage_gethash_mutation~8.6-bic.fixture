@@ -1,0 +1,17 @@
+--RULE--
+runtime.spl_object_storage_gethash_mutation
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+class Upgw86_Storage extends SplObjectStorage {
+	public $other;
+	public function getHash( $object ): string {
+		$this->other[ new stdClass() ] = null;
+		return 'same';
+	}
+}
+$storage        = new Upgw86_Storage();
+$storage->other = new SplObjectStorage();
+$storage[ new stdClass() ] = null;
+echo count( $storage->other ), "\n";

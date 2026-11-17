@@ -1,0 +1,13 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+$bag = new class() implements Countable {
+	public function count() {
+		return 3;
+	}
+};
+
+echo count( $bag ), "\n";

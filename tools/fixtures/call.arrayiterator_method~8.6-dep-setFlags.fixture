@@ -1,0 +1,13 @@
+--RULE--
+call.arrayiterator_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_value() {
+	$items = new ArrayIterator( array( 'b' => 2, 'a' => 1 ) );
+	$items->setFlags( ArrayIterator::ARRAY_AS_PROPS );
+	return $items->b;
+}
+
+echo shop_value(), "\n";

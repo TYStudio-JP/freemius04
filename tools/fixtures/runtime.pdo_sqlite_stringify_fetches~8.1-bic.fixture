@@ -1,0 +1,11 @@
+--RULE--
+runtime.pdo_sqlite_stringify_fetches
+--CLAIM--
+{}
+--CODE--
+<?php
+// PDO::ATTR_STRINGIFY_FETCHES brings the old strings back on every version.
+$db = new PDO( 'sqlite::memory:' );
+$db->setAttribute( PDO::ATTR_STRINGIFY_FETCHES, true );
+
+var_dump( $db->query( 'SELECT 1, 1.5' )->fetch( PDO::FETCH_NUM ) );

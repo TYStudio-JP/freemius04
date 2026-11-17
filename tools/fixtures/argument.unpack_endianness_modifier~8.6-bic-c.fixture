@@ -1,0 +1,9 @@
+--RULE--
+argument.unpack_endianness_modifier
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// The 8.6 notes: ""C>name" raises a ValueError because the C format code
+// accepts no endianness modifier." 7.4-8.5 return the key ">name".
+print_r( unpack( 'C>name', "\x01" ) );

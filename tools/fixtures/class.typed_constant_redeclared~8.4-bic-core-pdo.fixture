@@ -1,0 +1,11 @@
+--RULE--
+class.typed_constant_redeclared
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+class Local_Pdo extends PDO {
+	const FETCH_ASSOC = 2;
+}
+
+echo Local_Pdo::FETCH_ASSOC, "\n";

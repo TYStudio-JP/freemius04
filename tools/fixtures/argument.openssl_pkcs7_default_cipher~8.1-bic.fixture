@@ -1,0 +1,30 @@
+--RULE--
+argument.openssl_pkcs7_default_cipher
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// Encrypts for a self-signed certificate and prints which cipher the S/MIME
+// message names: RC2 before 8.1, AES-128-CBC from 8.1.
+$dir = sys_get_temp_dir();
+$cnf = $dir . '/upgw-pkcs7.cnf';
+file_put_contents( $cnf, "[ req ]\ndistinguished_name = dn\n[ dn ]\n" );
+
+$options = array( 'config' => $cnf, 'private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA );
+$key     = openssl_pkey_new( $options );
+$cert    = openssl_csr_sign( openssl_csr_new( array( 'commonName' => 'example' ), $key, $options ), null, $key, 1, $options );
+openssl_x509_export( $cert, $pem );
+
+file_put_contents( $dir . '/upgw-in.txt', "hello\n" );
+openssl_pkcs7_encrypt( $dir . '/upgw-in.txt', $dir . '/upgw-out.txt', $pem, array() );
+
+$smime = file_get_contents( $dir . '/upgw-out.txt' );
+$der   = base64_decode( substr( $smime, strpos( $smime, "\n\n" ) + 2 ) );
+
+if ( false !== strpos( $der, "\x06\x09\x60\x86\x48\x01\x65\x03\x04\x01\x02" ) ) {
+	echo "aes-128-cbc\n";
+} elseif ( false !== strpos( $der, "\x06\x08\x2a\x86\x48\x86\xf7\x0d\x03\x02" ) ) {
+	echo "rc2\n";
+} else {
+	echo "other\n";
+}

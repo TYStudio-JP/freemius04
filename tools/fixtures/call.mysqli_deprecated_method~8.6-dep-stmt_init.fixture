@@ -1,0 +1,13 @@
+--RULE--
+call.mysqli_deprecated_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// There is no database server here, so the call is only compiled.
+// The deprecation of PHP 8.6 is raised when the method runs.
+function shop_statement( mysqli $db ) {
+	return $db->stmt_init();
+}
+
+echo function_exists( 'shop_statement' ) ? "compiled\n" : "missing\n";

@@ -1,0 +1,13 @@
+--RULE--
+signature.debuginfo_nullable_return
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Box {
+	public function __debugInfo(): ?array {
+		return array( 'size' => 1 );
+	}
+}
+
+var_dump( new Box() );

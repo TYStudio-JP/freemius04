@@ -1,0 +1,9 @@
+--RULE--
+argument.invalid_mode_value
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// $sorting_order 3 is none of the SCANDIR_SORT_* values (0, 1, 2).
+$entries = scandir( __DIR__, 3 );
+echo is_array( $entries ) ? "listed\n" : "failed\n";

@@ -27,7 +27,10 @@ $tests['8.1-dep: a Serializable class with the new methods, or one that may inhe
 	$clean( "class A extends Base implements Serializable { {$old} }", 'The parent may have the new methods.' );
 	$clean( "class A implements Serializable { use New_Serialization; {$old} }", 'A trait may have the new methods.' );
 	$clean( "interface Storable extends Serializable {}", 'An interface raises nothing.' );
-	$clean( "class A implements JsonSerializable { public function jsonSerialize() { return 1; } }", 'JsonSerializable.' );
+	// Not a Serializable finding. Without a return type, jsonSerialize() is
+	// itself deprecated from 8.1 (signature.tentative_return_type_missing).
+	upgw_same( array( 'signature.tentative_return_type_missing' ), upgw_rules_in( "<?php\nclass A implements JsonSerializable { public function jsonSerialize() { return 1; } }" ), 'JsonSerializable.' );
+	$clean( "class A implements JsonSerializable { public function jsonSerialize(): mixed { return 1; } }", 'JsonSerializable with its return type.' );
 	$clean( "namespace App;\nclass A implements Serializable { {$old} }", 'App\\Serializable is another interface.' );
 	$clean( "namespace App;\nuse Vendor\\Serializable;\nclass A implements Serializable { {$old} }", 'Imported interface of the same name.' );
 

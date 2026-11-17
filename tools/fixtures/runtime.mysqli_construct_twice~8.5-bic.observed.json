@@ -1,0 +1,37 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "runtime.mysqli_construct_twice",
+	"claim": {
+		"breaks_in": "8.5"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "warning",
+		"8.0": "warning",
+		"8.1": "warning",
+		"8.2": "warning",
+		"8.3": "warning",
+		"8.4": "warning",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"7.4": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4001",
+		"8.0": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4056",
+		"8.1": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4129",
+		"8.2": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4213",
+		"8.3": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4329",
+		"8.4": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4474",
+		"8.5": "Error: Cannot call constructor twice"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

@@ -1,0 +1,9 @@
+--RULE--
+runtime.gd_array_argument_types
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// A non-numeric string in the style array: converted silently on 7.4-8.5.
+$image = imagecreatetruecolor( 4, 4 );
+var_dump( imagesetstyle( $image, array( 'red' ) ) );

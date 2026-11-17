@@ -1,0 +1,18 @@
+--RULE--
+syntax.return_in_finally
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function attempt( array &$log ) {
+	try {
+		$log[] = 'try';
+	} finally {
+		$log[] = 'finally';
+		return;
+	}
+}
+
+$log = array();
+attempt( $log );
+echo implode( ',', $log ), "\n";

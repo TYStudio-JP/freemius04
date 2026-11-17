@@ -1,0 +1,9 @@
+--RULE--
+runtime.pdo_fetch_constant_values
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// Code that writes the constants by name is unaffected; a stored or
+// hard-coded number (65536 for PDO::FETCH_GROUP) means something else on 8.5.
+var_dump( PDO::FETCH_GROUP, PDO::FETCH_UNIQUE, PDO::FETCH_CLASSTYPE, PDO::FETCH_PROPS_LATE, PDO::FETCH_SERIALIZE );

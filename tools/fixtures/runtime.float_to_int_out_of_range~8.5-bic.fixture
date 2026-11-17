@@ -1,0 +1,10 @@
+--RULE--
+runtime.float_to_int_out_of_range
+--CLAIM--
+{}
+--CODE--
+<?php
+// Same output on every version; 8.5 adds E_WARNING "The float 1.0E+20 is not
+// representable as an int, cast occurred" for the explicit cast.
+$big = 1e20;
+var_dump( (int) $big );

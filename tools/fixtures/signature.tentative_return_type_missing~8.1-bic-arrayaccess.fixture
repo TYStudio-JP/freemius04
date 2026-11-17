@@ -1,0 +1,34 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Settings implements ArrayAccess {
+	private $data = array();
+	public function offsetExists( $offset ) { return isset( $this->data[ $offset ] ); }
+	public function offsetGet( $offset ) { return $this->data[ $offset ]; }
+	public function offsetSet( $offset, $value ) { $this->data[ $offset ] = $value; }
+	public function offsetUnset( $offset ) { unset( $this->data[ $offset ] ); }
+}
+
+$settings          = new Settings();
+$settings['color'] = 'blue';
+echo isset( $settings['color'] ) ? $settings['color'] : 'none', "\n";
+--FIXED--
+<?php
+class Settings implements ArrayAccess {
+	private $data = array();
+	#[\ReturnTypeWillChange]
+	public function offsetExists( $offset ) { return isset( $this->data[ $offset ] ); }
+	#[\ReturnTypeWillChange]
+	public function offsetGet( $offset ) { return $this->data[ $offset ]; }
+	#[\ReturnTypeWillChange]
+	public function offsetSet( $offset, $value ) { $this->data[ $offset ] = $value; }
+	#[\ReturnTypeWillChange]
+	public function offsetUnset( $offset ) { unset( $this->data[ $offset ] ); }
+}
+
+$settings          = new Settings();
+$settings['color'] = 'blue';
+echo isset( $settings['color'] ) ? $settings['color'] : 'none', "\n";

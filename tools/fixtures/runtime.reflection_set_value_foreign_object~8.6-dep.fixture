@@ -1,0 +1,17 @@
+--RULE--
+runtime.reflection_set_value_foreign_object
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Shop_Item {
+	public $price = 1;
+}
+class Shop_Other {
+	public $price = 2;
+}
+
+$property = new ReflectionProperty( 'Shop_Item', 'price' );
+$other    = new Shop_Other();
+$property->setValue( $other, 5 );
+echo $other->price, "\n";

@@ -1,0 +1,12 @@
+--RULE--
+call.splfileobject_csv_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_csv_control() {
+	$file = new SplFileObject( 'php://memory', 'w+' );
+	return implode( ' ', $file->getCsvControl() );
+}
+
+echo shop_csv_control(), "\n";

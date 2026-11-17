@@ -1,0 +1,15 @@
+--RULE--
+argument.null_to_internal_scalar
+--CLAIM--
+{}
+--CODE--
+<?php
+$length = 0;
+
+if ( PHP_VERSION_ID < 80100 ) {
+	$length = strlen( null );
+}
+
+echo $length, "\n";
+--SCAN--
+{ "guarded": true }

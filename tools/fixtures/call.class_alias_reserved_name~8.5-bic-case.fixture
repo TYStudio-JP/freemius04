@@ -1,0 +1,12 @@
+--RULE--
+call.class_alias_reserved_name
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// The check ignores case and a leading backslash.
+class Upgw_Items {
+}
+
+class_alias( 'Upgw_Items', '\Array' );
+echo "aliased\n";

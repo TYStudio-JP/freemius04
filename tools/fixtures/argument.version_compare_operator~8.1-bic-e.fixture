@@ -1,0 +1,10 @@
+--RULE--
+argument.version_compare_operator
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+var_dump( version_compare( PHP_VERSION, '5.6.0', 'e' ) );
+--FIXED--
+<?php
+var_dump( version_compare( PHP_VERSION, '5.6.0', 'eq' ) );

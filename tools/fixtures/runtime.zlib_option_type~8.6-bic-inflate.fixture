@@ -1,0 +1,9 @@
+--RULE--
+runtime.zlib_option_type
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// "15abc" is not an int; 7.4-8.5 read a number from it without a diagnostic.
+$context = inflate_init( ZLIB_ENCODING_DEFLATE, array( 'window' => '15abc' ) );
+echo "called\n";

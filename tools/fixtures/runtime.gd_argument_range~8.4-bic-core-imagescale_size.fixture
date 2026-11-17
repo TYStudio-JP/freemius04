@@ -1,0 +1,14 @@
+--RULE--
+runtime.gd_argument_range
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// A negative width with the default height of -1 made imagescale() return
+// false up to 8.3; from 8.4 it is a ValueError. The width is a computed value
+// in practice.
+$image  = imagecreatetruecolor( 4, 4 );
+$width  = -5;
+$scaled = imagescale( $image, $width );
+
+echo "done\n";

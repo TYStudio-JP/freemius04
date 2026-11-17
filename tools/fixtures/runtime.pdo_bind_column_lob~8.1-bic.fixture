@@ -1,0 +1,17 @@
+--RULE--
+runtime.pdo_bind_column_lob
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+$db = new PDO( 'sqlite::memory:' );
+$db->exec( 'CREATE TABLE files (body BLOB)' );
+$db->exec( "INSERT INTO files VALUES ('data')" );
+
+$statement = $db->prepare( 'SELECT body FROM files' );
+$statement->execute();
+$statement->bindColumn( 1, $body, PDO::PARAM_LOB );
+$statement->fetch( PDO::FETCH_BOUND );
+
+// SQLite gave a string before 8.1; from 8.1 a stream, as documented.
+echo gettype( $body ), ' ', is_resource( $body ) ? stream_get_contents( $body ) : $body, "\n";

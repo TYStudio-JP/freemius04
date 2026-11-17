@@ -1,0 +1,14 @@
+--RULE--
+call.reflection_parameter_type_method
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+function run_later( callable $callback ) {}
+
+function wants_callable( ReflectionParameter $parameter ) {
+	return $parameter->isCallable();
+}
+
+$parameters = ( new ReflectionFunction( 'run_later' ) )->getParameters();
+var_dump( wants_callable( $parameters[0] ) );

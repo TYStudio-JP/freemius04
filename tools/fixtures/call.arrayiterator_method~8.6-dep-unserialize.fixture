@@ -1,0 +1,14 @@
+--RULE--
+call.arrayiterator_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_count( $data ) {
+	$items = new ArrayIterator( array() );
+	$items->unserialize( $data );
+	return count( $items );
+}
+
+$source = serialize( array( 'a' => 1 ) );
+echo shop_count( 'x:i:0;' . $source . ';m:a:0:{}' ), "\n";

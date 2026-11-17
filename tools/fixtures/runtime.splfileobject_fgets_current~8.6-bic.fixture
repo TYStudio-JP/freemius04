@@ -1,0 +1,12 @@
+--RULE--
+runtime.splfileobject_fgets_current
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+$file = new SplTempFileObject();
+$file->fwrite( "one\ntwo\nthree\n" );
+$file->rewind();
+echo json_encode( $file->fgets() ), "\n";
+// 7.4-8.5 return the line fgets() just returned; 8.6 reads on.
+echo json_encode( $file->current() ), "\n";

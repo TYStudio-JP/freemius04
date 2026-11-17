@@ -1,0 +1,15 @@
+--RULE--
+runtime.arrayobject_enum
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// An enum does not parse before PHP 8.1, so it is declared through eval() on
+// the runtimes that have enums; 7.4 and 8.0 skip the block. 8.5 throws
+// InvalidArgumentException "Enums are not compatible with ArrayObject".
+if ( PHP_VERSION_ID >= 80100 ) {
+	eval( 'enum Upgw_Suit { case Hearts; }' );
+	$storage = new ArrayObject( constant( 'Upgw_Suit::Hearts' ) );
+}
+
+echo "done\n";

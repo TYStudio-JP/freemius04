@@ -1,0 +1,11 @@
+--RULE--
+runtime.mb_http_output_null_byte
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+// An encoding with a null byte was a warning on 7.4 and a ValueError (unknown
+// encoding) since 8.0; 8.4 only changes the message.
+$encoding = "UTF\0-8";
+
+var_dump( @mb_http_output( $encoding ) );

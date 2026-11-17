@@ -1,0 +1,11 @@
+--RULE--
+call.invalid_literal_argument
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+$handle = curl_multi_init();
+
+curl_multi_select( $handle, -1 );
+
+echo "done\n";

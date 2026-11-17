@@ -1,0 +1,9 @@
+--RULE--
+runtime.usleep_overflow
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// UINT_MAX + 2 microseconds: 7.4-8.5 let it overflow to 1.
+usleep( 4294967297 );
+echo "slept\n";

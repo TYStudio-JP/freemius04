@@ -1,0 +1,11 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+namespace Shop;
+
+use const PHP_INT_SIZE as let;
+
+echo let > 0 ? "size\n" : "none\n";

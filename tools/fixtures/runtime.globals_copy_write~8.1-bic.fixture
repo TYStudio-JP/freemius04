@@ -1,0 +1,13 @@
+--RULE--
+runtime.globals_copy_write
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// Before 8.1 a copy of $GLOBALS still pointed at the global variables, so
+// writing to the copy changed them. From 8.1 the copy is a plain array.
+$color = 'red';
+$copy  = $GLOBALS;
+
+$copy['color'] = 'blue';
+echo $color, "\n";

@@ -1,0 +1,15 @@
+--RULE--
+call.reflection_parameter_type_method
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+function takes_list( array $items ) {}
+
+function first_is_array( $function ) {
+	$parameter = new ReflectionParameter( $function, 0 );
+
+	return $parameter->isArray();
+}
+
+var_dump( first_is_array( 'takes_list' ) );

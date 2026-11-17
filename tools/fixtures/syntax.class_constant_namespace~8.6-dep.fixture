@@ -1,0 +1,11 @@
+--RULE--
+syntax.class_constant_namespace
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Shop_Route {
+	const NAMESPACE = 'shop/v1';
+}
+
+echo Shop_Route::NAMESPACE, "\n";

@@ -1,0 +1,19 @@
+--RULE--
+signature.dom_create_document_return_type
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+class Local_Implementation extends DOMImplementation {
+	public function createDocument( $namespace = null, $qualified_name = '', $doctype = null ) {
+		if ( null === $doctype ) {
+			return parent::createDocument( $namespace, $qualified_name );
+		}
+
+		return parent::createDocument( $namespace, $qualified_name, $doctype );
+	}
+}
+
+$implementation = new Local_Implementation();
+
+echo get_class( $implementation->createDocument( null, 'root' ) ), "\n";

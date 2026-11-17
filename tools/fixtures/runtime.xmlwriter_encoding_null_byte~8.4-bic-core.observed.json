@@ -1,0 +1,37 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "runtime.xmlwriter_encoding_null_byte",
+	"claim": {
+		"breaks_in": "8.4"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "warning",
+		"8.0": "warning",
+		"8.1": "warning",
+		"8.2": "warning",
+		"8.3": "warning",
+		"8.4": "fatal",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"7.4": "E_WARNING: XMLWriter::startDocument(): xmlTextWriterStartDocument : unsupported encoding",
+		"8.0": "E_WARNING: XMLWriter::startDocument(): xmlTextWriterStartDocument : unsupported encoding",
+		"8.1": "E_WARNING: XMLWriter::startDocument(): xmlTextWriterStartDocument : unsupported encoding",
+		"8.2": "E_WARNING: XMLWriter::startDocument(): xmlTextWriterStartDocument : unsupported encoding",
+		"8.3": "E_WARNING: XMLWriter::startDocument(): xmlTextWriterStartDocument : unsupported encoding",
+		"8.4": "ValueError: XMLWriter::startDocument(): Argument #2 ($encoding) must not contain any null bytes",
+		"8.5": "ValueError: XMLWriter::startDocument(): Argument #2 ($encoding) must not contain any null bytes"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

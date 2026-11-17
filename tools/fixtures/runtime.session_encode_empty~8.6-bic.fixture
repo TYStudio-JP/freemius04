@@ -1,0 +1,10 @@
+--RULE--
+runtime.session_encode_empty
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+ini_set( 'session.use_cookies', '0' );
+session_start();
+// An empty session: false on 7.4-8.5, "" on 8.6.
+var_dump( session_encode() );

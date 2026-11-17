@@ -1,0 +1,10 @@
+--RULE--
+call.define_third_argument
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$case_insensitive = false;
+define( 'SHOP_DEBUG', true, $case_insensitive );
+
+var_dump( SHOP_DEBUG );

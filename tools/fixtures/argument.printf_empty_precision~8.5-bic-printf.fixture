@@ -1,0 +1,8 @@
+--RULE--
+argument.printf_empty_precision
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// Flags, width and an argument number before the empty precision.
+printf( "[%1\$-8.f]\n", 2.5 );

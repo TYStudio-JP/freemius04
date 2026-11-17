@@ -1,0 +1,9 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+const let = 'value';
+
+echo let, "\n";

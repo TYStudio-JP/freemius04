@@ -1,0 +1,560 @@
+[
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The type of PHP_DEBUG and PHP_ZTS constants changed to bool.",
+		"disposition": "rule",
+		"rule": "constant.php_debug_zts_type",
+		"fixtures": [
+			"constant.php_debug_zts_type~8.4-bic-core-debug_not_identical.fixture",
+			"constant.php_debug_zts_type~8.4-bic-core-debug_not_identical_false.fixture",
+			"constant.php_debug_zts_type~8.4-bic-core-zts_identical.fixture",
+			"constant.php_debug_zts_type~8.4-bic-core-zts_identical_false.fixture"
+		],
+		"reason": "Php84BicCorePhpDebugZtsType reports PHP_DEBUG / PHP_ZTS compared with === or !== to the literal 0 or false (int(0) up to 8.3, bool(false) from 8.4, so the answer flips); comparisons with 1 or true change only on debug or ZTS builds, which no runtime here is, and loose comparisons keep working."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The name of uploaded files and files created by the tempnam() function are now 13 bytes longer.",
+		"disposition": "runtime-only",
+		"rule": "runtime.tempnam_name_length",
+		"fixtures": [
+			"runtime.tempnam_name_length~8.4-bic-core.fixture"
+		],
+		"reason": "The runtimes show basename( tempnam() ) growing from 10 to 23 bytes in 8.4; only code that relies on the length of a generated name notices, and that length is a run-time value."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Encountering recursion during comparison now results in a Error exception, rather than a fatal error.",
+		"disposition": "runtime-only",
+		"rule": "runtime.comparison_recursion",
+		"fixtures": [
+			"runtime.comparison_recursion~8.4-bic-core.fixture"
+		],
+		"reason": "Whether a compared value contains itself is known only at run time; the runtimes show E_ERROR \"Nesting level too deep\" on 7.4-8.3 and an uncaught (catchable) Error with the same message from 8.4, so such code fails on every version and only becomes catchable."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Indirect modification of readonly properties within __clone() is no longer allowed, e.g. $ref = &$this->readonly.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [
+			"runtime.readonly_clone_indirect_modification~8.4-bic-core-append.fixture",
+			"runtime.readonly_clone_indirect_modification~8.4-bic-core-reference.fixture"
+		],
+		"reason": "Visible in the source, but no rule can be verified: readonly properties do not parse before 8.1, the modification fails on 8.1 and 8.2 and works only on 8.3, which the fixture claim (breaks_in) cannot express; the eval()-gated runtime fixtures show $ref = &$this->prop and $this->prop[] = ... in __clone() working on 8.3 and an Error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The exit (and die) language constructs now behave more like a function.",
+		"disposition": "rule",
+		"rule": "call.exit_argument_type",
+		"fixtures": [
+			"call.exit_argument_type~8.4-bic-core-array.fixture",
+			"call.exit_argument_type~8.4-bic-core-float.fixture",
+			"call.exit_argument_type~8.4-bic-core-null.fixture",
+			"call.exit_argument_type~8.4-bic-core-strict_false.fixture",
+			"call.exit_argument_type~8.4-bic-core-strict_float.fixture",
+			"call.exit_argument_type~8.4-bic-core-strict_null.fixture",
+			"call.exit_argument_type~8.4-bic-core-strict_true.fixture",
+			"call.exit_argument_type~8.4-bic-core-true.fixture"
+		],
+		"reason": "Php84BicCoreExitArgument reports exit/die with a literal true or float (printed up to 8.3, an exit status from 8.4: changed), null (deprecated 8.4), an array (TypeError 8.4), and in a strict_types file true/false/null/float (TypeError 8.4); exit( false ) without strict types and non-literal arguments are not reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The E_STRICT constant was deprecated and its corresponding error level was removed.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "data/catalog/constants.php already lists E_STRICT as deprecated in 8.4 (evidence verified), reported by InternalConstants; nothing new written."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "Date",
+		"disposition": "rule",
+		"rule": "class.typed_constant_redeclared",
+		"fixtures": [
+			"class.typed_constant_redeclared~8.4-bic-core-date.fixture"
+		],
+		"reason": "Php84BicCoreTypedClassConstant: a class extending DateTime, DateTimeImmutable, DateTimeZone or DatePeriod that redeclares one of their constants (e.g. ATOM) without a type is a compile error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "Intl",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes, so the typed intl constants cannot be shown; the rule's list leaves intl classes out."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "PDO",
+		"disposition": "rule",
+		"rule": "class.typed_constant_redeclared",
+		"fixtures": [
+			"class.typed_constant_redeclared~8.4-bic-core-pdo.fixture"
+		],
+		"reason": "Php84BicCoreTypedClassConstant: a class extending PDO that redeclares a PDO constant (even with an int value) is a compile error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "Reflection",
+		"disposition": "rule",
+		"rule": "class.typed_constant_redeclared",
+		"fixtures": [
+			"class.typed_constant_redeclared~8.4-bic-core-reflection.fixture"
+		],
+		"reason": "Php84BicCoreTypedClassConstant: a class extending a Reflection* class that redeclares e.g. IS_PUBLIC is a compile error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "SPL",
+		"disposition": "rule",
+		"rule": "class.typed_constant_redeclared",
+		"fixtures": [
+			"class.typed_constant_redeclared~8.4-bic-core-spl.fixture"
+		],
+		"reason": "Php84BicCoreTypedClassConstant: a class extending an SPL class (ArrayIterator, ArrayObject, the iterators, SplFileObject, SplDoublyLinkedList, SplPriorityQueue, MultipleIterator) that redeclares one of its constants is a compile error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "Sqlite",
+		"disposition": "rule",
+		"rule": "class.typed_constant_redeclared",
+		"fixtures": [
+			"class.typed_constant_redeclared~8.4-bic-core-sqlite3.fixture"
+		],
+		"reason": "Php84BicCoreTypedClassConstant: a class extending SQLite3 that redeclares one of its constants (OK, DENY, CREATE_INDEX, ...) is a compile error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Extension Class constants are now typed",
+		"quote": "XMLReader",
+		"disposition": "rule",
+		"rule": "class.typed_constant_redeclared",
+		"fixtures": [
+			"class.typed_constant_redeclared~8.4-bic-core-xmlreader.fixture"
+		],
+		"reason": "Php84BicCoreTypedClassConstant: a class extending XMLReader that redeclares one of its node-type constants is a compile error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Resource to Object conversions: DBA",
+		"quote": "dba_open() and dba_popen() will now return Dba\\Connection",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The dba extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Resource to Object conversions: ODBC",
+		"quote": "odbc_connect() and odbc_pconnect() will now return Odbc\\Connection",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The odbc extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Resource to Object conversions: ODBC",
+		"quote": "odbc_prepare(), odbc_exec(), and various other functions will now return Odbc\\Result",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The odbc extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Resource to Object conversions: SOAP",
+		"quote": "SoapClient::$httpurl is now a Soap\\Url object rather than a resource.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "SoapClient::$httpurl has been private since 8.1, so is_resource( $client->httpurl ) in user code is already an Error from 8.1, and the property is set only after a real request, which a fixture may not make; nothing in the source tells a plugin's reading of it apart."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "Resource to Object conversions: SOAP",
+		"quote": "SoapClient::$sdl is now a Soap\\Sdl object rather than a resource.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.soapclient_sdl_object~8.4-bic-core.fixture"
+		],
+		"reason": "SoapClient::$sdl and $httpurl have been private since 8.1, so is_resource( $client->sdl ) in user code is already an Error from 8.1; read through an array cast, $sdl is a resource up to 8.3 and an object from 8.4 ($httpurl needs a real request and is not shown)."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Curl",
+		"quote": "curl_multi_select throws a ValueError if the timeout argument if it's negative or greater than PHP_INT_MAX.",
+		"disposition": "rule",
+		"rule": "call.invalid_literal_argument",
+		"fixtures": [
+			"call.invalid_literal_argument~8.4-bic-core-curl_multi_select.fixture"
+		],
+		"reason": "Php84BicCoreLiteralArguments reports curl_multi_select() with a literal negative timeout (accepted up to 8.1, a warning on 8.2-8.3, a ValueError from 8.4); a computed timeout is a run-time value and is not reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: GD",
+		"quote": "imagejpeg/imagewebp/imagepng/imageavif throws an exception if an invalid quality parameter value is passed.",
+		"disposition": "rule",
+		"rule": "call.invalid_literal_argument",
+		"fixtures": [
+			"call.invalid_literal_argument~8.4-bic-core-imagejpeg.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-imagepng.fixture",
+			"runtime.gd_argument_range~8.4-bic-core-imageavif_quality.fixture",
+			"runtime.gd_argument_range~8.4-bic-core-imageavif_speed.fixture"
+		],
+		"reason": "Php84BicCoreLiteralArguments reports imagejpeg() with a literal quality outside -1..100 and imagepng() outside -1..9 (ValueError from 8.4); imageavif() quality/speed are shown by runtime fixtures only (no imageavif before 8.1), and imagewebp() is left out because 8.4 still accepts a quality above 100 and a negative one already failed on 7.4/8.0."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: GD",
+		"quote": "imagescale throws an exception if the width/height argument underflows/overflows or if the mode argument is invalid.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.gd_argument_range~8.4-bic-core-imagefilter_scatter.fixture",
+			"runtime.gd_argument_range~8.4-bic-core-imagescale_mode.fixture",
+			"runtime.gd_argument_range~8.4-bic-core-imagescale_size.fixture"
+		],
+		"reason": "Sizes and modes out of range are almost always computed values; the runtime fixtures show imagescale() mode/size and imagefilter( IMG_FILTER_SCATTER ) out-of-range arguments becoming a ValueError in 8.4, and no rule judges them."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Gettext",
+		"quote": "bind_textdomain_codeset, textdomain and d(*)gettext functions now throw an exception if the domain argument is empty.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The gettext extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Intl",
+		"quote": "IntlCalendar::set(), IntlCalendar::setDate(), IntlCalendar::setDateTime(), and IntlGregorianCalendar date/time construction now report the correct argument position for out-of-bounds integer values.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Intl",
+		"quote": "resourcebundle_get(), ResourceBundle::get(), and accessing offsets on a ResourceBundle object now throw:",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Intl",
+		"quote": "IntlDateFormatter::__construct() throws a ValueError if the locale is invalid.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Intl",
+		"quote": "NumberFormatter::__construct() throws a ValueError if the locale is invalid.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Intl",
+		"quote": "SpoofChecker::setAllowedChars() and IntlDateFormatter::__construct() now report PHP constant names instead of ICU constant names in user-visible error messages.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: MBString",
+		"quote": "mb_encode_numericentity() and mb_decode_numericentity() now check that the $map is only composed of integers, if not a ValueError is thrown.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.mb_numericentity_map~8.4-bic-core.fixture"
+		],
+		"reason": "The map is run-time data: an array inside the numeric-entity $map is a ValueError from 8.4, while numeric strings and null still pass and non-numeric strings only warn."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: MBString",
+		"quote": "mb_http_input() now always throws a ValueError if the $type is invalid.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.mb_http_input_type~8.4-bic-core.fixture"
+		],
+		"reason": "The runtimes show an invalid type has been a ValueError since 8.0 already; 8.4 changes nothing a plugin running on 8.0+ would see."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: MBString",
+		"quote": "mb_http_output() now checks that the $encoding parameter does not contain any null bytes.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.mb_http_output_null_byte~8.4-bic-core.fixture"
+		],
+		"reason": "The runtimes show an encoding with a null byte has been a ValueError since 8.0 already; 8.4 only changes the message."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: ODBC",
+		"quote": "odbc_fetch_row() now emits a warning when a value less than or equal to 0 is passed for parameter $row.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The odbc extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: PCNTL",
+		"quote": "The functions pcntl_sigprocmask(), pcntl_sigwaitinfo() and pcntl_sigtimedwait() now throw:",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is in none of the runtimes (and is CLI-only)."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: PCNTL",
+		"quote": "The function pcntl_sigprocmask() now throw:",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is in none of the runtimes (and is CLI-only)."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: PCNTL",
+		"quote": "The function pcntl_sigtimedwait() now throw:",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is in none of the runtimes (and is CLI-only)."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: SimpleXML",
+		"quote": "Calling simplexml_import_dom() with a non-XML object now throws a TypeError instead of a ValueError.",
+		"disposition": "runtime-only",
+		"rule": "runtime.simplexml_import_dom_type",
+		"fixtures": [
+			"runtime.simplexml_import_dom_type~8.4-bic-core.fixture"
+		],
+		"reason": "Passing a non-DOM object has been a TypeError since 8.0 (a warning on 7.4); the 8.4 change concerns the new Dom\\ document classes of 8.4, which older code does not use, and the object passed is a run-time value."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Standard",
+		"quote": "round() now validates the value of the $mode parameter and throws a ValueError for invalid modes.",
+		"disposition": "rule",
+		"rule": "call.invalid_literal_argument",
+		"fixtures": [
+			"call.invalid_literal_argument~8.4-bic-core-round_mode.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-round_mode_5.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-round_mode_6.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-round_mode_7.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-round_mode_8.fixture"
+		],
+		"reason": "Php84BicCoreLiteralArguments reports a literal round() mode outside 1..8 as breaking in 8.4 (ValueError) and a literal 5..8 as changed in 8.4: the runtimes show 8.4 accepts 5..8 as the new rounding modes (ceiling, floor, toward zero, away from zero) where 8.3 read them as PHP_ROUND_HALF_UP; computed modes are not reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Standard",
+		"quote": "The str_getcsv() function now throws ValueErrors when the $separator and $enclosure arguments are not one byte long, or if the $escape is not one byte long or the empty string.",
+		"disposition": "rule",
+		"rule": "call.invalid_literal_argument",
+		"fixtures": [
+			"call.invalid_literal_argument~8.4-bic-core-str_getcsv_enclosure.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-str_getcsv_escape.fixture",
+			"call.invalid_literal_argument~8.4-bic-core-str_getcsv_separator.fixture"
+		],
+		"reason": "Php84BicCoreLiteralArguments reports literal str_getcsv() separators/enclosures that are not exactly one byte (the empty string included) and escapes longer than one byte (ValueError from 8.4); computed values are not reported."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Standard",
+		"quote": "php_uname() now throws ValueErrors if the $move parameter is invalid.",
+		"disposition": "rule",
+		"rule": "call.invalid_literal_argument",
+		"fixtures": [
+			"call.invalid_literal_argument~8.4-bic-core-php_uname.fixture"
+		],
+		"reason": "Php84BicCoreLiteralArguments reports a literal php_uname() mode other than a/m/n/r/s/v (\"\" and multi-character strings included, which 8.3 read by their first character or as \"a\"; ValueError from 8.4)."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: Standard",
+		"quote": "The \"allowed_classes\" option for unserialize() now throws TypeErrors and ValueErrors if it is not an array of class names.",
+		"disposition": "rule",
+		"rule": "call.invalid_literal_argument",
+		"fixtures": [
+			"call.invalid_literal_argument~8.4-bic-core-unserialize.fixture"
+		],
+		"reason": "Php84BicCoreLiteralArguments reports an int in a literal allowed_classes list (TypeError from 8.4); a string allowed_classes was already a TypeError from 8.0, and an invalid class-name string inside the list is not judged."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: XMLReader",
+		"quote": "Passing an invalid character encoding to XMLReader::open() or XMLReader::XML() now throws a ValueError.",
+		"disposition": "runtime-only",
+		"rule": "runtime.xmlreader_invalid_encoding",
+		"fixtures": [
+			"runtime.xmlreader_invalid_encoding~8.4-bic-core.fixture"
+		],
+		"reason": "Which encodings libxml knows is not visible in the source; the runtimes show an unknown encoding ignored up to 8.3 and a ValueError from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: XMLWriter",
+		"quote": "Passing an encoding containing null bytes previously emitted a warning and now throws a ValueError.",
+		"disposition": "runtime-only",
+		"rule": "runtime.xmlwriter_encoding_null_byte",
+		"fixtures": [
+			"runtime.xmlwriter_encoding_null_byte~8.4-bic-core.fixture"
+		],
+		"reason": "A null byte in the encoding is run-time data; the runtimes show a warning and false up to 8.3 and a ValueError from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: XSL",
+		"quote": "XSLTProcessor::setParameter() will now throw a ValueError when its arguments contain null bytes.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The xsl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: XSL",
+		"quote": "Calling XSLTProcessor::importStyleSheet() with a non-XML object now throws a TypeError instead of a ValueError.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The xsl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "New warnings and exceptions: XSL",
+		"quote": "Failure to call a PHP function callback during evaluation now throws instead of emitting a warning.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The xsl extension is in none of the runtimes."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Some DOM methods previously returned false or a PHP_ERR DOMException if a new node could not be allocated.",
+		"disposition": "rule",
+		"rule": "signature.dom_create_document_return_type",
+		"fixtures": [
+			"signature.dom_create_document_return_type~8.4-bic-core.fixture"
+		],
+		"reason": "Allocation failures cannot be produced or seen in source; the createDocument() part is detectable: the runtimes show no tentative return type up to 8.3 and a tentative DOMDocument in 8.4, so an override without a return type in a DOMImplementation subclass is deprecated from 8.4 (Php84BicCoreDomCreateDocument)."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Previously, DOMXPath objects could be cloned, but resulted in an unusable object.",
+		"disposition": "rule",
+		"rule": "clone.dom_xpath",
+		"fixtures": [
+			"clone.dom_xpath~8.4-bic-core.fixture"
+		],
+		"reason": "Php84BicCoreDomXPathClone reports clone new DOMXPath(...) and clones of a function-local variable that only ever holds new DOMXPath(...); the clone worked up to 8.3 and is an Error from 8.4."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Removed DOMImplementation::getFeature().",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [
+			"runtime.dom_implementation_get_feature~8.4-bic-core.fixture"
+		],
+		"reason": "getFeature() is a common method name on user objects and the class behind ->getFeature() is not visible; the runtimes show it already threw an Error (\"Not yet implemented\") from 8.0 (a warning on 7.4), so no working code calls it."
+	},
+	{
+		"version": "8.4",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "The GMP class is now final and cannot be extended anymore.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Syntactically detectable (class X extends GMP), but the gmp extension is in none of the runtimes, so no fixture can verify it and the agreement treats it as out of scope."
+	}
+]

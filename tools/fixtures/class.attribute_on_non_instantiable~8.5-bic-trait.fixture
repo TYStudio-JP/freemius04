@@ -1,0 +1,15 @@
+--RULE--
+class.attribute_on_non_instantiable
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+namespace Upgw\Markers;
+
+use Attribute;
+
+#[Attribute]
+trait Marker_Trait {
+}
+
+echo "declared\n";

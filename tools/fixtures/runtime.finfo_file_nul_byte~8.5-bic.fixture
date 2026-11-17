@@ -1,0 +1,16 @@
+--RULE--
+runtime.finfo_file_nul_byte
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// 7.4 warns and returns false, 8.0 to 8.4 throw a TypeError, 8.5 a ValueError.
+// Only "is it a ValueError" is printed, which is what changes in 8.5.
+$info = new finfo( FILEINFO_MIME_TYPE );
+
+try {
+	$info->file( "upload\0.txt" );
+	echo "not a ValueError\n";
+} catch ( Throwable $error ) {
+	echo $error instanceof ValueError ? "ValueError\n" : "not a ValueError\n";
+}

@@ -1,0 +1,14 @@
+--RULE--
+syntax.constructor_return_value
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Counter {
+	public function __construct() {
+		return 5;
+	}
+}
+
+$counter = new Counter();
+echo get_class( $counter ), "\n";

@@ -1,0 +1,16 @@
+--RULE--
+runtime.simplexml_import_dom_type
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+// An object that is not a DOM node: a warning and null on 7.4, a TypeError
+// since 8.0. The 8.4 change (TypeError instead of ValueError) concerns the
+// new Dom\ classes of 8.4, which older code cannot use.
+$node = new stdClass();
+
+try {
+	var_dump( @simplexml_import_dom( $node ) );
+} catch ( TypeError $error ) {
+	echo "TypeError\n";
+}

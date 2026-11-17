@@ -1,0 +1,15 @@
+--RULE--
+class.splfileobject_fwrite_signature
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// 7.4 warns that the declaration should be compatible; 8.0 to 8.4 accept it.
+class Upgw_Log_File extends SplFileObject {
+	#[\ReturnTypeWillChange]
+	public function fwrite( string $data, int $length = 0 ) {
+		return 0;
+	}
+}
+
+echo "declared\n";

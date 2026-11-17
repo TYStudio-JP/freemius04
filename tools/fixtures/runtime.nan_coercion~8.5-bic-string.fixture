@@ -1,0 +1,10 @@
+--RULE--
+runtime.nan_coercion
+--CLAIM--
+{}
+--CODE--
+<?php
+// Same output on every version; 8.5 adds E_WARNING "unexpected NAN value was
+// coerced to string".
+$value = NAN;
+var_dump( (string) $value );

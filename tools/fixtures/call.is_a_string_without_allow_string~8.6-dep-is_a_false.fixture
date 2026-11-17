@@ -1,0 +1,10 @@
+--RULE--
+call.is_a_string_without_allow_string
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Base {}
+class Child extends Base {}
+
+var_dump( is_a( Child::class, 'Base', false ) );

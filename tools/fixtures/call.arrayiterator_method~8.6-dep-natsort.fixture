@@ -1,0 +1,13 @@
+--RULE--
+call.arrayiterator_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_sorted() {
+	$items = new ArrayIterator( array( 'img12', 'img10', 'img2' ) );
+	$items->natsort();
+	return implode( ',', iterator_to_array( $items ) );
+}
+
+echo shop_sorted(), "\n";

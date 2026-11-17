@@ -1,0 +1,9 @@
+--RULE--
+argument.setlocale_array_position
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// An array as a later locale argument: accepted on 7.4-8.5; the 8.6 notes:
+// "Passing an array as a later variadic locale argument now throws a TypeError."
+var_dump( setlocale( LC_ALL, 'C', array( 'C' ) ) );

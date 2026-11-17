@@ -1,0 +1,7 @@
+--RULE--
+argument.pcre_k_in_lookaround
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+var_dump( preg_match( '/(?=a\Kb)ab/', 'ab', $matches ), $matches );

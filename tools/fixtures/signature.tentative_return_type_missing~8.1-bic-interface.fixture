@@ -1,0 +1,11 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+interface Sized extends Countable {
+	public function count();
+}
+
+echo interface_exists( 'Sized' ) ? "declared\n" : "missing\n";

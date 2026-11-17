@@ -1,0 +1,7 @@
+--RULE--
+argument.object_instead_of_array
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+echo http_build_query( (object) array( 'page' => 2, 'sort' => 'name' ) ), "\n";

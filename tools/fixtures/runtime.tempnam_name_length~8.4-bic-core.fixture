@@ -1,0 +1,14 @@
+--RULE--
+runtime.tempnam_name_length
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// The random part of a tempnam() name is 13 bytes longer from PHP 8.4. Code
+// that expects a fixed length of the name (or of an uploaded file's tmp_name)
+// sees another value. The length depends on the platform, not on the source.
+$file = tempnam( sys_get_temp_dir(), 'upgw' );
+
+echo strlen( basename( $file ) ), "\n";
+
+unlink( $file );

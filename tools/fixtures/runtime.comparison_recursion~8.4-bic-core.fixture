@@ -1,0 +1,16 @@
+--RULE--
+runtime.comparison_recursion
+--CLAIM--
+{ "breaks_in": "7.4" }
+--CODE--
+<?php
+// Comparing two structures that contain themselves never worked. Up to 8.3 it
+// is a fatal error ("Nesting level too deep"); from 8.4 an Error exception,
+// which a try/catch around the comparison can catch. Whether a value contains
+// itself is known only at run time.
+$first    = array();
+$first[]  = &$first;
+$second   = array();
+$second[] = &$second;
+
+var_dump( $first == $second );

@@ -1,0 +1,11 @@
+--RULE--
+signature.null_default_before_required
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+function pick( mixed $value = null, $fallback ) {
+	return null === $value ? $fallback : 'value';
+}
+
+echo pick( null, 'fallback' ), "\n";

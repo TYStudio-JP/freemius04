@@ -1,0 +1,9 @@
+--RULE--
+constant.pdo_props_late_without_class
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+$db        = new PDO( 'sqlite::memory:' );
+$statement = $db->query( 'SELECT 1 AS a' );
+echo count( $statement->fetchAll( PDO::FETCH_ASSOC | PDO::FETCH_PROPS_LATE ) ), "\n";

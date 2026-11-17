@@ -1,0 +1,18 @@
+--RULE--
+runtime.static_var_inherited_method
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+class Base_Counter {
+	public static function next() {
+		static $count = 0;
+		return ++$count;
+	}
+}
+
+class Child_Counter extends Base_Counter {
+}
+
+// Before 8.1 the child had its own $count: 1 2 1 2. From 8.1 it is shared.
+echo Base_Counter::next(), Base_Counter::next(), Child_Counter::next(), Child_Counter::next(), "\n";

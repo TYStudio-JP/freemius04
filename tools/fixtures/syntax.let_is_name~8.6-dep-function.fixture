@@ -1,0 +1,11 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function is( $value ) {
+	return (bool) $value;
+}
+
+var_dump( is( 1 ) );

@@ -1,0 +1,13 @@
+--RULE--
+runtime.mysqli_construct_twice
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// mysqli_init() already constructs the object; calling the constructor on it
+// again is an Error from 8.5 ("Cannot call constructor twice"). Before, it
+// tried to connect: the socket does not exist, so it fails with warnings.
+mysqli_report( MYSQLI_REPORT_OFF );
+$link = mysqli_init();
+@$link->__construct( 'localhost', 'user', 'secret', 'db', 0, '/nonexistent/mysqld.sock' );
+echo "constructed\n";

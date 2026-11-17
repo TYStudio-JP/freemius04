@@ -1,0 +1,11 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Shop_Item {}
+
+class_alias( 'Shop_Item', 'Let' );
+
+echo get_class( new Let() ), "\n";

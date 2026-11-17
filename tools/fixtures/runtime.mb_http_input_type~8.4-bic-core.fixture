@@ -1,0 +1,11 @@
+--RULE--
+runtime.mb_http_input_type
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+// An invalid $type returned false on 7.4 and has been a ValueError since 8.0;
+// the runtimes show no change in 8.4.
+$type = 'X';
+
+var_dump( mb_http_input( $type ) );

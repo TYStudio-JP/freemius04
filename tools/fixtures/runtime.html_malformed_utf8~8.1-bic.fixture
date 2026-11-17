@@ -1,0 +1,10 @@
+--RULE--
+runtime.html_malformed_utf8
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// Before 8.1 malformed UTF-8 gave an empty string; now it becomes U+FFFD.
+$text = "caf\xE9";
+
+echo bin2hex( htmlspecialchars( $text ) ), "\n";

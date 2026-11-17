@@ -1,0 +1,11 @@
+--RULE--
+runtime.null_to_internal_scalar_variable
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+// The usual case: a value that is null only at run time.
+$options = array();
+$title   = isset( $options['title'] ) ? $options['title'] : null;
+
+echo '[', htmlspecialchars( $title ), "]\n";

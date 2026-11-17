@@ -1,0 +1,14 @@
+--RULE--
+class.soapclient_dorequest_signature
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// The 8.0 signature, written out with its types. 7.4 only warns about it.
+class Upgw_Typed_Soap_Client extends \SoapClient {
+	public function __doRequest( string $request, string $location, string $action, int $version, bool $one_way = false ): ?string {
+		return '';
+	}
+}
+
+echo "declared\n";

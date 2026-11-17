@@ -1,0 +1,472 @@
+[
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "It is no longer possible to use \"array\" and \"callable\" as class alias names in class_alias().",
+		"disposition": "rule",
+		"rule": "call.class_alias_reserved_name",
+		"fixtures": [
+			"call.class_alias_reserved_name~8.5-bic-array.fixture",
+			"call.class_alias_reserved_name~8.5-bic-callable.fixture",
+			"call.class_alias_reserved_name~8.5-bic-case.fixture"
+		],
+		"reason": "New rule Php85BicClassAlias reports class_alias() with a literal alias \"array\" or \"callable\"; the runtimes showed 7.4-8.4 accept it and 8.5 stops with E_COMPILE_ERROR, also for \"\\Array\" (case and leading backslash ignored)."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Loosely comparing uncomparable objects (e.g. enums, \\CurlHandle and other internal classes) to booleans was previously inconsistent.",
+		"disposition": "runtime-only",
+		"rule": "runtime.uncomparable_object_bool_compare",
+		"fixtures": [
+			"runtime.uncomparable_object_bool_compare~8.5-bic.fixture"
+		],
+		"reason": "Whether an operand is an uncomparable object is a run-time type, and $obj == true (literal) behaves the same before and after; the fixture shows a CurlHandle compared with a boolean variable: not equal on 8.0-8.4, equal on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The return value of gc_collect_cycles() no longer includes strings and resources that were indirectly collected through cycles.",
+		"disposition": "runtime-only",
+		"rule": "runtime.gc_collect_cycles_count",
+		"fixtures": [
+			"runtime.gc_collect_cycles_count~8.5-bic.fixture"
+		],
+		"reason": "The count depends on what the collected cycles hold at run time; the fixture shows 60 on 7.4-8.4 and 30 on 8.5 for the same garbage."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "It is now allowed to substitute static with self or the concrete class name in final subclasses.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A relaxation: the runtimes showed a final subclass returning self for a static return type is a compile error on 8.0-8.4 (parse error on 7.4) and runs on 8.5, so code that runs today cannot be affected; nothing to report for an upgrade."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The tick handlers are now deactivated after all shutdown functions, destructors have run and the output handlers have been cleaned up.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on declare(ticks) plus run-time registration; a plain run showed tick handlers firing inside a shutdown function only on 8.5, but the fixture harness writes its report in its own shutdown function, so output from later shutdown code breaks the report and no fixture can record it."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Traits are now bound before the parent class.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Probing parent/trait conflicts on the runtimes found only relaxations (a trait property or static property that conflicted with the parent was a fatal error on 7.4-8.4 and works on 8.5) and reworded error messages; no case that runs on 8.4 and behaves differently on 8.5 was found, so nothing reliable to report."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Errors emitted during compilation and class linking are now always delayed and handled after compilation or class linking.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Only the moment a user error handler sees compile-time diagnostics changes; probes through eval() showed identical handler calls on 8.4 and 8.5, including the handler still being called before a compile fatal error on 8.5, so no observable difference could be demonstrated."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Exceptions thrown by user-defined error handlers when handling class linking errors are not promoted to fatal errors anymore and do not prevent linking.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A relaxation: a throwing handler during inheritance of ArrayIterator was a fatal error on 8.1-8.4 and a catchable exception with the class linked on 8.5, so code that runs today is not affected; depends on the handler at run time."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Applying #[\\Attribute] to an abstract class, enum, interface, or trait triggers an error during compilation.",
+		"disposition": "rule",
+		"rule": "class.attribute_on_non_instantiable",
+		"fixtures": [
+			"class.attribute_on_non_instantiable~8.5-bic-abstract.fixture",
+			"class.attribute_on_non_instantiable~8.5-bic-interface.fixture",
+			"class.attribute_on_non_instantiable~8.5-bic-trait.fixture"
+		],
+		"reason": "New rule Php85BicAttributeTarget; fixtures for abstract class, interface and trait break in 8.5 (E_COMPILE_ERROR), the enum case was checked through eval() on 8.4/8.5 only (enums do not parse before 8.1); #[\\DelayedTargetValidation] and non-global Attribute names are not reported. Review: an eval() fixture for the enum case verified ok on 7.4-8.4 and fatal on 8.5, but it cannot be kept because FixturesTest needs the scanner to see the declaration, which eval() hides."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The disable_classes INI setting has been removed as it causes various engine assumptions to be broken.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "An INI setting, not source code."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Destructuring non-array values (other than NULL) using [] or list() now emits a warning.",
+		"disposition": "runtime-only",
+		"rule": "runtime.destructuring_non_array",
+		"fixtures": [
+			"runtime.destructuring_non_array~8.5-bic-list_string.fixture",
+			"runtime.destructuring_non_array~8.5-bic.fixture"
+		],
+		"reason": "Depends on the value being destructured; the fixtures print the same on every version and 8.5 adds E_WARNING \"Cannot use int as array\", which the claim format cannot record as a level."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "A warning is now emitted when casting floats to int if they cannot be represented as one.",
+		"disposition": "runtime-only",
+		"rule": "runtime.float_to_int_out_of_range",
+		"fixtures": [
+			"runtime.float_to_int_out_of_range~8.5-bic.fixture"
+		],
+		"reason": "Depends on the float value; the fixture prints the same on every version with an E_WARNING on 8.5 only. The runtimes also showed that an implicit out-of-range conversion ($f % 7) raises this warning on 8.5 instead of the 8.1-8.4 E_DEPRECATED."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "A warning is now emitted when casting NAN to other types.",
+		"disposition": "runtime-only",
+		"rule": "runtime.nan_coercion",
+		"fixtures": [
+			"runtime.nan_coercion~8.5-bic-bool.fixture",
+			"runtime.nan_coercion~8.5-bic-string.fixture"
+		],
+		"reason": "Depends on the value; the fixtures (bool and string casts) print the same everywhere with an E_WARNING on 8.5 only."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "BZ2",
+		"quote": "bzcompress() now throws a ValueError when $block_size is not between 1 and 9.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The bz2 extension is not loaded in any of the runtimes (extension_loaded(\"bz2\") is false on 7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "BZ2",
+		"quote": "bzcompress() now throws a ValueError when $work_factor is not between 0 and 250.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The bz2 extension is not loaded in any of the runtimes."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Cloning a DOMNamedNodeMap, DOMNodeList, Dom\\NamedNodeMap, Dom\\NodeList, Dom\\HTMLCollection, and Dom\\DtdNamedNodeMap now fails.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dom_clone_collection",
+		"fixtures": [
+			"runtime.dom_clone_collection~8.5-bic-named_node_map.fixture",
+			"runtime.dom_clone_collection~8.5-bic-node_list.fixture"
+		],
+		"reason": "clone $x does not show the class of $x; the fixtures clone a DOMNodeList and a DOMNamedNodeMap: fine on 7.4-8.4, Error \"Trying to clone an uncloneable object\" on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "FileInfo",
+		"quote": "finfo_file() and finfo::file() now throws a ValueError instead of a TypeError when $filename contains nul bytes.",
+		"disposition": "runtime-only",
+		"rule": "runtime.finfo_file_nul_byte",
+		"fixtures": [
+			"runtime.finfo_file_nul_byte~8.5-bic.fixture"
+		],
+		"reason": "Depends on the file name value; the fixture shows a warning on 7.4, TypeError on 8.0-8.4 and ValueError on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "The extension now requires at least ICU 57.1.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Build requirement."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "The behaviour of Collator::SORT_REGULAR with respect to handling numeric strings is now aligned with the behaviour of SORT_REGULAR in ext/standard.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes, so the change cannot be verified; it would depend on the strings sorted at run time anyway."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "LDAP",
+		"quote": "ldap_get_option() and ldap_set_option() now throw a ValueError when passing an invalid option.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ldap extension is not loaded in any of the runtimes."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "MBstring",
+		"quote": "Unicode data tables have been updated to Unicode 17.0",
+		"disposition": "runtime-only",
+		"rule": "runtime.mbstring_unicode_17",
+		"fixtures": [
+			"runtime.mbstring_unicode_17~8.5-bic.fixture"
+		],
+		"reason": "Depends on the characters processed; a table diff on 8.4 vs 8.5 found new case mappings (U+A7CE/A7CF, A7D2-A7D5, U+16EA0..), and the fixture shows mb_strtoupper(\"\\u{A7CF}\") changing on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "MySQLi",
+		"quote": "Calling the mysqli constructor on an already-constructed object is now no longer possible and throws an Error.",
+		"disposition": "runtime-only",
+		"rule": "runtime.mysqli_construct_twice",
+		"fixtures": [
+			"runtime.mysqli_construct_twice~8.5-bic.fixture"
+		],
+		"reason": "The class of the object whose __construct() is called is not known from the syntax; the fixture shows mysqli_init() followed by ->__construct() failing with \"Cannot call constructor twice\" on 8.5 only (a failed new mysqli() followed by __construct() still ran on 8.5)."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "ODBC",
+		"quote": "ODBC now assumes that at least ODBC 3.5 functionality is available.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Build configuration of an extension none of the runtimes has."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "ODBC",
+		"quote": "ODBC no longer has build flags to build against specific drivers (except for DB2) and removes special cases for those drivers.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Build configuration."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Opcache",
+		"quote": "The Opcache extension is now always built into the PHP binary and is always loaded.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Build and INI configuration, not source code (the php-wasm 8.5 runtime here even reports extension_loaded(\"opcache\") as false, while 7.4-8.4 report true)."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PCNTL",
+		"quote": "pcntl_exec() now throws ValueErrors when entries of the $args parameter contain null bytes.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is not loaded in any of the runtimes (CLI-only extension)."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PCNTL",
+		"quote": "pcntl_exec() now throws ValueErrors when entries or keys of the $env_vars parameter contain null bytes.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is not loaded in any of the runtimes."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PCRE",
+		"quote": "The extension is compiled without semi-deprecated PCRE2_EXTRA_ALLOW_LOOKAROUND_BSK compile option.",
+		"disposition": "rule",
+		"rule": "argument.pcre_k_in_lookaround",
+		"fixtures": [
+			"argument.pcre_k_in_lookaround~8.5-bic-alpha.fixture",
+			"argument.pcre_k_in_lookaround~8.5-bic-lookahead.fixture",
+			"argument.pcre_k_in_lookaround~8.5-bic-lookbehind.fixture"
+		],
+		"reason": "New rule Php85BicPcreLookaroundK reads literal patterns of preg_* calls; the runtimes showed \\K inside a lookaround matching on 7.4-8.4 and failing to compile on 8.5 (warning, false/null), so it is a behaviour change (changed 8.5), not a fatal error."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "The constructor arguments set in conjunction with PDO::FETCH_CLASS now follow the usual CUFA (call_user_func_array) semantics.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.pdo_fetch_class_ctor_named_args~8.5-bic.fixture",
+			"runtime.pdo_fetch_class_ctor_by_ref~8.5-bic.fixture"
+		],
+		"reason": "Whether string keys match parameter names, and whether a parameter is by-reference, depends on the class constructor; fixtures show string keys taken in order on 7.4-8.4 and as named arguments on 8.5, and a by-value argument for a by-ref parameter gaining an E_WARNING on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "Attempting to call PDOStatement::setFetchMode during a call to PDO::fetch(), PDO::fetchObject(), PDO::fetchAll(), for example using tricks such as passing the statement object as a constructor argument when fetching into an object, will now throw an Error.",
+		"disposition": "runtime-only",
+		"rule": "runtime.pdo_set_fetch_mode_while_fetching",
+		"fixtures": [
+			"runtime.pdo_set_fetch_mode_while_fetching~8.5-bic.fixture"
+		],
+		"reason": "Happens inside a constructor called during the fetch, decided at run time; the fixture runs on 7.4-8.4 and throws \"Cannot change default fetch mode while fetching\" on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "The value of the constants PDO::FETCH_GROUP, PDO::FETCH_UNIQUE, PDO::FETCH_CLASSTYPE, PDO::FETCH_PROPS_LATE, and PDO::FETCH_SERIALIZE have changed.",
+		"disposition": "runtime-only",
+		"rule": "runtime.pdo_fetch_constant_values",
+		"fixtures": [
+			"runtime.pdo_fetch_constant_values~8.5-bic.fixture"
+		],
+		"reason": "Code that names the constants is unaffected; only stored or hard-coded numbers (65536 etc.) are, which cannot be told from other integers. The fixture shows the values changing on 8.5 (e.g. FETCH_GROUP 65536 -> 32)."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "A ValueError is now thrown if PDO::FETCH_PROPS_LATE is used with a fetch mode different than PDO::FETCH_CLASS, consistent with other fetch flags.",
+		"disposition": "rule",
+		"rule": "constant.pdo_props_late_without_class",
+		"fixtures": [
+			"constant.pdo_props_late_without_class~8.5-bic-default_mode.fixture",
+			"constant.pdo_props_late_without_class~8.5-bic-fetchall.fixture",
+			"constant.pdo_props_late_without_class~8.5-bic-set_fetch_mode.fixture"
+		],
+		"reason": "New rule Php85BicPdoPropsLate reports a \"|\" of PDO::FETCH_* constants with FETCH_PROPS_LATE and another mode but no FETCH_CLASS; the runtimes showed fetchAll(), setFetchMode() and ATTR_DEFAULT_FETCH_MODE (at the next fetch) accepted on 7.4-8.4 and a ValueError on 8.5, while FETCH_PROPS_LATE alone still works."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "A ValueError is now thrown if PDO::FETCH_INTO is used as a fetch mode in PDO::fetchAll(), similar to PDO::FETCH_LAZY.",
+		"disposition": "runtime-only",
+		"rule": "runtime.pdo_fetchall_fetch_into",
+		"fixtures": [
+			"runtime.pdo_fetchall_fetch_into~8.5-bic.fixture"
+		],
+		"reason": "The call is visible but the version it breaks in depends on the connection error mode at run time: in silent mode 7.4-8.4 warned and returned [] (fixture: breaks 8.5), in the default exception mode of 8.0+ it already threw a PDOException; it never returned rows, so a rule would mostly report dead code."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO_FIREBIRD",
+		"quote": "A ValueError is now thrown when trying to set a cursor name that is too long on a PDOStatement resulting from the Firebird driver.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Firebird driver is not available in any of the runtimes."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "Attempting to write session data where $_SESSION has a key containing the pipe character will now emit a warning instead of silently failing.",
+		"disposition": "runtime-only",
+		"rule": "runtime.session_key_pipe",
+		"fixtures": [
+			"runtime.session_key_pipe~8.5-bic.fixture"
+		],
+		"reason": "Keys are usually built at run time and the outcome (encoding fails) is the same on every version; the fixture shows session_encode() returning false everywhere with an E_WARNING added on 8.5, which the claim format cannot record."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "SimpleXML",
+		"quote": "Passing an XPath expression that returns something other than a node set to SimpleXMLElement::xpath() will now emit a warning and return false, instead of silently failing and returning an empty array.",
+		"disposition": "rule",
+		"rule": "call.simplexml_xpath_non_node_set",
+		"fixtures": [
+			"call.simplexml_xpath_non_node_set~8.5-bic-boolean.fixture",
+			"call.simplexml_xpath_non_node_set~8.5-bic-count.fixture",
+			"call.simplexml_xpath_non_node_set~8.5-bic-string.fixture"
+		],
+		"reason": "New rule Php85BicSimpleXmlXpath reports ->xpath() with a single literal expression starting with count(), string(), boolean() and other scalar XPath functions; fixtures show array(0) on 7.4-8.4 and false with a warning on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "ArrayObject no longer accepts enums, as modifying the $name or $value properties can break engine assumptions.",
+		"disposition": "runtime-only",
+		"rule": "runtime.arrayobject_enum",
+		"fixtures": [
+			"runtime.arrayobject_enum~8.5-bic.fixture"
+		],
+		"reason": "An enum case is written like a class constant (Suit::Hearts), so the syntax tree cannot tell it apart; the fixture (eval-declared enum on 8.1+) runs on 8.1-8.4 and throws InvalidArgumentException \"Enums are not compatible with ArrayObject\" on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::fwrite's parameter $length is now nullable.",
+		"disposition": "rule",
+		"rule": "class.splfileobject_fwrite_signature",
+		"fixtures": [
+			"class.splfileobject_fwrite_signature~8.5-bic.fixture",
+			"runtime.splfileobject_fwrite_null_length~8.5-bic.fixture",
+			"runtime.splfileobject_fwrite_signature_default~8.5-bic.fixture"
+		],
+		"reason": "The visible break is an override of fwrite() in a direct subclass with a non-nullable typed $length (new rule in Php85BicInternalOverride, fatal on 8.5); explicit fwrite($data, 0) prints the same everywhere, and a null $length (from a variable: runtime fixture) is deprecated 8.1-8.4 writing nothing and writes the whole string on 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Using a printf-family function with a formatter that did not specify the precision previously incorrectly reset the precision instead of treating it as a precision of 0.",
+		"disposition": "rule",
+		"rule": "argument.printf_empty_precision",
+		"fixtures": [
+			"argument.printf_empty_precision~8.5-bic-E.fixture",
+			"argument.printf_empty_precision~8.5-bic-F.fixture",
+			"argument.printf_empty_precision~8.5-bic-G.fixture",
+			"argument.printf_empty_precision~8.5-bic-e.fixture",
+			"argument.printf_empty_precision~8.5-bic-f.fixture",
+			"argument.printf_empty_precision~8.5-bic-fprintf.fixture",
+			"argument.printf_empty_precision~8.5-bic-g.fixture",
+			"argument.printf_empty_precision~8.5-bic-printf.fixture"
+		],
+		"reason": "New rule Php85BicPrintfPrecision reads literal formats; the runtimes showed \"%.f\" etc. printing 6 decimals on 7.4-8.4 and 0 on 8.5 for e, E, f, F, g, G, while %.s and %.d did not change (and %.h/%.H, which do not exist on 7.4, are left out)."
+	},
+	{
+		"version": "8.5",
+		"section": "Backward Incompatible Changes",
+		"area": "SOAP",
+		"quote": "SoapClient::__doRequest() expects a new, optional $uriParserClass parameter as described in https://wiki.php.net/rfc/url_parsing_api#plugability.",
+		"disposition": "rule",
+		"rule": "class.soapclient_dorequest_signature",
+		"fixtures": [
+			"class.soapclient_dorequest_signature~8.5-bic-typed.fixture",
+			"class.soapclient_dorequest_signature~8.5-bic.fixture"
+		],
+		"reason": "The runtimes showed that a direct SoapClient subclass overriding __doRequest() with the five pre-8.5 parameters is a fatal \"must be compatible\" error on 8.5 (fine on 7.4-8.4); new rule in Php85BicInternalOverride reports exactly-five-parameter overrides."
+	}
+]

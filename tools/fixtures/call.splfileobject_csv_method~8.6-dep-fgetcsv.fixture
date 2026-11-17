@@ -1,0 +1,14 @@
+--RULE--
+call.splfileobject_csv_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_csv_fields() {
+	$file = new SplFileObject( 'php://memory', 'w+' );
+	$file->fwrite( "a,b\n" );
+	$file->rewind();
+	return $file->fgetcsv( ',', '"', '\\' );
+}
+
+echo implode( '|', shop_csv_fields() ), "\n";

@@ -1,0 +1,8 @@
+--RULE--
+runtime.filename_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// 7.4 warns and returns null, 8.0-8.5 return false silently.
+echo file_exists( "upgw\0x" ) ? "exists\n" : "missing\n";

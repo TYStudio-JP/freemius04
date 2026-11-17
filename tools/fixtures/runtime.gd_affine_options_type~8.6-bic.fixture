@@ -1,0 +1,8 @@
+--RULE--
+runtime.gd_affine_options_type
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// A non-numeric string where array|float is documented: used as 0 on 7.4-8.5.
+echo count( imageaffinematrixget( IMG_AFFINE_ROTATE, 'abc' ) ), "\n";

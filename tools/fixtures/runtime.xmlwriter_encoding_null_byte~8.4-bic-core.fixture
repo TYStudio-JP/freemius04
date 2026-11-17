@@ -1,0 +1,13 @@
+--RULE--
+runtime.xmlwriter_encoding_null_byte
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// An encoding with a null byte was a warning (and false) up to 8.3; from 8.4
+// it is a ValueError.
+$writer   = new XMLWriter();
+$encoding = "UTF\0-8";
+
+$writer->openMemory();
+var_dump( @$writer->startDocument( '1.0', $encoding ) );

@@ -1,0 +1,8 @@
+--RULE--
+runtime.pathinfo_invalid_flags
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// 32 is no PATHINFO_* value: "" on 7.4-8.5.
+var_dump( pathinfo( '/a/b.txt', 32 ) );

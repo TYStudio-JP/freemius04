@@ -1,0 +1,8 @@
+--RULE--
+argument.invalid_mode_value
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// $case 2 is neither CASE_LOWER (0) nor CASE_UPPER (1).
+print_r( array_change_key_case( array( 'a' => 1 ), 2 ) );

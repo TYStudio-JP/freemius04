@@ -1,0 +1,9 @@
+--RULE--
+argument.unpack_endianness_modifier
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+// 7.4-8.5 read "<value" as the element name. The 8.6 notes: "Formats such as
+// "s<value" now produce the key "value" instead of "<value"".
+print_r( unpack( 's<value', "\x01\x00" ) );

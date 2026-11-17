@@ -1,0 +1,11 @@
+--RULE--
+signature.null_default_before_required
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+function label( $prefix = null, $name ) {
+	return ( null === $prefix ? '' : $prefix . ': ' ) . $name;
+}
+
+echo label( null, 'a' ), "\n", label( 'b', 'c' ), "\n";

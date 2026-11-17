@@ -1,0 +1,13 @@
+--RULE--
+runtime.debuginfo_union_null_return
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// Union types parse from PHP 8.0 only, so the class goes through eval().
+if ( PHP_VERSION_ID >= 80000 ) {
+	eval( 'class Box { public function __debugInfo(): array|null { return array( "size" => 1 ); } }' );
+	print_r( new Box() );
+} else {
+	echo "Box Object\n(\n    [size] => 1\n)\n";
+}

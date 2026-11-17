@@ -1,0 +1,11 @@
+--RULE--
+constant.php_debug_zts_type
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+if ( false === PHP_ZTS ) {
+	echo "single-threaded build\n";
+} else {
+	echo "thread-safe build, or an older PHP\n";
+}

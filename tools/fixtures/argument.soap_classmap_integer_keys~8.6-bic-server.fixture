@@ -1,0 +1,14 @@
+--RULE--
+argument.soap_classmap_integer_keys
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+$server = new SoapServer(
+	null,
+	array(
+		'uri'      => 'urn:upgw',
+		'classmap' => array( 'Item' => 'stdClass', 7 => 'ArrayObject' ),
+	)
+);
+echo "created\n";

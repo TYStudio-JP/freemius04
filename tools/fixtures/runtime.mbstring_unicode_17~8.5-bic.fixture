@@ -1,0 +1,9 @@
+--RULE--
+runtime.mbstring_unicode_17
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// U+A7CF, a lower-case letter new in Unicode 17. Earlier tables do not know
+// it and leave it unchanged; 8.5 maps it to U+A7CE.
+var_dump( bin2hex( mb_strtoupper( "\u{A7CF}", 'UTF-8' ) ) );

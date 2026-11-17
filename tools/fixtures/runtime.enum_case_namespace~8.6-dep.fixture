@@ -1,0 +1,16 @@
+--RULE--
+runtime.enum_case_namespace
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// syntax.class_constant_namespace also reports an enum case named namespace
+// (the scanner sees the case directly; see Php86DepTest). Enums parse from
+// PHP 8.1 only, so the declaration goes through eval() here; 8.1 to 8.5
+// accept the case silently.
+if ( PHP_VERSION_ID >= 80100 ) {
+	eval( 'enum Route_Part: string { case Namespace = "shop/v1"; }' );
+	echo constant( 'Route_Part::Namespace' )->value, "\n";
+} else {
+	echo "shop/v1\n";
+}

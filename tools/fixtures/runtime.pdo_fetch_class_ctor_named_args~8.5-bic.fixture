@@ -1,0 +1,23 @@
+--RULE--
+runtime.pdo_fetch_class_ctor_named_args
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// String keys of the constructor arguments were ignored before 8.5 (taken in
+// order); from 8.5 they are named arguments.
+class Upgw_Row {
+	public $a;
+	public $x;
+	public $y;
+
+	public function __construct( $x = 'default x', $y = 'default y' ) {
+		$this->x = $x;
+		$this->y = $y;
+	}
+}
+
+$db        = new PDO( 'sqlite::memory:' );
+$statement = $db->query( 'SELECT 1 AS a' );
+$rows      = $statement->fetchAll( PDO::FETCH_CLASS, 'Upgw_Row', array( 'y' => 'Y', 'x' => 'X' ) );
+echo $rows[0]->x, ' ', $rows[0]->y, "\n";

@@ -1,0 +1,9 @@
+--RULE--
+call.define_third_argument
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+define( 'SHOP_DEBUG', true, false );
+
+var_dump( SHOP_DEBUG );

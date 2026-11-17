@@ -1,0 +1,11 @@
+--RULE--
+call.is_a_string_without_allow_string
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Base {}
+class Child extends Base {}
+
+$child = new Child();
+var_dump( is_a( get_class( $child ), 'Base' ) );

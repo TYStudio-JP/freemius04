@@ -1,0 +1,11 @@
+--RULE--
+class.typed_constant_redeclared
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+class Local_Date extends DateTime {
+	const ATOM = 'Y-m-d';
+}
+
+echo Local_Date::ATOM, "\n";

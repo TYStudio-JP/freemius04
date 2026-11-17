@@ -1,0 +1,13 @@
+--RULE--
+call.arrayiterator_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_sorted() {
+	$items = new ArrayIterator( array( 'b' => 2, 'a' => 1, 'c' => 3 ) );
+	$items->asort();
+	return implode( ',', iterator_to_array( $items ) );
+}
+
+echo shop_sorted(), "\n";

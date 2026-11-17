@@ -1,0 +1,18 @@
+--RULE--
+runtime.soap_classmap_list
+--CLAIM--
+{ "breaks_in": "8.2" }
+--CODE--
+<?php
+// A classmap with integer keys only. The 8.6 notes list it as new, but 8.2
+// and later already throw SoapFault "'classmap' option must be an associative
+// array", which is why argument.soap_classmap_integer_keys leaves it out.
+$client = new SoapClient(
+	null,
+	array(
+		'location' => 'http://localhost/',
+		'uri'      => 'urn:upgw',
+		'classmap' => array( 5 => 'stdClass' ),
+	)
+);
+echo "created\n";

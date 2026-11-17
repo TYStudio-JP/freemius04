@@ -1,0 +1,890 @@
+[
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "By-reference foreach loops may now visit previously skipped elements after array compaction.",
+		"disposition": "runtime-only",
+		"rule": "runtime.foreach_reference_compaction",
+		"fixtures": [
+			"runtime.foreach_reference_compaction~8.6-bic.fixture"
+		],
+		"reason": "Depends on which elements are deleted and when the array is compacted at run time; the notes only say loops \"may\" visit other elements, so the fixture claims nothing and records the keys 7.4-8.5 visit (the same on all of them)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "??/empty() on a magic property no longer call __get() when __isset() has materialized the property by writing into the property table.",
+		"disposition": "runtime-only",
+		"rule": "runtime.magic_isset_materialized",
+		"fixtures": [
+			"runtime.magic_isset_materialized~8.6-bic-coalesce.fixture",
+			"runtime.magic_isset_materialized~8.6-bic-empty.fixture"
+		],
+		"reason": "Whether __isset() writes the property is decided inside the magic method at run time; the fixtures show ?? and empty() calling __get() after __isset() wrote the property on every runtime 7.4-8.5 (changed_in 8.6 is documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "COM",
+		"quote": "It is no longer possible to clone variant objects because the cloning behavior was ill-defined.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "COM is a Windows-only extension and is not loaded in any of the runtimes."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Curl",
+		"quote": "The callback registered with CURLOPT_READFUNCTION now throws a ValueError when returning an integer other than 0, CURL_READFUNC_ABORT or CURL_READFUNC_PAUSE.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on the integer a callback returns during a transfer; a probe with a file:// upload whose callback returns 5 did not finish on 8.1+ in php-wasm, so no deterministic fixture is possible, and the callback cannot be told apart from a correct one."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Properties previously documented as @readonly (e.g. DOMNode::$nodeType, DOMDocument::$xmlEncoding, DOMEntity::$actualEncoding, DOMEntity::$encoding, DOMEntity::$version) are now declared with asymmetric visibility (public private(set)).",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [
+			"runtime.dom_readonly_property_write~8.6-bic.fixture"
+		],
+		"reason": "Writing these properties already throws Error on every runtime 7.4-8.5 (the fixture shows class Error everywhere; the message changed from \"Cannot write property\" to \"Cannot write read-only property\" in 8.1 and \"Cannot modify readonly property\" in 8.4); 8.6 changes only the message, so code that runs today is not affected."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Array access on Dom\\DtdNamedNodeMap objects now returns null for negative integer indexes instead of returning the first node.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Dom\\DtdNamedNodeMap exists only from 8.4 and the index is a run-time value; a fixture cannot show anything on 7.4-8.3, and a negative literal index on a DTD map is not something plugin code can be told to contain."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Array access on Dom\\DtdNamedNodeMap objects now raises a ValueError when the integer index is greater than INT_MAX instead of overflowing to a smaller index.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on an index value greater than INT_MAX at run time on a class that exists only from 8.4; nothing in the source distinguishes it."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "FTP",
+		"quote": "ftp_nb_fget(), ftp_nb_fput(), ftp_nb_get() and ftp_nb_put() now throw an Error when the connection is already transferring, instead of emitting a warning and returning false.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ftp extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GD",
+		"quote": "imagesetstyle(), imagefilter() and imagecrop() filter the types / values of their array arguments and raise a TypeError / ValueError accordingly.",
+		"disposition": "runtime-only",
+		"rule": "runtime.gd_array_argument_types",
+		"fixtures": [
+			"runtime.gd_array_argument_types~8.6-bic-imagesetstyle.fixture"
+		],
+		"reason": "The element types of the array are run-time values; the fixture shows imagesetstyle() accepting a non-numeric string element silently on 7.4-8.5 (breaks_in 8.6 documented only; the notes do not list which values imagefilter() and imagecrop() reject)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GD",
+		"quote": "imageaffinematrixget() now enforces the documented array|float type for the $options parameter, including the corresponding weak and strict typing behavior.",
+		"disposition": "runtime-only",
+		"rule": "runtime.gd_affine_options_type",
+		"fixtures": [
+			"runtime.gd_affine_options_type~8.6-bic.fixture"
+		],
+		"reason": "The $options value is a run-time value; the fixture shows a non-numeric string accepted silently on 7.4-8.5 (breaks_in 8.6 documented only, as a TypeError under weak typing)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "gmp_fact() now throws a ValueError if $num does not fit into an unsigned long.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The gmp extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "gmp_pow(), gmp_binomial(), gmp_root() and gmp_rootrem() now throw a ValueError if their second argument does not fit into an unsigned long.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The gmp extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "The shift (<<, >>) and exponentiation (**) operators on GMP objects now throw a ValueError when GMP right operands are outside the unsigned long range, instead of silently truncating them.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The gmp extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "GMP integer string parsing now throws a ValueError for strings containing NUL bytes, instead of silently truncating them.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The gmp extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "gmp_powm() modulo-by-zero now raises a DivisionByZeroError whose message includes the function name and argument index ($modulus).",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The gmp extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "Passing a non-stringable object as a time zone to Intl APIs that accept time zone objects or strings now raises a TypeError instead of an Error.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "IntlIterator::current() now returns null when called before the iterator is positioned, or after the iterator becomes invalid, instead of exposing an undefined value.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "IntlBreakIterator::getLocale() now raises a ValueError when the type is neither Locale::ACTUAL_LOCALE nor Locale::VALID_LOCALE instead of returning false.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "MessageFormatter::parse() and parseMessage() now return PHP_INT_MIN as int, rather than float, on 64-bit platforms when parsing integer values.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "The $type parameter of IntlBreakIterator::getPartsIterator() has been changed from string to int to match the underlying implementation.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "UConverter::transcode() now rejects from_subst and to_subst option values longer than 127 bytes instead of silently truncating the length before passing it to ICU.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "ResourceBundle::get() and resourcebundle_get() now report fallback-disabled resource lookups with \"without fallback to <locale>\" instead of the malformed \"without fallback from to <locale>\".",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "IntlDateFormatter::parse()/datefmt_parse() and IntlDateFormatter::localtime()/datefmt_localtime() now raise a TypeError when the offset argument is not of type int instead of silently converting the value.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "Collator::sort(), collator_sort(), Collator::asort(), and collator_asort() now report UTF-8/UTF-16 conversion failures during comparison through the intl error mechanism and return false.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "MBstring",
+		"quote": "Unicode data tables have been updated to Unicode 18.0",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Changes character data used on run-time strings; which characters a plugin processes cannot be seen in the source, and no runtime has Unicode 18 tables to compare with."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "PCNTL",
+		"quote": "pcntl_alarm() now raises a ValueError if the seconds argument is lower than zero or greater than the platform's UINT_MAX.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "PCNTL",
+		"quote": "pcntl_exec() now raises a ValueError if the $args argument is not a list array.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pcntl extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "PCRE",
+		"quote": "preg_grep() now returns false instead of a partial array when a PCRE execution error occurs (e.g. malformed UTF-8 input with the /u modifier).",
+		"disposition": "runtime-only",
+		"rule": "runtime.preg_grep_error_result",
+		"fixtures": [
+			"runtime.preg_grep_error_result~8.6-bic.fixture"
+		],
+		"reason": "Depends on the subject strings at run time; the fixture shows preg_grep() returning the partial array for malformed UTF-8 with /u on 7.4-8.5 (changed_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "PGSQL",
+		"quote": "pg_fetch_object() now reports the ValueError for a non-empty $constructor_args on a class without a constructor on the $constructor_args argument instead of $class.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Phar",
+		"quote": "Phar::mungServer() now raises a ValueError when an invalid argument value is passed instead of being silently ignored.",
+		"disposition": "runtime-only",
+		"rule": "runtime.phar_mung_server_invalid",
+		"fixtures": [
+			"runtime.phar_mung_server_invalid~8.6-bic.fixture"
+		],
+		"reason": "The fixture shows an unknown name ignored silently on 7.4-8.5 (breaks_in 8.6 documented only); Phar::mungServer() is for phar stubs, not plugin or theme code, so no rule was written."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Phar",
+		"quote": "Phar::addEmptyDir() now rejects \"/.phar\" paths in addition to \".phar\" paths, and raises the same BadMethodCallException for attempts to create the reserved magic \".phar\" directory through that form.",
+		"disposition": "runtime-only",
+		"rule": "runtime.phar_add_empty_dir_magic",
+		"fixtures": [
+			"runtime.phar_add_empty_dir_magic~8.6-bic.fixture"
+		],
+		"reason": "The runtime contradicts the notes: PharData::addEmptyDir(\"/.phar\") already throws BadMethodCallException on 8.4 and 8.5 (it works on 7.4-8.3), so the fixture claims breaks_in 8.4; the path is a run-time value in practice and building a Phar is not plugin code."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Phar",
+		"quote": "Phar::addEmptyDir() now treats non-magic names that merely share the \".phar\" prefix as ordinary directories.",
+		"disposition": "runtime-only",
+		"rule": "runtime.phar_add_empty_dir_prefix",
+		"fixtures": [
+			"runtime.phar_add_empty_dir_prefix~8.6-bic.fixture"
+		],
+		"reason": "A relaxation that the runtime places earlier than the notes: \".pharx\" is rejected on 7.4-8.3 and already created on 8.4 and 8.5 (fixture changed_in 8.4); code that runs today is not harmed."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Phar",
+		"quote": "Files are only automatically interpreted as Phar archives when included if \".phar\" occurs as an extension in the filename component of their paths.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [
+			"runtime.phar_include_directory_name~8.6-bic.fixture"
+		],
+		"reason": "Whether an included path has \".phar\" in a directory name is a run-time value; the fixture shows a plain PHP file inside a \"*.phar\" directory included as a plain file on every runtime 7.4-8.5, so only real archives under such names are affected, which the source does not show."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "Setting session.cookie_path, session.cookie_domain, or session.cache_limiter to a value containing NUL bytes now emits a warning and leaves the setting unchanged.",
+		"disposition": "runtime-only",
+		"rule": "runtime.session_ini_nul",
+		"fixtures": [
+			"runtime.session_ini_nul~8.6-bic.fixture"
+		],
+		"reason": "The value is a run-time string; the fixture shows ini_set() storing a session.cookie_path with a NUL byte on 7.4-8.5 (changed_in 8.6: warning and unchanged setting, documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "A ValueError is thrown if $name is a string containing NUL bytes in session_module_name().",
+		"disposition": "runtime-only",
+		"rule": "runtime.session_module_name_nul",
+		"fixtures": [
+			"runtime.session_module_name_nul~8.6-bic.fixture"
+		],
+		"reason": "The name is a run-time value; the fixture shows session_module_name() accepting \"files\\0x\" without a diagnostic on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "session_encode() now returns an empty string instead of false for empty sessions.",
+		"disposition": "runtime-only",
+		"rule": "runtime.session_encode_empty",
+		"fixtures": [
+			"runtime.session_encode_empty~8.6-bic.fixture"
+		],
+		"reason": "Whether the session is empty is a run-time state; the fixture shows session_encode() returning false for an empty session on 7.4-8.5 (changed_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "When session.lazy_write is enabled and a session handler implements SessionUpdateTimestampHandlerInterface, sessions that were read as empty and remain empty at write time will now trigger updateTimestamp() instead of write().",
+		"disposition": "runtime-only",
+		"rule": "runtime.session_lazy_write_update_timestamp",
+		"fixtures": [
+			"runtime.session_lazy_write_update_timestamp~8.6-bic.fixture"
+		],
+		"reason": "Depends on session contents at run time; the fixture shows write() being called for a session read and written empty under lazy_write on 7.4-8.5 (changed_in 8.6: updateTimestamp(), documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "The defaults of three session INI settings have changed to provide secure behavior out of the box:",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Changed INI defaults (session.use_strict_mode, session.cookie_httponly, session.cookie_samesite), not source code."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Session",
+		"quote": "SessionHandler::validateId() has been added and delegates to the configured save handler.",
+		"disposition": "rule",
+		"rule": "signature.session_validate_id_return_type",
+		"fixtures": [
+			"signature.session_validate_id_return_type~8.6-bic-namespaced.fixture",
+			"signature.session_validate_id_return_type~8.6-bic.fixture"
+		],
+		"reason": "New rule Php86BicSessionValidateId reports a validateId() without return type in a class that extends SessionHandler directly (not one that also implements SessionUpdateTimestampHandlerInterface, deprecated since 8.1); the fixtures declare such classes without diagnostics on 7.4-8.5, deprecated_in 8.6 documented only; the open()/parent::open() warning in the same bullet is run-time and not reported."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Shmop",
+		"quote": "shmop_open() now raises a ValueError when the $key argument is outside the platform's key_t range instead of passing a truncated key to the operating system.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The shmop extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SimpleXML",
+		"quote": "SimpleXMLElement::__construct() now raises a ValueError when the $data argument contains NUL bytes, matching simplexml_load_file().",
+		"disposition": "runtime-only",
+		"rule": "runtime.simplexml_nul_path",
+		"fixtures": [
+			"runtime.simplexml_nul_path~8.6-bic.fixture"
+		],
+		"reason": "The data is a run-time string; the fixture shows new SimpleXMLElement($path . \"\\0junk\", 0, true) loading the truncated path on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SOAP",
+		"quote": "The \"classmap\" option of SoapClient and SoapServer now rejects arrays containing integer keys.",
+		"disposition": "rule",
+		"rule": "argument.soap_classmap_integer_keys",
+		"fixtures": [
+			"argument.soap_classmap_integer_keys~8.6-bic-mixed.fixture",
+			"argument.soap_classmap_integer_keys~8.6-bic-server.fixture",
+			"argument.soap_classmap_integer_keys~8.6-bic-string.fixture",
+			"runtime.soap_classmap_list~8.6-bic.fixture"
+		],
+		"reason": "New rule Php86BicSoapClassmap reports literal classmaps with string and integer keys (SoapClient, SoapServer) and a non-array literal classmap (SoapClient); the runtimes accepted those on 7.4-8.5 but already rejected integer-only classmaps from 8.2, which are therefore not reported as an 8.6 change."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SOAP",
+		"quote": "WSDL/XML Schema parsing now rejects out-of-range integer values for occurrence constraints and integer restriction facets.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on the content of WSDL documents read at run time, not on the PHP source."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SOAP",
+		"quote": "SOAP encoding errors now report the affected type or failing operation in the error message instead of the generic \"Encoding: Violation of encoding rules\" message.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Only the text of SOAP encoding error messages changes; code that compares the message cannot be told apart from code that does not."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Sockets",
+		"quote": "socket_set_option() with SO_ATTACH_REUSEPORT_CBPF now requires an int $value and a $level of SOL_SOCKET.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The sockets extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Sockets",
+		"quote": "socket_set_option() with SO_ATTACH_REUSEPORT_CBPF and a $value of 0 now detaches the reuseport filter through SO_DETACH_REUSEPORT_BPF.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The sockets extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Sodium",
+		"quote": "The password-hashing functions sodium_crypto_pwhash(), sodium_crypto_pwhash_str(), sodium_crypto_pwhash_scryptsalsa208sha256() and sodium_crypto_pwhash_scryptsalsa208sha256_str() now throw ValueError instead of SodiumException when an argument is out of range, such as an opslimit or memlimit below the documented minimum.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The sodium extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplObjectStorage::getHash() implementations may no longer mutate any SplObjectStorage instance.",
+		"disposition": "runtime-only",
+		"rule": "runtime.spl_object_storage_gethash_mutation",
+		"fixtures": [
+			"runtime.spl_object_storage_gethash_mutation~8.6-bic.fixture"
+		],
+		"reason": "What getHash() does is decided when it runs; the fixture shows a getHash() that adds to another SplObjectStorage working on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::next() now advances the stream when no prior current() call has cached a line.",
+		"disposition": "runtime-only",
+		"rule": "runtime.splfileobject_next_without_current",
+		"fixtures": [
+			"runtime.splfileobject_next_without_current~8.6-bic.fixture"
+		],
+		"reason": "Depends on the order of calls on one object at run time; the fixture shows current() after next() without a prior current() returning the first line on 7.4-8.5 (changed_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::fgets() no longer caches the returned line for subsequent current() calls.",
+		"disposition": "runtime-only",
+		"rule": "runtime.splfileobject_fgets_current",
+		"fixtures": [
+			"runtime.splfileobject_fgets_current~8.6-bic.fixture"
+		],
+		"reason": "Depends on the order of calls on one object at run time; the fixture shows current() returning the line fgets() just returned on 7.4-8.5 (changed_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::next() past EOF no longer increments key() without bound.",
+		"disposition": "runtime-only",
+		"rule": "runtime.splfileobject_key_past_eof",
+		"fixtures": [
+			"runtime.splfileobject_key_past_eof~8.6-bic.fixture"
+		],
+		"reason": "Depends on how often next() is called past the end at run time; the fixture shows key() reaching 6 for a two-line file on 7.4-8.5 (changed_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "DirectoryIterator::key() now returns int|string, and DirectoryIterator::current() returns string|SplFileInfo|static.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A narrower declared return type; the runtimes report the tentative return type \"mixed\" for both methods on 8.1-8.5, and the notes do not say what happens to subclasses that override them, so nothing can be claimed for source code."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "array_intersect() with at least two arrays now converts values to strings while scanning its inputs instead of during sort comparisons.",
+		"disposition": "runtime-only",
+		"rule": "runtime.array_intersect_conversion",
+		"fixtures": [
+			"runtime.array_intersect_conversion~8.6-bic.fixture"
+		],
+		"reason": "Depends on the values and their __toString() at run time; the notes say the conversions \"can change\" without stating a result, so the fixture claims nothing and records 2 kept values and 16 __toString() calls on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Form feed (\\f) is now added to the default trimmed characters of trim(), rtrim() and ltrim().",
+		"disposition": "runtime-only",
+		"rule": "runtime.trim_form_feed",
+		"fixtures": [
+			"runtime.trim_form_feed~8.6-bic.fixture"
+		],
+		"reason": "Whether a string has form feeds at its ends is a run-time value and one-argument trim() calls are everywhere; the fixture shows \"\\f\" kept on 7.4-8.5 (changed_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "array_filter() now raises a ValueError when an invalid $mode argument value is passed.",
+		"disposition": "rule",
+		"rule": "argument.invalid_mode_value",
+		"fixtures": [
+			"argument.invalid_mode_value~8.6-bic-array_filter.fixture"
+		],
+		"reason": "New rule Php86BicInvalidModes reports a literal $mode outside 0, 1, 2; the fixture shows mode 3 accepted silently on 7.4-8.5 (breaks_in 8.6 documented only); modes from variables are not reported."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "array_change_key_case() now raises a ValueError when an invalid $case argument value is passed.",
+		"disposition": "rule",
+		"rule": "argument.invalid_mode_value",
+		"fixtures": [
+			"argument.invalid_mode_value~8.6-bic-array_change_key_case.fixture"
+		],
+		"reason": "Php86BicInvalidModes reports a literal $case other than CASE_LOWER/CASE_UPPER; the fixture shows 2 accepted silently on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "getenv() and putenv() now raise a ValueError when the first argument contains NUL bytes.",
+		"disposition": "runtime-only",
+		"rule": "runtime.env_nul",
+		"fixtures": [
+			"runtime.env_nul~8.6-bic-getenv.fixture",
+			"runtime.env_nul~8.6-bic-putenv.fixture"
+		],
+		"reason": "The name is a run-time string; the fixtures show getenv() and putenv() accepting NUL bytes silently on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "dl() now raises a ValueError when the $extension_filename argument contains NUL bytes.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dl_nul",
+		"fixtures": [
+			"runtime.dl_nul~8.6-bic.fixture"
+		],
+		"reason": "The file name is a run-time string, and dl() does run in the CLI SAPI that WP-CLI uses, so it is not out of scope; the fixture shows dl() cutting the name at the NUL byte (a warning, then false) on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "openlog() now raises a ValueError when the $prefix argument contains NUL bytes.",
+		"disposition": "runtime-only",
+		"rule": "runtime.openlog_nul",
+		"fixtures": [
+			"runtime.openlog_nul~8.6-bic.fixture"
+		],
+		"reason": "The prefix is a run-time string; the fixture shows openlog() accepting a NUL byte on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "parse_str() now raises a ValueError when the $string argument contains NUL bytes.",
+		"disposition": "runtime-only",
+		"rule": "runtime.parse_str_nul",
+		"fixtures": [
+			"runtime.parse_str_nul~8.6-bic.fixture"
+		],
+		"reason": "The query string is usually request data; the fixture shows parse_str() stopping silently at the NUL byte on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "setlocale() now raises a ValueError when a locale name contains NUL bytes, instead of silently truncating it.",
+		"disposition": "rule",
+		"rule": "argument.setlocale_array_position",
+		"fixtures": [
+			"argument.setlocale_array_position~8.6-bic-extra.fixture",
+			"argument.setlocale_array_position~8.6-bic-later.fixture",
+			"runtime.setlocale_nul~8.6-bic.fixture"
+		],
+		"reason": "New rule Php86BicSetlocaleArrays reports array literals after $locales and extra arguments after an array $locales (accepted silently on 7.4-8.5 per the fixtures; breaks_in 8.6 documented only); the NUL-byte part depends on run-time strings and has the runtime fixture only."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "linkinfo() now raises a ValueError when the $path argument is empty.",
+		"disposition": "runtime-only",
+		"rule": "runtime.linkinfo_empty",
+		"fixtures": [
+			"runtime.linkinfo_empty~8.6-bic.fixture"
+		],
+		"reason": "The path is a run-time value; the fixture shows linkinfo(\"\") warning and returning -1 on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "pathinfo() now raises a ValueError when an invalid $flags argument value is passed.",
+		"disposition": "runtime-only",
+		"rule": "runtime.pathinfo_invalid_flags",
+		"fixtures": [
+			"runtime.pathinfo_invalid_flags~8.6-bic.fixture"
+		],
+		"reason": "The notes do not say whether combined PATHINFO_* flags count as invalid, so no rule; the fixture shows flags 32 returning \"\" silently on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "scandir() now raises a ValueError when an invalid $sorting_order argument value is passed.",
+		"disposition": "rule",
+		"rule": "argument.invalid_mode_value",
+		"fixtures": [
+			"argument.invalid_mode_value~8.6-bic-scandir.fixture"
+		],
+		"reason": "Php86BicInvalidModes reports a literal $sorting_order outside 0, 1, 2; the fixture shows 3 accepted silently on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "number_format() now raises a ValueError when $decimals is outside the integer range instead of silently clamping very large positive values.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on a run-time $decimals beyond the C int range; a probe with 2147483648 decimals returned \"2\" on 7.4 and 8.0 but exhausted memory on 8.1+, so no deterministic fixture is possible."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "sleep() now raises a ValueError when $seconds is greater than the platform limit (UINT_MAX seconds, or UINT_MAX / 1000 seconds on Windows) instead of allowing the value to overflow.",
+		"disposition": "runtime-only",
+		"rule": "runtime.sleep_overflow",
+		"fixtures": [
+			"runtime.sleep_overflow~8.6-bic.fixture"
+		],
+		"reason": "The duration is a run-time value; the fixture shows sleep(4294967296) overflowing to 0 and returning int(0) at once on 7.4-8.5 (breaks_in 8.6 documented only), so no fixture actually sleeps."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "usleep() now raises a ValueError when $microseconds is greater than UINT_MAX instead of allowing the value to overflow.",
+		"disposition": "runtime-only",
+		"rule": "runtime.usleep_overflow",
+		"fixtures": [
+			"runtime.usleep_overflow~8.6-bic.fixture"
+		],
+		"reason": "The duration is a run-time value; the fixture shows usleep(4294967297) returning silently on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "proc_open() now raises a ValueError when the $cwd argument contains NUL bytes.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The $cwd is a run-time value, and fixtures may not start processes, so it cannot be demonstrated here."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "base_convert(), bindec(), hexdec() and octdec() now raise a notice when they cannot precisely convert the given number.",
+		"disposition": "runtime-only",
+		"rule": "runtime.inexact_base_conversion",
+		"fixtures": [
+			"runtime.inexact_base_conversion~8.6-bic.fixture"
+		],
+		"reason": "Depends on the input number at run time; 8.6 adds only an E_NOTICE, which changes neither the result nor whether code runs, so the fixture claims nothing and shows a float on 7.4-8.5."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The following functions now raise a ValueError when the $filename argument contains NUL bytes:",
+		"disposition": "runtime-only",
+		"rule": "runtime.filename_nul",
+		"fixtures": [
+			"runtime.filename_nul~8.6-bic-file_exists.fixture",
+			"runtime.filename_nul~8.6-bic-filesize.fixture"
+		],
+		"reason": "File names are run-time values; the fixtures show file_exists() and filesize() returning without an exception for a name with a NUL byte on 7.4-8.5 (7.4 warns, 8.0+ return false; breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "unpack() now reads a \"<\" or \">\" immediately following a format code as an endianness modifier rather than as the first character of the element name.",
+		"disposition": "rule",
+		"rule": "argument.unpack_endianness_modifier",
+		"fixtures": [
+			"argument.unpack_endianness_modifier~8.6-bic-big_named_after_slash.fixture",
+			"argument.unpack_endianness_modifier~8.6-bic-c.fixture",
+			"argument.unpack_endianness_modifier~8.6-bic-little.fixture"
+		],
+		"reason": "New rule Php86BicUnpackEndianness reads literal unpack() formats; the fixtures show the keys \"<value\", \">size\" and \">name\" on 7.4-8.5 (changed_in 8.6, and breaks_in 8.6 for \"C>\", documented only); the notes do not list which other codes reject a modifier."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Sysvshm",
+		"quote": "shm_attach() now raises a ValueError when the $key argument is outside the platform's key_t range instead of passing a truncated key to the operating system.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The sysvshm extension is not loaded in any of the runtimes (7.4-8.5), so no claim can be verified."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "URI",
+		"quote": "__construct(), parse(), and with*() of Uri\\WhatWg\\Url, and Uri\\WhatWg\\UrlBuilder::build() now report validation errors in the order in which they are detected.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Only the order of reported validation errors of the uri extension (8.5+) changes, decided by the URL at run time; the extension does not exist before 8.5, so no fixture can run on 7.4-8.4."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "URI",
+		"quote": "Uri\\WhatWg\\Url::__construct() now sets $softErrors to an empty array when URL processing throws an exception, instead of preserving its value.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on a URL failing at run time in the uri extension (8.5+); the source does not show it and no fixture can run on 7.4-8.4."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Zip",
+		"quote": "ZipArchive::extractTo now raises a TypeError for the files argument if one or more of the entries is not a string.",
+		"disposition": "runtime-only",
+		"rule": "runtime.ziparchive_extract_to_non_string",
+		"fixtures": [
+			"runtime.ziparchive_extract_to_non_string~8.6-bic.fixture"
+		],
+		"reason": "The entry list is usually built at run time; the fixture shows an int entry accepted silently on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Zip",
+		"quote": "ZipArchive::addGlob() and ZipArchive::addPattern() now raise a TypeError when the \"remove_all_path\" option is not of type bool, or when the \"comp_method\", \"comp_flags\", or \"enc_method\" options are not of type int (numeric strings are coerced), instead of emitting a warning.",
+		"disposition": "rule",
+		"rule": "argument.zip_glob_option_type",
+		"fixtures": [
+			"argument.zip_glob_option_type~8.6-bic-comp_method.fixture",
+			"argument.zip_glob_option_type~8.6-bic-remove_all_path.fixture"
+		],
+		"reason": "New rule Php86BicZipGlobOptions reports literal option values of the wrong type; the fixtures show 7.4 silent and 8.0-8.5 warning \"must be of type bool, int given\" and going on (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Zip",
+		"quote": "Serializing or unserializing a ZipArchive now throws an Exception.",
+		"disposition": "runtime-only",
+		"rule": "runtime.ziparchive_serialize",
+		"fixtures": [
+			"runtime.ziparchive_serialize~8.6-bic.fixture"
+		],
+		"reason": "Whether a serialized value holds a ZipArchive is a run-time type; the fixture shows serialize(new ZipArchive) working on 7.4-8.5 (breaks_in 8.6 documented only)."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Zlib",
+		"quote": "deflate_init() now raises a TypeError when the value for option \"level\", \"memory\", \"window\", or \"strategy\" is not of type int.",
+		"disposition": "runtime-only",
+		"rule": "runtime.zlib_option_type",
+		"fixtures": [
+			"runtime.zlib_option_type~8.6-bic-deflate.fixture"
+		],
+		"reason": "Option values are usually run-time values; the fixture shows deflate_init() accepting level \"fast\" silently on 7.4-8.5 (breaks_in 8.6 documented only); literal non-int options are implausible in plugin code, so no rule."
+	},
+	{
+		"version": "8.6",
+		"section": "Backward Incompatible Changes",
+		"area": "Zlib",
+		"quote": "inflate_init() now raises a TypeError when the value for option \"window\" is not of type int.",
+		"disposition": "runtime-only",
+		"rule": "runtime.zlib_option_type",
+		"fixtures": [
+			"runtime.zlib_option_type~8.6-bic-inflate.fixture"
+		],
+		"reason": "The fixture shows inflate_init() accepting window \"15abc\" without a diagnostic on 7.4-8.5 (breaks_in 8.6 documented only)."
+	}
+]

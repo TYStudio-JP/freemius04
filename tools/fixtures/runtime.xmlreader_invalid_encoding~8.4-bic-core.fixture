@@ -1,0 +1,12 @@
+--RULE--
+runtime.xmlreader_invalid_encoding
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// An encoding libxml does not know was ignored up to 8.3; from 8.4 it is a
+// ValueError.
+$reader   = new XMLReader();
+$encoding = 'no-such-encoding';
+
+var_dump( $reader->XML( '<root/>', $encoding ) );

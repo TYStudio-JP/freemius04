@@ -1,0 +1,9 @@
+--RULE--
+syntax.underscore_constant_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+const _ = 'placeholder';
+
+echo _, "\n";

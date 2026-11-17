@@ -1,0 +1,9 @@
+--RULE--
+runtime.zlib_option_type
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// "fast" is not an int: read as level 0 on 7.4-8.5.
+$context = deflate_init( ZLIB_ENCODING_DEFLATE, array( 'level' => 'fast' ) );
+echo false === $context ? "failed\n" : "created\n";

@@ -1,0 +1,8 @@
+--RULE--
+runtime.debug_zval_dump_interned
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// "refcount(1)" before 8.1, "interned" from 8.1.
+debug_zval_dump( 'literal' );

@@ -1,0 +1,10 @@
+--RULE--
+runtime.object_instead_of_array_variable
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$options        = new stdClass();
+$options->level = 6;
+$context        = deflate_init( ZLIB_ENCODING_DEFLATE, $options );
+echo strlen( deflate_add( $context, 'hello', ZLIB_FINISH ) ) > 0 ? "packed\n" : "empty\n";

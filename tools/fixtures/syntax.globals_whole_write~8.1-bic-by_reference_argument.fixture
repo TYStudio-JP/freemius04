@@ -1,0 +1,10 @@
+--RULE--
+syntax.globals_whole_write
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+$plugin_last = 'value';
+// end() takes its array by reference: 8.1 throws an Error.
+end( $GLOBALS );
+echo is_string( key( $GLOBALS ) ) ? "string key\n" : "other key\n";

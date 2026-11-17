@@ -1,0 +1,10 @@
+--RULE--
+argument.printf_empty_precision
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+$out = fopen( 'php://memory', 'w+' );
+fprintf( $out, 'total: %.f', 99.95 );
+rewind( $out );
+var_dump( stream_get_contents( $out ) );

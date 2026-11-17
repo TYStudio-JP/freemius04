@@ -1,0 +1,10 @@
+--RULE--
+runtime.mysqli_default_report_mode
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// MYSQLI_REPORT_OFF (0) before 8.1; MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT
+// (3) from 8.1, so failed queries and connections throw mysqli_sql_exception.
+$driver = new mysqli_driver();
+var_dump( $driver->report_mode );

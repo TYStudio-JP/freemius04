@@ -1,0 +1,14 @@
+--RULE--
+runtime.reflection_invoke_static_with_object
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Shop_Item {
+	public static function label() {
+		return 'item';
+	}
+}
+
+$method = new ReflectionMethod( 'Shop_Item', 'label' );
+echo $method->invoke( new Shop_Item() ), "\n";

@@ -1,0 +1,11 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+interface Is {
+	public function label();
+}
+
+echo interface_exists( 'Is' ) ? "declared\n" : "missing\n";

@@ -1,0 +1,22 @@
+--RULE--
+runtime.foreach_reference_compaction
+--CLAIM--
+{}
+--CODE--
+<?php
+// Elements deleted ahead of a by-reference foreach, then the array grows.
+// The 8.6 notes say such loops "may now visit previously skipped elements";
+// they give no case, so this only records what 7.4-8.5 do.
+$list = array( 1, 2, 3, 4, 5, 6, 7, 8 );
+$seen = array();
+foreach ( $list as $key => &$value ) {
+	$seen[] = $key;
+	if ( 1 === $key ) {
+		unset( $list[2], $list[3] );
+		for ( $i = 0; $i < 20; $i++ ) {
+			$list[] = $i;
+		}
+	}
+}
+unset( $value );
+echo implode( ',', $seen ), "\n";

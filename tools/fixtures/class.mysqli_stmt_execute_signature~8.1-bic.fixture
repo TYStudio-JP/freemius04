@@ -1,0 +1,16 @@
+--RULE--
+class.mysqli_stmt_execute_signature
+--CLAIM--
+{ "breaks_in": "8.1" }
+--CODE--
+<?php
+// PHP 8.1 added the optional $params parameter to mysqli_stmt::execute().
+// An override without it is no longer compatible: a fatal error when the
+// class is declared.
+class Logged_Statement extends mysqli_stmt {
+	public function execute(): bool {
+		return parent::execute();
+	}
+}
+
+echo "declared\n";

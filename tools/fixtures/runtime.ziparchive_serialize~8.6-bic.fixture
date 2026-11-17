@@ -1,0 +1,8 @@
+--RULE--
+runtime.ziparchive_serialize
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+$data = serialize( new ZipArchive() );
+echo 0 === strpos( $data, 'O:10:"ZipArchive"' ) ? "serialized\n" : "other\n";

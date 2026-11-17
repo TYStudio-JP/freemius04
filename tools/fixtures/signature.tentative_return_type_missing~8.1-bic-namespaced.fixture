@@ -1,0 +1,22 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+namespace App\Data;
+
+use JsonSerializable;
+
+class Entry implements \Countable, JsonSerializable {
+	public function count() {
+		return 1;
+	}
+
+	public function jsonSerialize() {
+		return 'entry';
+	}
+}
+
+$entry = new Entry();
+echo count( $entry ), json_encode( $entry ), "\n";

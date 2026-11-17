@@ -1,0 +1,12 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+namespace Shop;
+
+use ArrayObject as Let;
+
+$list = new Let( array( 1, 2 ) );
+echo count( $list ), "\n";

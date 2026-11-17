@@ -1,0 +1,7 @@
+--RULE--
+call.invalid_literal_argument
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+echo implode( ',', str_getcsv( 'a||b', '||', '"', '\\' ) ), "\n";

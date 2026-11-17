@@ -1,0 +1,11 @@
+--RULE--
+runtime.dom_clone_collection
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+$document = new DOMDocument();
+$document->loadXML( '<list><item/><item/></list>' );
+$items = $document->getElementsByTagName( 'item' );
+$copy  = clone $items;
+echo "cloned\n";

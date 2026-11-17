@@ -1,0 +1,13 @@
+--RULE--
+runtime.html_default_flags_variable
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// Whether the output changes depends on the text: only a ' (or malformed
+// UTF-8) is treated differently.
+$names = array( 'Ann', "O'Brien" );
+
+foreach ( $names as $name ) {
+	echo htmlspecialchars( $name ), "\n";
+}

@@ -1,0 +1,12 @@
+--RULE--
+runtime.mb_numericentity_map
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// An array inside the $map was read as 0 up to 8.3; from 8.4 it is a
+// ValueError. Numeric strings and null are still accepted, a string that is
+// not numeric gives a warning, and a float with a fraction a deprecation.
+$map = array( 128, 1114111, 0, array() );
+
+echo mb_encode_numericentity( "\xc3\xa9", $map, 'UTF-8' ), "\n";

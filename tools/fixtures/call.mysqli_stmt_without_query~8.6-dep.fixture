@@ -1,0 +1,13 @@
+--RULE--
+call.mysqli_stmt_without_query
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// There is no database server here, so the statement is only compiled.
+// The deprecation of PHP 8.6 is raised when the constructor runs.
+function shop_statement( mysqli $db ) {
+	return new mysqli_stmt( $db );
+}
+
+echo function_exists( 'shop_statement' ) ? "compiled\n" : "missing\n";

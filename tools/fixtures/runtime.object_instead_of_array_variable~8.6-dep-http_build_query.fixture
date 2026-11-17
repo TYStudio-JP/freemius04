@@ -1,0 +1,9 @@
+--RULE--
+runtime.object_instead_of_array_variable
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$query       = new stdClass();
+$query->page = 2;
+echo http_build_query( $query ), "\n";

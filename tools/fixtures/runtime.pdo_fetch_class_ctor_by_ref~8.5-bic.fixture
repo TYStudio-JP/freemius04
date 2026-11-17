@@ -1,0 +1,22 @@
+--RULE--
+runtime.pdo_fetch_class_ctor_by_ref
+--CLAIM--
+{}
+--CODE--
+<?php
+// A by-value argument for a by-reference constructor parameter: same output
+// on every version, and from 8.5 the usual E_WARNING "must be passed by
+// reference, value given", which the claim format does not record.
+class Upgw_Ref_Row {
+	public $a;
+
+	public function __construct( &$out ) {
+		$out = 'set';
+	}
+}
+
+$db        = new PDO( 'sqlite::memory:' );
+$statement = $db->query( 'SELECT 1 AS a' );
+$value     = 'original';
+$rows      = $statement->fetchAll( PDO::FETCH_CLASS, 'Upgw_Ref_Row', array( $value ) );
+echo count( $rows ), ' ', $value, "\n";

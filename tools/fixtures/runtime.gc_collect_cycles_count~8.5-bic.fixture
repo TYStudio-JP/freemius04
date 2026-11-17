@@ -1,0 +1,18 @@
+--RULE--
+runtime.gc_collect_cycles_count
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// The count no longer includes strings and resources freed with the cycles.
+gc_collect_cycles();
+
+for ( $i = 0; $i < 10; $i++ ) {
+	$node        = new stdClass();
+	$node->self  = $node;
+	$node->list  = array( str_repeat( 'y', $i + 5 ), array( 'z' . $i ) );
+	$node->file  = fopen( 'php://memory', 'r' );
+	unset( $node );
+}
+
+echo gc_collect_cycles(), "\n";

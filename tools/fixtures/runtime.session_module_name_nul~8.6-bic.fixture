@@ -1,0 +1,7 @@
+--RULE--
+runtime.session_module_name_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+var_dump( session_module_name( "files\0x" ) );

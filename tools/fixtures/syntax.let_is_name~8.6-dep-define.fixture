@@ -1,0 +1,9 @@
+--RULE--
+syntax.let_is_name
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+define( 'is', 'value' );
+
+echo constant( 'is' ), "\n";

@@ -1,0 +1,15 @@
+--RULE--
+runtime.magic_isset_materialized
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+class Upgw86_Lazy {
+	public $p;
+	public function __construct() { unset( $this->p ); }
+	public function __isset( $name ) { $this->$name = 'written'; return true; }
+	public function __get( $name ) { return ''; }
+}
+// 7.4-8.5 ask __get() (""), so empty() is true; 8.6 sees "written".
+$lazy = new Upgw86_Lazy();
+var_dump( empty( $lazy->p ) );

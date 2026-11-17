@@ -1,0 +1,9 @@
+--RULE--
+runtime.phar_mung_server_invalid
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// An unknown variable name: ignored silently on 7.4-8.5.
+Phar::mungServer( array( 'NOT_A_SERVER_VAR' ) );
+echo "done\n";

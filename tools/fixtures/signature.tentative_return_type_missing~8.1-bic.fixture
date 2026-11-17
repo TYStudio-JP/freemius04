@@ -1,0 +1,33 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Bag implements Countable {
+	private $items = array( 'a', 'b' );
+
+	/**
+	 * Number of items.
+	 */
+	public function count() {
+		return count( $this->items );
+	}
+}
+
+echo count( new Bag() ), "\n";
+--FIXED--
+<?php
+class Bag implements Countable {
+	private $items = array( 'a', 'b' );
+
+	/**
+	 * Number of items.
+	 */
+	#[\ReturnTypeWillChange]
+	public function count() {
+		return count( $this->items );
+	}
+}
+
+echo count( new Bag() ), "\n";

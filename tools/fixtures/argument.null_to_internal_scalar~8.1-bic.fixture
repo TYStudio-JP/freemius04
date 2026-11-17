@@ -1,0 +1,10 @@
+--RULE--
+argument.null_to_internal_scalar
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+echo strlen( null ), "\n";
+--FIXED--
+<?php
+echo strlen( '' ), "\n";

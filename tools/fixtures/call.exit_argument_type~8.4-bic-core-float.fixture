@@ -1,0 +1,8 @@
+--RULE--
+call.exit_argument_type
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+echo "saved\n";
+die( 1.0 );

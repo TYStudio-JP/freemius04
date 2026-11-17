@@ -1,0 +1,8 @@
+--RULE--
+argument.unpack_endianness_modifier
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+// The second element: "S>size" is read as the key ">size" on 7.4-8.5.
+print_r( unpack( 'Ctype/S>size', "\x07\x00\x02" ) );

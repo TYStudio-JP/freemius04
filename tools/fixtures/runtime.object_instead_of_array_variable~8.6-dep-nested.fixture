@@ -1,0 +1,9 @@
+--RULE--
+runtime.object_instead_of_array_variable
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$filter       = new stdClass();
+$filter->size = 'large';
+echo urldecode( http_build_query( array( 'filter' => $filter ) ) ), "\n";

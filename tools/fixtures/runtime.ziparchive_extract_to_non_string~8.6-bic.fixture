@@ -1,0 +1,14 @@
+--RULE--
+runtime.ziparchive_extract_to_non_string
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+$path = sys_get_temp_dir() . '/upgw86-extract.zip';
+$zip  = new ZipArchive();
+$zip->open( $path, ZipArchive::CREATE | ZipArchive::OVERWRITE );
+$zip->addFromString( '1', 'one' );
+$zip->close();
+$zip->open( $path );
+// An int entry name: accepted on 7.4-8.5.
+var_dump( $zip->extractTo( sys_get_temp_dir() . '/upgw86-extract', array( 1 ) ) );

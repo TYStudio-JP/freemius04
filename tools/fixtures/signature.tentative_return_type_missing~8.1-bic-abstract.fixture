@@ -1,0 +1,11 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+abstract class Base_Collection implements Countable {
+	abstract public function count();
+}
+
+echo class_exists( 'Base_Collection' ) ? "declared\n" : "missing\n";

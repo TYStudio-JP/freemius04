@@ -1,0 +1,9 @@
+--RULE--
+runtime.php_filter_chain_limit
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// Seventeen filters in one php://filter URL, without filter.max_filter_count.
+$chain = implode( '|', array_fill( 0, 17, 'string.rot13' ) );
+echo file_get_contents( 'php://filter/read=' . $chain . '/resource=data://text/plain,hello' ), "\n";

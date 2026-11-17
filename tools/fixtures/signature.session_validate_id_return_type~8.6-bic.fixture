@@ -1,0 +1,14 @@
+--RULE--
+signature.session_validate_id_return_type
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// 8.6 adds SessionHandler::validateId() with a tentative bool return type.
+class Upgw86_Session_Handler extends SessionHandler {
+	public function validateId( $id ) {
+		return true;
+	}
+}
+
+echo "declared\n";

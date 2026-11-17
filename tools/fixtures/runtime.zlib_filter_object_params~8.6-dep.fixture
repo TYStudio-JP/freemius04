@@ -1,0 +1,14 @@
+--RULE--
+runtime.zlib_filter_object_params
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+$params        = new stdClass();
+$params->level = 6;
+$stream        = fopen( 'php://memory', 'w+' );
+$filter        = stream_filter_append( $stream, 'zlib.deflate', STREAM_FILTER_WRITE, $params );
+fwrite( $stream, 'hello' );
+stream_filter_remove( $filter );
+rewind( $stream );
+echo gzinflate( stream_get_contents( $stream ) ), "\n";

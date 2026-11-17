@@ -1,0 +1,12 @@
+--RULE--
+call.arrayiterator_method
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+function shop_packed() {
+	$items = new ArrayIterator( array( 'a' => 1 ) );
+	return $items->serialize();
+}
+
+echo strlen( shop_packed() ) > 0 ? "serialized\n" : "empty\n";

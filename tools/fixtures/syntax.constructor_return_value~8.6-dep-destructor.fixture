@@ -1,0 +1,16 @@
+--RULE--
+syntax.constructor_return_value
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Counter {
+	public function __destruct() {
+		echo "destroyed\n";
+		return true;
+	}
+}
+
+$counter = new Counter();
+unset( $counter );
+echo "done\n";

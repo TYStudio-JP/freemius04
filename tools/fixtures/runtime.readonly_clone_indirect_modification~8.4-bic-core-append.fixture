@@ -1,0 +1,23 @@
+--RULE--
+runtime.readonly_clone_indirect_modification
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// As the -reference fixture, with $this->tags[] = ... in __clone(): allowed
+// on 8.3, an Error ("Cannot indirectly modify readonly property") from 8.4.
+if ( PHP_VERSION_ID >= 80300 ) {
+	eval(
+		'final class Tagged {
+			public function __construct( public readonly array $tags ) {}
+
+			public function __clone() {
+				$this->tags[] = "copy";
+			}
+		}
+
+		$copy = clone new Tagged( array( "original" ) );'
+	);
+}
+
+echo "done\n";

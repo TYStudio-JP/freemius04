@@ -1,0 +1,8 @@
+--RULE--
+call.simplexml_xpath_non_node_set
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+$xml = simplexml_load_string( '<list><item/><item/></list>' );
+var_dump( $xml->xpath( 'count(//item)' ) );

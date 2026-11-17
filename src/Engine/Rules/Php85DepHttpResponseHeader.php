@@ -322,8 +322,12 @@ final class Php85DepHttpResponseHeader implements Rule {
 
 		$function = new \ReflectionFunction( $name );
 
+		// A user function: the runtimes raised the notice for those, by
+		// reference or not. Inside WordPress the PHP running the scan also knows
+		// the functions of other plugins; answering the same way as for an
+		// unknown function keeps the result independent of what is loaded.
 		if ( ! $function->isInternal() ) {
-			return null;
+			return true;
 		}
 
 		if ( null !== $arg->name ) {

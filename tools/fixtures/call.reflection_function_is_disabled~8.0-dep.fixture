@@ -1,0 +1,13 @@
+--RULE--
+call.reflection_function_is_disabled
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+function can_call( $name ) {
+	$function = new ReflectionFunction( $name );
+
+	return ! $function->isDisabled();
+}
+
+var_dump( can_call( 'strlen' ) );

@@ -1,0 +1,13 @@
+--RULE--
+runtime.phar_add_empty_dir_magic
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// The 8.6 notes say addEmptyDir() "now rejects "/.phar" paths". PharData
+// (phar.readonly does not apply to it) already throws for "/.phar" on 8.4 and 8.5.
+$path = sys_get_temp_dir() . '/upgw86-magic.tar';
+@unlink( $path );
+$archive = new PharData( $path );
+$archive->addEmptyDir( '/.phar' );
+echo "created\n";

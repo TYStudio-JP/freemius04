@@ -1,0 +1,12 @@
+--RULE--
+runtime.splfixedarray_json
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+$list    = new SplFixedArray( 2 );
+$list[0] = 'a';
+$list[1] = 'b';
+
+// {"0":"a","1":"b"} before 8.1, ["a","b"] from 8.1.
+echo json_encode( $list ), "\n";

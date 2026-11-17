@@ -1,0 +1,7 @@
+--RULE--
+runtime.openlog_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+var_dump( openlog( "upgw\0x", 0, LOG_USER ) );

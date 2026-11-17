@@ -1,0 +1,10 @@
+--RULE--
+runtime.destructuring_non_array
+--CLAIM--
+{}
+--CODE--
+<?php
+// list() on a string: same output, an E_WARNING from 8.5.
+$value       = 'text';
+list( $first ) = $value;
+var_dump( $first );

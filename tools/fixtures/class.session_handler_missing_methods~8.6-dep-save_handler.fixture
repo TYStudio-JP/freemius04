@@ -1,0 +1,43 @@
+--RULE--
+class.session_handler_missing_methods
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+class Shop_Session_Store implements SessionHandlerInterface {
+	#[\ReturnTypeWillChange]
+	public function open( $path, $name ) {
+		return true;
+	}
+
+	#[\ReturnTypeWillChange]
+	public function close() {
+		return true;
+	}
+
+	#[\ReturnTypeWillChange]
+	public function read( $id ) {
+		return '';
+	}
+
+	#[\ReturnTypeWillChange]
+	public function write( $id, $data ) {
+		return true;
+	}
+
+	#[\ReturnTypeWillChange]
+	public function destroy( $id ) {
+		return true;
+	}
+
+	#[\ReturnTypeWillChange]
+	public function gc( $max_lifetime ) {
+		return 0;
+	}
+
+	public function create_sid() {
+		return 'shop-session-id-0001';
+	}
+}
+
+var_dump( session_set_save_handler( new Shop_Session_Store(), true ) );

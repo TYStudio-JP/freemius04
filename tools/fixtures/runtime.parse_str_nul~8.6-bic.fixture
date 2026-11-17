@@ -1,0 +1,9 @@
+--RULE--
+runtime.parse_str_nul
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// 7.4-8.5 stop at the NUL byte: only "a" is set.
+parse_str( "a=1\0&b=2", $out );
+echo json_encode( $out ), "\n";

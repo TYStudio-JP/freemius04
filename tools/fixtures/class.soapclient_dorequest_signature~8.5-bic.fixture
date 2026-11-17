@@ -1,0 +1,16 @@
+--RULE--
+class.soapclient_dorequest_signature
+--CLAIM--
+{ "breaks_in": "8.5" }
+--CODE--
+<?php
+// #[\ReturnTypeWillChange] keeps the 8.1 tentative return type notice away,
+// so the fixture shows the 8.5 change alone.
+class Upgw_Soap_Client extends SoapClient {
+	#[\ReturnTypeWillChange]
+	public function __doRequest( $request, $location, $action, $version, $one_way = 0 ) {
+		return '';
+	}
+}
+
+echo "declared\n";

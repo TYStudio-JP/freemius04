@@ -1,0 +1,15 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Menu implements IteratorAggregate {
+	public function getIterator() {
+		return new ArrayIterator( array( 'home', 'about' ) );
+	}
+}
+
+foreach ( new Menu() as $item ) {
+	echo $item, "\n";
+}

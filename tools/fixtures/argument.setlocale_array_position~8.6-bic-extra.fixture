@@ -1,0 +1,10 @@
+--RULE--
+argument.setlocale_array_position
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// An array as $locales followed by more arguments: accepted on 7.4-8.5; the
+// 8.6 notes: "Passing any additional locale arguments when $locales is an
+// array now throws an ArgumentCountError."
+var_dump( setlocale( LC_ALL, array( 'C' ), 'POSIX' ) );

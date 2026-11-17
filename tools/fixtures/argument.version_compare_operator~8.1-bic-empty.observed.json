@@ -1,0 +1,35 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "argument.version_compare_operator",
+	"claim": {
+		"breaks_in": "8.1"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "ok",
+		"8.0": "ok",
+		"8.1": "fatal",
+		"8.2": "fatal",
+		"8.3": "fatal",
+		"8.4": "fatal",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"8.1": "ValueError: version_compare(): Argument #3 ($operator) must be a valid comparison operator",
+		"8.2": "ValueError: version_compare(): Argument #3 ($operator) must be a valid comparison operator",
+		"8.3": "ValueError: version_compare(): Argument #3 ($operator) must be a valid comparison operator",
+		"8.4": "ValueError: version_compare(): Argument #3 ($operator) must be a valid comparison operator",
+		"8.5": "ValueError: version_compare(): Argument #3 ($operator) must be a valid comparison operator"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

@@ -1,0 +1,8 @@
+--RULE--
+runtime.trim_form_feed
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+// "\f" is not in the default character list on 7.4-8.5.
+echo json_encode( array( trim( "\fx\f" ), rtrim( "x\f" ), ltrim( "\fx" ) ) ), "\n";

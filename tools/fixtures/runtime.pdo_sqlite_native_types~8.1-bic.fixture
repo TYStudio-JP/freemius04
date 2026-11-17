@@ -1,0 +1,11 @@
+--RULE--
+runtime.pdo_sqlite_native_types
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+$db  = new PDO( 'sqlite::memory:' );
+$row = $db->query( 'SELECT 1, 1.5, \'x\'' )->fetch( PDO::FETCH_NUM );
+
+// Strings before 8.1; int and float from 8.1.
+var_dump( $row );

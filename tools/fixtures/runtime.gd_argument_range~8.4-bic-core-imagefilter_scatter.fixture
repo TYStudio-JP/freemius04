@@ -1,0 +1,13 @@
+--RULE--
+runtime.gd_argument_range
+--CLAIM--
+{ "breaks_in": "8.4" }
+--CODE--
+<?php
+// IMG_FILTER_SCATTER with a $sub that does not fit a C int was accepted up to
+// 8.3; from 8.4 it is a ValueError.
+$image = imagecreatetruecolor( 2, 2 );
+
+imagefilter( $image, IMG_FILTER_SCATTER, PHP_INT_MAX, 0 );
+
+echo "done\n";

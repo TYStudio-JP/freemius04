@@ -1,0 +1,23 @@
+--RULE--
+runtime.reflection_set_value_foreign_object
+--CLAIM--
+{ "deprecated_in": "8.6" }
+--CODE--
+<?php
+// ReflectionProperty::setRawValue() exists from PHP 8.4.
+class Shop_Item {
+	public $price = 1;
+}
+class Shop_Other {
+	public $price = 2;
+}
+
+$property = new ReflectionProperty( 'Shop_Item', 'price' );
+$other    = new Shop_Other();
+
+if ( method_exists( $property, 'setRawValue' ) ) {
+	$property->setRawValue( $other, 5 );
+} else {
+	$other->price = 5;
+}
+echo $other->price, "\n";

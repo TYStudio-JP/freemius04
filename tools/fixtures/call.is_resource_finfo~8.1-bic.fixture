@@ -1,0 +1,36 @@
+--RULE--
+call.is_resource_finfo
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+class Mime_Detector {
+	public function detect( $data ) {
+		$finfo = finfo_open( FILEINFO_MIME_TYPE );
+
+		if ( is_resource( $finfo ) ) {
+			return finfo_buffer( $finfo, $data );
+		}
+
+		return 'unknown';
+	}
+}
+
+$detector = new Mime_Detector();
+echo $detector->detect( '<?xml version="1.0"?><a/>' ), "\n";
+--FIXED--
+<?php
+class Mime_Detector {
+	public function detect( $data ) {
+		$finfo = finfo_open( FILEINFO_MIME_TYPE );
+
+		if ( ( false !== $finfo ) ) {
+			return finfo_buffer( $finfo, $data );
+		}
+
+		return 'unknown';
+	}
+}
+
+$detector = new Mime_Detector();
+echo $detector->detect( '<?xml version="1.0"?><a/>' ), "\n";

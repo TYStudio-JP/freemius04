@@ -1,0 +1,11 @@
+--RULE--
+runtime.null_to_internal_strict_types
+--CLAIM--
+{ "breaks_in": "7.4" }
+--CODE--
+<?php
+declare( strict_types = 1 );
+
+// With strict types null was never accepted: a TypeError on every version,
+// so 8.1 changes nothing here.
+echo strlen( null ), "\n";

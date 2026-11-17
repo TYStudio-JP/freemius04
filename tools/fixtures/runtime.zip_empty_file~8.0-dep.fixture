@@ -1,0 +1,16 @@
+--RULE--
+runtime.zip_empty_file
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+$file = tempnam( sys_get_temp_dir(), 'zip' );
+file_put_contents( $file, '' );
+
+$zip = new ZipArchive();
+var_dump( $zip->open( $file ) );
+var_dump( $zip->numFiles );
+unset( $zip );
+if ( file_exists( $file ) ) {
+	unlink( $file );
+}

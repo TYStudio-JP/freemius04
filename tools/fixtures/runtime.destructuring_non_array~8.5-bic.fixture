@@ -1,0 +1,11 @@
+--RULE--
+runtime.destructuring_non_array
+--CLAIM--
+{}
+--CODE--
+<?php
+// Same output on every version; 8.5 adds E_WARNING "Cannot use int as array",
+// which the claim format does not record (see the observed messages).
+$value     = 42;
+[ $a, $b ] = $value;
+var_dump( $a, $b );

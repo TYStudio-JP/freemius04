@@ -1,0 +1,14 @@
+--RULE--
+runtime.splfileobject_key_past_eof
+--CLAIM--
+{ "changed_in": "8.6" }
+--CODE--
+<?php
+$file = new SplTempFileObject();
+$file->fwrite( "one\ntwo\n" );
+$file->rewind();
+for ( $i = 0; $i < 6; $i++ ) {
+	$file->next();
+}
+// 7.4-8.5 keep counting past the end.
+var_dump( $file->key() );

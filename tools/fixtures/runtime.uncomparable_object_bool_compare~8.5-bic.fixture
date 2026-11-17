@@ -1,0 +1,18 @@
+--RULE--
+runtime.uncomparable_object_bool_compare
+--CLAIM--
+{ "changed_in": "8.5" }
+--CODE--
+<?php
+// A CurlHandle is an uncomparable object from 8.0 on (7.4 returns a resource,
+// which is not part of this change, so the comparison is made only for an
+// object). Compared with a boolean held in a variable it was never equal
+// before 8.5; from 8.5 it is compared like (bool) $handle, which is true.
+$handle   = curl_init();
+$expected = true;
+
+if ( is_object( $handle ) && $handle == $expected ) {
+	echo "equal\n";
+}
+
+echo "done\n";

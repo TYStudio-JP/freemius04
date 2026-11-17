@@ -1,0 +1,7 @@
+--RULE--
+call.invalid_literal_argument
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+echo round( 2.4, 0, 5 ), "\n";

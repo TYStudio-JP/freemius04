@@ -1,0 +1,15 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+class Upper_Iterator extends ArrayIterator {
+	public function current() {
+		return strtoupper( parent::current() );
+	}
+}
+
+foreach ( new Upper_Iterator( array( 'a', 'b' ) ) as $value ) {
+	echo $value, "\n";
+}

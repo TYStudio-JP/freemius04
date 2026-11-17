@@ -1,0 +1,18 @@
+--RULE--
+signature.tentative_return_type_missing
+--CLAIM--
+{}
+--CODE--
+<?php
+// Declared only when the "if" runs, and only on PHP before 8.1.
+if ( PHP_VERSION_ID < 80100 ) {
+	class Bag implements Countable {
+		public function count() {
+			return 2;
+		}
+	}
+}
+
+echo "loaded\n";
+--SCAN--
+{ "guarded": true }

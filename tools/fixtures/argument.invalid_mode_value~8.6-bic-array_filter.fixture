@@ -1,0 +1,9 @@
+--RULE--
+argument.invalid_mode_value
+--CLAIM--
+{ "breaks_in": "8.6" }
+--CODE--
+<?php
+// Mode 3 is none of 0, ARRAY_FILTER_USE_BOTH (1), ARRAY_FILTER_USE_KEY (2).
+$kept = array_filter( array( 1, 0, 2 ), function ( $value ) { return $value; }, 3 );
+echo count( $kept ), "\n";

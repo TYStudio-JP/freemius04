@@ -1,0 +1,15 @@
+--RULE--
+runtime.is_resource_finfo_elsewhere
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+// The same change where the handle is kept in a property, or in a variable
+// outside a function: not followed by the scanner.
+class Mime_Cache {
+	public $finfo;
+}
+
+$cache        = new Mime_Cache();
+$cache->finfo = finfo_open( FILEINFO_MIME_TYPE );
+echo is_resource( $cache->finfo ) ? "resource\n" : "not a resource\n";

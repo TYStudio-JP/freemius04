@@ -1,0 +1,7 @@
+--RULE--
+argument.html_default_flags
+--CLAIM--
+{ "changed_in": "8.1" }
+--CODE--
+<?php
+echo count( get_html_translation_table() ), ' ', count( get_html_translation_table( HTML_ENTITIES ) ), "\n";
