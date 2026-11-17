@@ -101,7 +101,7 @@ own test file for code that looks similar and must stay unreported. Try your
 rule on real code as well:
 
 ```
-php bin/scan.php /tmp/claude-0/-home-user/c53f4819-233f-5e8c-bf08-acc461710893/scratchpad/corpus/wp-latest --target=8.5 --summary
+php bin/scan.php tools/out/corpus/wp-latest --target=8.5 --summary
 ```
 
 WordPress 7.1.4 supports PHP 8.5: a finding of level `error` or `changed`

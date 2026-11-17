@@ -13,6 +13,7 @@ items of the PHP 8.0-8.6 upgrade notes have a recorded verdict in
 Not done: the run-time monitor, Freemius keys, translations, MySQL and
 browser checks, PHP 8.6 on a real runtime.
 
+- **Picking this up elsewhere (Japanese): `docs/HANDOFF.ja.md`. Setup: `bash tools/setup.sh`.**
 - Why this product, and the evidence for and against (Japanese): `docs/market-research.ja.md`
 - Design, current state, limits and open decisions (Japanese): `docs/product-design.ja.md`
 
