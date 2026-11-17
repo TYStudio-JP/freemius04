@@ -1,0 +1,11 @@
+--RULE--
+ini.auto_detect_line_endings
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+if ( function_exists( 'ini_set' ) ) {
+	@ini_set( 'auto_detect_line_endings', true );
+}
+
+echo "done\n";

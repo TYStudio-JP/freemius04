@@ -137,7 +137,9 @@ final class Php84DepSessionIni implements Rule {
 
 		$finding          = $context->report( 'ini.session_deprecated_setting', $at, array( 'deprecated' => '8.4' ) );
 		$finding->subject = 'session.' . $setting;
-		$finding->guarded = $context->function_is_guarded( $function );
+		// Only a PHP version check keeps the notice away: function_exists( "ini_set" ) is
+		// a common check and guards nothing here (seen on the 8.4 runtime).
+		$finding->guarded = $context->function_is_guarded( '8.4-dep: version check only' );
 	}
 
 	/**

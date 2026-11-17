@@ -160,4 +160,50 @@ $tests['8.1-dep: init(), FETCH_SERIALIZE and ssl_method are reported only where 
 	$clean( "namespace App;\nnew SoapClient( \$wsdl, array( 'ssl_method' => 1 ) );", 'App\\SoapClient is another class.' );
 };
 
+$tests['8.1-dep (review): function_exists() around a call does not mark it as guarded, a version check does'] = static function () {
+	$cases = array(
+		"if ( function_exists( 'ctype_digit' ) ) { ctype_digit( 5 ); }",
+		"if ( function_exists( 'imagepolygon' ) ) { imagepolygon( \$image, \$points, 3, \$color ); }",
+		"if ( function_exists( 'ini_set' ) ) { @ini_set( 'auto_detect_line_endings', true ); }",
+		"if ( ! function_exists( 'mb_check_encoding' ) ) { return; }\nmb_check_encoding();",
+		"if ( is_callable( 'mysqli_get_client_info' ) ) { mysqli_get_client_info( \$link ); }",
+		"class A { function f() { if ( function_exists( 'current' ) ) { return current( \$this ); } } }",
+	);
+
+	foreach ( $cases as $code ) {
+		$findings = upgw_scanner()->scan( "<?php\n" . $code )->findings;
+		upgw_same( 1, count( $findings ), $code );
+		upgw_true( ! $findings[0]->guarded, 'Not guarded: ' . $code );
+
+		$findings = upgw_scanner()->scan( "<?php\nif ( PHP_VERSION_ID < 80100 ) {\n" . $code . "\n}" )->findings;
+		upgw_same( 1, count( $findings ), $code );
+		upgw_true( $findings[0]->guarded, 'Guarded by the version check: ' . $code );
+	}
+};
+
+$tests['8.1-dep (review): PDO::FETCH_SERIALIZE without PDO::FETCH_CLASS beside it is not reported'] = static function () use ( $clean ) {
+	// runtime.pdo_fetch_serialize_alone.
+	$clean( '$statement->fetchAll( PDO::FETCH_SERIALIZE ); $statement->setFetchMode( PDO::FETCH_SERIALIZE ); $pdo->query( $sql, PDO::FETCH_SERIALIZE ); $statement->fetch( PDO::FETCH_SERIALIZE );', 'The flag alone.' );
+	$clean( '$statement->fetchAll( PDO::FETCH_SERIALIZE | PDO::FETCH_ASSOC ); $statement->fetchAll( PDO::FETCH_SERIALIZE | Other::FETCH_CLASS );', 'Combined with something else.' );
+	$clean( '$statement->fetchColumn( PDO::FETCH_CLASS | PDO::FETCH_SERIALIZE ); $mode = PDO::FETCH_CLASS | PDO::FETCH_SERIALIZE;', 'Not a method that takes a fetch mode.' );
+
+	upgw_same( array( 'constant.pdo_fetch_serialize' ), upgw_rules_in( '<?php $statement->fetch( \PDO::FETCH_SERIALIZE | \pdo::FETCH_CLASS );' ), 'fetch(), either order.' );
+	upgw_same( array( 'constant.pdo_fetch_serialize' ), upgw_rules_in( '<?php $statement?->fetchAll( PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE | PDO::FETCH_SERIALIZE, "Row" );' ), 'Three flags.' );
+};
+
+$tests['8.1-dep (review): mb_check_encoding( null, $encoding ) and the other ways to name mysqli::init()'] = static function () use ( $clean ) {
+	upgw_same( array( 'argument.mb_check_encoding_none' ), upgw_rules_in( '<?php mb_check_encoding( NULL, "UTF-8" );' ), 'null with an encoding.' );
+	$clean( 'mb_check_encoding( $text, null ); mb_check_encoding( "", "UTF-8" ); mb_check_encoding( null, "UTF-8", $extra );', 'A value, or a call PHP rejects.' );
+
+	upgw_same( array( 'call.mysqli_parent_init', 'call.mysqli_parent_init' ), upgw_rules_in( '<?php class DB extends \mysqli { function __construct() { self::init(); MySQLi::Init(); } }' ), 'self:: and the class name.' );
+	$clean( 'class DB extends mysqli { use Boots; function __construct() { self::init(); static::init(); $this->init(); } }', 'A trait may supply init().' );
+	$clean( 'class DB extends Base { function __construct() { mysqli::init(); self::init(); } } mysqli::init();', 'Not in a class whose parent is mysqli.' );
+	$clean( "namespace App;\nclass DB extends \\mysqli { function __construct() { mysqli::init(); } }", 'App\\mysqli::init().' );
+};
+
+$tests['8.1-dep (review): auto_detect_line_endings given a float'] = static function () use ( $clean ) {
+	upgw_same( array( 'ini.auto_detect_line_endings' ), upgw_rules_in( '<?php ini_set( "auto_detect_line_endings", 1.5 );' ) );
+	$clean( 'ini_set( "auto_detect_line_endings", 0.0 ); ini_set( "auto_detect_line_endings", 0.5 );', 'Read as 0.' );
+};
+
 return $tests;

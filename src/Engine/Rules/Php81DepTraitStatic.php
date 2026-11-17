@@ -75,7 +75,7 @@ final class Php81DepTraitStatic implements Rule {
 
 		$finding          = $context->report( 'call.static_on_trait', $node, array( 'deprecated' => '8.1' ) );
 		$finding->subject = $resolved->toString();
-		$finding->guarded = $context->function_is_guarded( 'trait::static' );
+		$finding->guarded = $context->function_is_guarded( Php81DepArguments::VERSION_GUARD );
 	}
 
 	/**

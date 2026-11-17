@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * Rule ids, all deprecated in 8.1:
  *
  * - call.mysqli_parent_init       parent::init() in a class that extends mysqli
- * - constant.pdo_fetch_serialize  PDO::FETCH_SERIALIZE passed as a fetch mode
+ * - constant.pdo_fetch_serialize  PDO::FETCH_CLASS | PDO::FETCH_SERIALIZE passed as a fetch mode
  * - argument.soap_ssl_method      new SoapClient( $wsdl, array( 'ssl_method' => ... ) )
  *
  * Each is reported only where the class is named in the source. A call on a
@@ -31,6 +31,7 @@ final class Php81DepObjects implements Rule {
 	 * they are given the fetch mode.
 	 */
 	const TAKES_FETCH_MODE = array(
+		'fetch'        => true,
 		'fetchall'     => true,
 		'setfetchmode' => true,
 		'query'        => true,
@@ -76,13 +77,24 @@ final class Php81DepObjects implements Rule {
 	}
 
 	/**
-	 * Reports parent::init() inside a class whose parent is mysqli.
+	 * Reports a call to mysqli::init() inside a class whose parent is mysqli.
 	 *
 	 * @param Expr\StaticCall $node    Static call.
 	 * @param Context         $context Scan state.
 	 */
 	private function parent_init( Expr\StaticCall $node, Context $context ) {
-		if ( 'parent' !== strtolower( $node->class->toString() ) || ! $node->name instanceof Node\Identifier || 'init' !== strtolower( $node->name->toString() ) ) {
+		if ( ! $node->name instanceof Node\Identifier || 'init' !== strtolower( $node->name->toString() ) ) {
+			return;
+		}
+
+		// parent::init(), mysqli::init() and, when the class has no init() of
+		// its own, self::init() all name the method of mysqli (fixture
+		// call.mysqli_parent_init~8.1-dep-self_and_named). static::init() and
+		// $this->init() may reach a method of a subclass and are left alone.
+		$written = strtolower( $node->class->toString() );
+		$is_self = 'self' === $written;
+
+		if ( 'parent' !== $written && ! $is_self && ( $node->class->isSpecialClassName() || 'mysqli' !== self::class_name( $node->class ) ) ) {
 			return;
 		}
 
@@ -96,10 +108,14 @@ final class Php81DepObjects implements Rule {
 			return;
 		}
 
+		if ( $is_self && ( null !== $class->getMethod( 'init' ) || count( $class->getTraitUses() ) > 0 ) ) {
+			return;
+		}
+
 		$finding          = $context->report( 'call.mysqli_parent_init', $node, array( 'deprecated' => '8.1' ) );
 		$finding->subject = 'mysqli::init';
 		$finding->instead = 'parent::__construct()';
-		$finding->guarded = $context->function_is_guarded( 'mysqli::init' );
+		$finding->guarded = $context->function_is_guarded( Php81DepArguments::VERSION_GUARD );
 	}
 
 	/**
@@ -114,10 +130,33 @@ final class Php81DepObjects implements Rule {
 			return;
 		}
 
+		// On its own the flag does nothing and raises nothing (fixture
+		// runtime.pdo_fetch_serialize_alone): the notice comes when it is
+		// combined with PDO::FETCH_CLASS, so that has to be written beside it.
 		$parent = $node->getAttribute( 'parent' );
+		$top    = null;
 
 		while ( $parent instanceof Expr\BinaryOp\BitwiseOr ) {
+			$top    = $parent;
 			$parent = $parent->getAttribute( 'parent' );
+		}
+
+		$with_class = false;
+		$operands   = null === $top ? array() : array( $top );
+
+		while ( $operands ) {
+			$side = array_pop( $operands );
+
+			if ( $side instanceof Expr\BinaryOp\BitwiseOr ) {
+				$operands[] = $side->left;
+				$operands[] = $side->right;
+			} elseif ( $side instanceof Expr\ClassConstFetch && $side->class instanceof Node\Name && $side->name instanceof Node\Identifier && 'FETCH_CLASS' === $side->name->toString() && 'pdo' === self::class_name( $side->class ) ) {
+				$with_class = true;
+			}
+		}
+
+		if ( ! $with_class ) {
+			return;
 		}
 
 		if ( ! $parent instanceof Node\Arg || $parent->unpack || null !== $parent->name ) {
@@ -136,7 +175,7 @@ final class Php81DepObjects implements Rule {
 
 		$finding          = $context->report( 'constant.pdo_fetch_serialize', $node, array( 'deprecated' => '8.1' ) );
 		$finding->subject = 'PDO::FETCH_SERIALIZE';
-		$finding->guarded = $context->function_is_guarded( 'pdo::fetch_serialize' );
+		$finding->guarded = $context->function_is_guarded( Php81DepArguments::VERSION_GUARD );
 	}
 
 	/**
@@ -168,7 +207,7 @@ final class Php81DepObjects implements Rule {
 				$finding          = $context->report( 'argument.soap_ssl_method', $item, array( 'deprecated' => '8.1' ) );
 				$finding->subject = 'ssl_method';
 				$finding->instead = "'stream_context' => stream_context_create( array( 'ssl' => array( 'crypto_method' => ... ) ) )";
-				$finding->guarded = $context->function_is_guarded( 'soapclient::__construct' );
+				$finding->guarded = $context->function_is_guarded( Php81DepArguments::VERSION_GUARD );
 			}
 		}
 	}

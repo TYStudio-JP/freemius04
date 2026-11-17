@@ -28,8 +28,7 @@ defined( 'ABSPATH' ) || exit;
  * - no function of that name is declared in the plugin or theme,
  * - the file mentions xml_set_object, without which a method name never worked.
  *
- * Only xml_set_element_handler() and xml_set_character_data_handler() have
- * fixtures; the other xml_set_*_handler() functions are not reported yet.
+ * Each function listed in HANDLERS has a fixture of its own.
  *
  * Not visible here: when the handlers are set BEFORE xml_set_object(), PHP 8.4
  * throws a ValueError instead (fixture runtime.xml_handler_string~before_object).
@@ -40,8 +39,15 @@ final class Php84DepXmlHandlerMethodName implements Rule {
 	 * Number of handler arguments after the parser.
 	 */
 	const HANDLERS = array(
-		'xml_set_element_handler'        => 2,
-		'xml_set_character_data_handler' => 1,
+		'xml_set_element_handler'                => 2,
+		'xml_set_character_data_handler'         => 1,
+		'xml_set_default_handler'                => 1,
+		'xml_set_processing_instruction_handler' => 1,
+		'xml_set_start_namespace_decl_handler'   => 1,
+		'xml_set_end_namespace_decl_handler'     => 1,
+		'xml_set_external_entity_ref_handler'    => 1,
+		'xml_set_notation_decl_handler'          => 1,
+		'xml_set_unparsed_entity_decl_handler'   => 1,
 	);
 
 	/**
@@ -102,6 +108,8 @@ final class Php84DepXmlHandlerMethodName implements Rule {
 		$finding          = $context->report( 'call.xml_handler_method_name', $node, array( 'deprecated' => '8.4' ) );
 		$finding->subject = $name . ': ' . implode( ', ', $methods );
 		$finding->instead = 'array( $object, \'' . $methods[0] . '\' )';
-		$finding->guarded = $context->function_is_guarded( $name );
+		// Only a PHP version check keeps the notice away: function_exists() for the function itself
+		// is true on every version and guards nothing (seen on the 8.4 runtime).
+		$finding->guarded = $context->function_is_guarded( '8.4-dep: version check only' );
 	}
 }

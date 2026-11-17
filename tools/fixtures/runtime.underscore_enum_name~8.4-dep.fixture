@@ -1,0 +1,14 @@
+--RULE--
+runtime.underscore_enum_name
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+// An enum does not parse before PHP 8.1, so it is declared through eval() on
+// the runtimes that have enums. Evidence for syntax.underscore_class_name
+// reporting "enum _".
+if ( PHP_VERSION_ID >= 80100 ) {
+	eval( 'enum _ { case Placeholder; }' );
+}
+
+echo "done\n";

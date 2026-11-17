@@ -1,0 +1,27 @@
+--RULE--
+call.xml_handler_method_name
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+class Reader_For_default {
+	public $calls = 0;
+
+	public function on_event() {
+		++$this->calls;
+
+		return true;
+	}
+}
+
+$reader = new Reader_For_default();
+$parser = xml_parser_create();
+
+// Called through a variable so that this fixture shows the handler name
+// alone; xml_set_object() by name is the catalog's own finding.
+$attach = 'xml_set_object';
+$attach( $parser, $reader );
+
+xml_set_default_handler( $parser, 'on_event' );
+
+echo "handler set\n";

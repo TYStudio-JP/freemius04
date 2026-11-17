@@ -19,9 +19,11 @@
 		"disposition": "rule",
 		"rule": "call.trigger_error_e_user_error",
 		"fixtures": [
-			"call.trigger_error_e_user_error~8.4-dep.fixture"
+			"call.trigger_error_e_user_error~8.4-dep.fixture",
+			"call.trigger_error_e_user_error~8.4-dep-user_error.fixture",
+			"call.trigger_error_e_user_error~8.4-dep-number.fixture"
 		],
-		"reason": "Reported when the level is written as E_USER_ERROR or 256 in trigger_error()/user_error(); a level from a variable is known at run time only and is not reported."
+		"reason": "Reported when the level is written as E_USER_ERROR or 256 in trigger_error()/user_error(); a level from a variable is known at run time only and is not reported. Only a PHP version check marks it guarded; function_exists( \"trigger_error\" ) does not."
 	},
 	{
 		"version": "8.4",
@@ -33,9 +35,10 @@
 		"fixtures": [
 			"syntax.underscore_class_name~8.4-dep-interface.fixture",
 			"syntax.underscore_class_name~8.4-dep-trait.fixture",
-			"syntax.underscore_class_name~8.4-dep.fixture"
+			"syntax.underscore_class_name~8.4-dep.fixture",
+			"runtime.underscore_enum_name~8.4-dep.fixture"
 		],
-		"reason": "Compile-time notice for a class, interface or trait named \"_\" (all three seen on 8.4/8.5); an enum named \"_\" is left out because enums do not parse before 8.1 and no fixture can show it on every runtime."
+		"reason": "Compile-time notice for a class, interface, trait or enum named \"_\" (class, interface and trait seen on 8.4/8.5 with fixtures that parse on every runtime; the enum is shown by runtime.underscore_enum_name~8.4-dep, which declares it through eval() from 8.1 on because enums do not parse before 8.1)."
 	},
 	{
 		"version": "8.4",
@@ -81,7 +84,7 @@
 			"call.dateperiod_iso_constructor~8.4-dep-with_options.fixture",
 			"call.dateperiod_iso_constructor~8.4-dep.fixture"
 		],
-		"reason": "new DatePeriod() with one or two arguments can only be the ISO string form (the other form needs three), so the argument count decides; parent::__construct( $iso ) in a subclass raises it too but is not reported."
+		"reason": "new DatePeriod() with one or two arguments can only be the ISO string form (the other form needs three), so the argument count decides; parent::__construct( $iso ) in a subclass raises it too but is not reported. new on a subclass of DatePeriod raises it as well (seen on 8.4) and is not reported either: the parent of a class declared in another file is not visible."
 	},
 	{
 		"version": "8.4",
@@ -313,7 +316,7 @@
 			"ini.session_deprecated_setting~8.4-dep-sid_length.fixture",
 			"ini.session_deprecated_setting~8.4-dep-ini_alter.fixture"
 		],
-		"reason": "Reported for ini_set()/ini_alter()/session_start() options with a literal setting name and a literal value other than the default (32 and 4): the runtimes raise nothing when the default value is set again; php.ini itself is not source code and is out of reach."
+		"reason": "Reported for ini_set()/ini_alter()/session_start() options with a literal setting name and a literal value other than the default (32 and 4): the runtimes raise nothing when the default value is set again; php.ini itself is not source code and is out of reach. A sid_length outside 22..256 raises the notice too (plus a warning; seen on 8.4) and is not reported."
 	},
 	{
 		"version": "8.4",
@@ -330,9 +333,11 @@
 			"ini.session_deprecated_setting~8.4-dep-referer_check.fixture",
 			"ini.session_deprecated_setting~8.4-dep-session_start.fixture",
 			"ini.session_deprecated_setting~8.4-dep-session_start_use_only_cookies.fixture",
-			"constant.session_sid~8.4-dep.fixture"
+			"constant.session_sid~8.4-dep.fixture",
+			"ini.session_deprecated_setting~8.4-dep-function_exists.fixture",
+			"constant.session_sid~8.4-dep-defined.fixture"
 		],
-		"reason": "Literal ini_set()/session_start() values that switch use_only_cookies off, use_trans_sid on, or give trans_sid_tags, trans_sid_hosts or referer_check a non-default value are reported; the SID constant has its own rule constant.session_sid because the generated catalog does not have it."
+		"reason": "Literal ini_set()/session_start() values that switch use_only_cookies off, use_trans_sid on, or give trans_sid_tags, trans_sid_hosts or referer_check a non-default value are reported; the SID constant has its own rule constant.session_sid because the generated catalog does not have it. Neither function_exists( \"ini_set\" ) nor defined( \"SID\" ) keeps the notices away (fixtures), so only a PHP version check marks these findings guarded. A plugin that defines its own SID constant in another file would be reported wrongly; only a definition in the same file is recognised."
 	},
 	{
 		"version": "8.4",
@@ -416,9 +421,10 @@
 		"fixtures": [
 			"call.csv_escape_default~8.4-dep-fgetcsv.fixture",
 			"call.csv_escape_default~8.4-dep-fputcsv.fixture",
-			"call.csv_escape_default~8.4-dep-str_getcsv.fixture"
+			"call.csv_escape_default~8.4-dep-str_getcsv.fixture",
+			"call.csv_escape_default~8.4-dep-function_exists.fixture"
 		],
-		"reason": "fputcsv(), fgetcsv() and str_getcsv() calls that write out fewer arguments than reach $escape, and do not pass it by name, are reported."
+		"reason": "fputcsv(), fgetcsv() and str_getcsv() calls that write out fewer arguments than reach $escape, and do not pass it by name, are reported. function_exists( \"str_getcsv\" ) around the call does not keep the notice away (fixture), so only a PHP version check marks it guarded."
 	},
 	{
 		"version": "8.4",
@@ -441,8 +447,15 @@
 			"call.xml_handler_method_name~8.4-dep-character_data.fixture",
 			"call.xml_handler_method_name~8.4-dep.fixture",
 			"runtime.xml_handler_string~8.4-dep-before_object.fixture",
-			"runtime.xml_handler_string~8.4-dep-empty.fixture"
+			"runtime.xml_handler_string~8.4-dep-empty.fixture",
+			"call.xml_handler_method_name~8.4-dep-default.fixture",
+			"call.xml_handler_method_name~8.4-dep-processing_instruction.fixture",
+			"call.xml_handler_method_name~8.4-dep-start_namespace_decl.fixture",
+			"call.xml_handler_method_name~8.4-dep-end_namespace_decl.fixture",
+			"call.xml_handler_method_name~8.4-dep-external_entity_ref.fixture",
+			"call.xml_handler_method_name~8.4-dep-notation_decl.fixture",
+			"call.xml_handler_method_name~8.4-dep-unparsed_entity_decl.fixture"
 		],
-		"reason": "Detected in part: a literal method-like name given to xml_set_element_handler() or xml_set_character_data_handler() in a file that mentions xml_set_object and declares no function of that name; other handler functions, handlers from variables and the empty string are not reported, and the runtime showed a ValueError (not a deprecation) when the names are set before xml_set_object()."
+		"reason": "Detected in part: a literal method-like name given to any of the nine xml_set_*_handler() functions (one fixture each) in a file that mentions xml_set_object and declares no function of that name; handlers from variables, the empty string and classes whose xml_set_object() call is in another file are not reported. The runtime showed a ValueError (not a deprecation) when the names are set before xml_set_object(); the rule cannot see the order reliably and claims only the deprecation."
 	}
 ]

@@ -74,6 +74,8 @@ final class Php84DepCsvEscape implements Rule {
 		$finding          = $context->report( 'call.csv_escape_default', $node, array( 'deprecated' => '8.4' ) );
 		$finding->subject = $name;
 		$finding->instead = 'pass $escape explicitly; "\\\\" keeps what the call does today';
-		$finding->guarded = $context->function_is_guarded( $name );
+		// Only a PHP version check keeps the notice away: function_exists() for the function itself
+		// is true on every version and guards nothing (seen on the 8.4 runtime).
+		$finding->guarded = $context->function_is_guarded( '8.4-dep: version check only' );
 	}
 }

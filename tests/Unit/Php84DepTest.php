@@ -206,16 +206,20 @@ $tests['8.4-dep: something else called SID is not reported'] = static function (
 	$clean( "if ( defined( 'SID' ) ) { \$name = 'SID'; }", 'The name as a string.' );
 	$clean( 'echo session_id();', 'The function that replaces it.' );
 
-	$findings = upgw_scanner()->scan( "<?php\nif ( defined( 'SID' ) ) {\n\t\$url .= '?' . SID;\n}" )->findings;
-	$guarded  = array();
+	$guarded = static function ( $code ) {
+		$flags = array();
 
-	foreach ( $findings as $finding ) {
-		if ( 'constant.session_sid' === $finding->rule ) {
-			$guarded[] = $finding->guarded;
+		foreach ( upgw_scanner()->scan( "<?php\n" . $code )->findings as $finding ) {
+			if ( 'constant.session_sid' === $finding->rule ) {
+				$flags[] = $finding->guarded;
+			}
 		}
-	}
 
-	upgw_same( array( true ), $guarded, 'Behind defined() the finding is kept, marked as guarded.' );
+		return $flags;
+	};
+
+	upgw_same( array( false ), $guarded( "if ( defined( 'SID' ) ) {\n\t\$url .= '?' . SID;\n}" ), 'defined( "SID" ) is true while a session is active and guards nothing.' );
+	upgw_same( array( true ), $guarded( "if ( PHP_VERSION_ID < 80400 ) {\n\t\$url .= '?' . SID;\n}" ), 'Behind a version check the finding is kept, marked as guarded.' );
 	upgw_same( array( 'constant.session_sid' ), $mine( "namespace App;\n\$url .= '?' . SID;" ), 'Inside a namespace the name falls back to the global constant.' );
 };
 
@@ -251,6 +255,78 @@ $tests['8.4-dep: stream_context_set_option() as the fallback for stream_context_
 	}
 
 	upgw_same( array( true ), $guarded );
+};
+
+$tests['8.4-dep: function_exists() for the function itself is not a guard, a version check is'] = static function () {
+	$flags = static function ( $code ) {
+		$ids = array(
+			'call.trigger_error_e_user_error',
+			'call.mysqli_store_result_mode',
+			'call.session_set_save_handler_callbacks',
+			'call.stream_context_set_option_two_arguments',
+			'call.csv_escape_default',
+			'ini.session_deprecated_setting',
+			'call.xml_handler_method_name',
+		);
+		$found = array();
+
+		foreach ( upgw_scanner()->scan( "<?php\n" . $code )->findings as $finding ) {
+			if ( in_array( $finding->rule, $ids, true ) ) {
+				$found[] = $finding->guarded;
+			}
+		}
+
+		return $found;
+	};
+
+	$cases = array(
+		'ini_set'                   => "ini_set( 'session.use_trans_sid', 1 );",
+		'str_getcsv'                => '$row = str_getcsv( $line );',
+		'fputcsv'                   => 'fputcsv( $handle, $row );',
+		'trigger_error'             => "trigger_error( 'Stop.', E_USER_ERROR );",
+		'mysqli_store_result'       => '$r = mysqli_store_result( $link, 0 );',
+		'session_set_save_handler'  => 'session_set_save_handler( $a, $b, $c, $d, $e, $f );',
+		'stream_context_set_option' => 'stream_context_set_option( $context, $options );',
+		'xml_set_element_handler'   => "xml_set_object( \$parser, \$this );\nxml_set_element_handler( \$parser, 'open', 'close' );",
+	);
+
+	foreach ( $cases as $function => $code ) {
+		upgw_same( array( false ), $flags( "if ( function_exists( '{$function}' ) ) {\n{$code}\n}" ), "function_exists( '{$function}' ) keeps no notice away." );
+		upgw_same( array( false ), $flags( "if ( ! is_callable( '{$function}' ) ) {\n\treturn;\n}\n{$code}" ), "An early exit on is_callable( '{$function}' ) keeps no notice away." );
+		upgw_same( array( true ), $flags( "if ( version_compare( PHP_VERSION, '8.4', '<' ) ) {\n{$code}\n}" ), "{$function}: a version check is a guard." );
+	}
+};
+
+$tests['8.4-dep: an enum named "_" is reported, other enums are not'] = static function () use ( $clean, $mine ) {
+	$clean( 'enum Suit { case Hearts; }', 'An ordinary enum.' );
+	$clean( 'enum _Suit: string { case Hearts = "h"; }', 'Underscore prefix.' );
+	$clean( 'enum Suit { case _; }', 'A case named _.' );
+
+	upgw_same( array( 'syntax.underscore_class_name' ), $mine( 'enum _ { case A; }' ), 'Enum named _.' );
+	upgw_same( array( 'syntax.underscore_class_name' ), $mine( "namespace App;\nenum _: int { case A = 1; }" ), 'Backed enum named _ in a namespace.' );
+};
+
+$tests['8.4-dep: the other xml_set_*_handler() functions follow the same rules'] = static function () use ( $clean, $mine ) {
+	$object = "xml_set_object( \$parser, \$this );\n";
+	$names  = array(
+		'xml_set_default_handler',
+		'xml_set_processing_instruction_handler',
+		'xml_set_start_namespace_decl_handler',
+		'xml_set_end_namespace_decl_handler',
+		'xml_set_external_entity_ref_handler',
+		'xml_set_notation_decl_handler',
+		'xml_set_unparsed_entity_decl_handler',
+	);
+
+	foreach ( $names as $name ) {
+		$clean( "{$object}{$name}( \$parser, array( \$this, 'on_event' ) );", "{$name}: array callable." );
+		$clean( "{$object}{$name}( \$parser, 'on_event' );", "{$name}: a function of the plugin.", array( 'on_event' ) );
+		$clean( "{$name}( \$parser, 'on_event' );", "{$name}: no xml_set_object in the file." );
+		$clean( "{$object}{$name}( \$parser, '' );", "{$name}: the empty string removes the handler." );
+		upgw_same( array( 'call.xml_handler_method_name' ), $mine( "{$object}\\{$name}( \$parser, 'on_event' );" ), "{$name}: a method name." );
+	}
+
+	$clean( "{$object}xml_set_handler( \$parser, 'on_event' );", 'Not a function of the XML extension.' );
 };
 
 return $tests;

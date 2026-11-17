@@ -1,0 +1,17 @@
+--RULE--
+constant.session_sid
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+session_start();
+
+// defined( 'SID' ) is true once a session is active, and no guard: reading
+// the constant raises the notice all the same.
+$link = 'page.php';
+
+if ( defined( 'SID' ) ) {
+	$link .= '?' . SID;
+}
+
+echo strlen( $link ), "\n";

@@ -1,0 +1,14 @@
+--RULE--
+argument.polygon_num_points
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+// function_exists() does not keep the notice away: the function is there on
+// every version, only the fourth argument is deprecated.
+$image = imagecreatetruecolor( 10, 10 );
+$color = imagecolorallocate( $image, 1, 2, 3 );
+
+if ( function_exists( 'imagepolygon' ) ) {
+	var_dump( imagepolygon( $image, array( 1, 1, 5, 5, 1, 5 ), 3, $color ) );
+}

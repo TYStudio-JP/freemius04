@@ -1,0 +1,11 @@
+--RULE--
+call.csv_escape_default
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+// function_exists() for the function itself is no guard: it is true on every
+// version and the notice is raised all the same.
+if ( function_exists( 'str_getcsv' ) ) {
+	echo json_encode( str_getcsv( 'a,b' ) ), "\n";
+}

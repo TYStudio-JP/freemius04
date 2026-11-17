@@ -1,0 +1,15 @@
+--RULE--
+call.trigger_error_e_user_error
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+function settle( $amount ) {
+	if ( $amount < 0 ) {
+		user_error( 'Negative amount.', E_USER_ERROR );
+	}
+
+	return $amount;
+}
+
+echo settle( -1 ), "\n";

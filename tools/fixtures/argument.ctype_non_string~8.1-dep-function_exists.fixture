@@ -1,0 +1,19 @@
+--RULE--
+argument.ctype_non_string
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+if ( function_exists( 'ctype_digit' ) ) {
+	var_dump( ctype_digit( 5 ) );
+}
+
+function is_code( $value ) {
+	if ( ! function_exists( 'ctype_alpha' ) ) {
+		return false;
+	}
+
+	return ctype_alpha( (int) $value );
+}
+
+var_dump( is_code( '65' ) );

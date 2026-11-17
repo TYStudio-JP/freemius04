@@ -77,7 +77,7 @@ final class Php81DepSerializable implements Rule {
 		$parent = $node->getAttribute( 'parent' );
 
 		if ( null !== $parent && ! $parent instanceof Node\Stmt\Namespace_ ) {
-			$finding->guarded = $context->function_is_guarded( 'serializable' );
+			$finding->guarded = $context->function_is_guarded( Php81DepArguments::VERSION_GUARD );
 		}
 	}
 }

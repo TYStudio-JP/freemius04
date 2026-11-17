@@ -1,0 +1,26 @@
+--RULE--
+runtime.pdo_fetch_serialize_alone
+--CLAIM--
+{}
+--CODE--
+<?php
+// Without PDO::FETCH_CLASS the flag raises nothing.
+$pdo = new PDO( 'sqlite::memory:' );
+
+$statement = $pdo->query( "SELECT 'hello'" );
+$statement->fetchAll( PDO::FETCH_SERIALIZE );
+echo "fetchAll\n";
+
+$statement = $pdo->query( "SELECT 'hello'" );
+$statement->setFetchMode( PDO::FETCH_SERIALIZE );
+echo "setFetchMode\n";
+
+$statement = $pdo->query( "SELECT 'hello'", PDO::FETCH_SERIALIZE );
+echo "query\n";
+
+$statement = $pdo->query( "SELECT 'hello'" );
+$statement->fetch( PDO::FETCH_SERIALIZE );
+echo "fetch\n";
+
+$mode = PDO::FETCH_CLASS | PDO::FETCH_SERIALIZE;
+echo $mode > 0 ? 'read' : '', "\n";

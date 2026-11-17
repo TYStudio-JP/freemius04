@@ -50,6 +50,9 @@ final class Php84DepSessionSid implements Rule {
 		$finding          = $context->report( 'constant.session_sid', $node, array( 'deprecated' => '8.4' ) );
 		$finding->subject = 'SID';
 		$finding->instead = 'session_name() . "=" . session_id(), or cookie-based sessions';
-		$finding->guarded = $context->constant_is_guarded( 'SID' );
+		// defined( "SID" ) is true exactly when a session is active, and then reading
+		// the constant raises the notice (seen on the 8.4 runtime): only a PHP version
+		// check is a guard.
+		$finding->guarded = $context->constant_is_guarded( '8.4-dep: version check only' );
 	}
 }

@@ -76,7 +76,9 @@ final class Php84DepArgumentCounts implements Rule {
 		}
 
 		$finding->subject = $name;
-		$finding->guarded = $context->function_is_guarded( $name );
+		// Only a PHP version check keeps the notice away; function_exists() for the
+		// function itself is true on every version and guards nothing.
+		$finding->guarded = $context->function_is_guarded( '8.4-dep: version check only' );
 
 		// "if ( function_exists( 'stream_context_set_options' ) ) { new } else { old }"
 		// is how code that supports PHP 8.2 and 8.4 alike is written.

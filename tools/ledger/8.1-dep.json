@@ -98,13 +98,14 @@
 			"argument.ctype_non_string~8.1-dep-bool.fixture",
 			"argument.ctype_non_string~8.1-dep-every_function.fixture",
 			"argument.ctype_non_string~8.1-dep-float.fixture",
+			"argument.ctype_non_string~8.1-dep-function_exists.fixture",
 			"argument.ctype_non_string~8.1-dep-int.fixture",
 			"argument.ctype_non_string~8.1-dep-int_cast.fixture",
 			"argument.ctype_non_string~8.1-dep-int_function.fixture",
 			"argument.ctype_non_string~8.1-dep-null.fixture",
 			"runtime.ctype_non_string~8.1-dep.fixture"
 		],
-		"reason": "Reported when the single argument is written as an int or float literal, an (int) or (float) cast, true, false, null, or a call to intval(), strlen() or count(); an argument in a variable is runtime-only (runtime.ctype_non_string)."
+		"reason": "Reported when the single argument is written as an int or float literal, an (int) or (float) cast, true, false, null, or a call to intval(), strlen() or count(); an argument in a variable is runtime-only (runtime.ctype_non_string). A function_exists() check around the call does not keep the notice away (…-function_exists), so only a PHP version check marks the finding as guarded."
 	},
 	{
 		"version": "8.1",
@@ -156,6 +157,7 @@
 		"disposition": "rule",
 		"rule": "argument.polygon_num_points",
 		"fixtures": [
+			"argument.polygon_num_points~8.1-dep-function_exists.fixture",
 			"argument.polygon_num_points~8.1-dep-imagefilledpolygon.fixture",
 			"argument.polygon_num_points~8.1-dep-imageopenpolygon.fixture",
 			"argument.polygon_num_points~8.1-dep-imagepolygon.fixture"
@@ -201,9 +203,10 @@
 		"rule": "argument.mb_check_encoding_none",
 		"fixtures": [
 			"argument.mb_check_encoding_none~8.1-dep-null.fixture",
+			"argument.mb_check_encoding_none~8.1-dep-null_with_encoding.fixture",
 			"argument.mb_check_encoding_none~8.1-dep.fixture"
 		],
-		"reason": "A call with no argument, or with a literal null, shows it."
+		"reason": "A call with no argument, or with a literal null as the value (with or without an encoding), shows it."
 	},
 	{
 		"version": "8.1",
@@ -215,7 +218,7 @@
 		"fixtures": [
 			"runtime.mysqli_driver_version~8.1-dep.fixture"
 		],
-		"reason": "The runtimes confirm the deprecation, but $object->driver_version is a property read on a variable whose class the syntax tree does not show."
+		"reason": "The runtimes confirm the deprecation, but $object->driver_version is a property read on a variable whose class the syntax tree does not show. Only ( new mysqli_driver() )->driver_version written in one expression would be certain, which is too rare to be worth a rule."
 	},
 	{
 		"version": "8.1",
@@ -238,10 +241,11 @@
 		"disposition": "rule",
 		"rule": "call.mysqli_parent_init",
 		"fixtures": [
+			"call.mysqli_parent_init~8.1-dep-self_and_named.fixture",
 			"call.mysqli_parent_init~8.1-dep.fixture",
 			"runtime.mysqli_init_method~8.1-dep.fixture"
 		],
-		"reason": "parent::init() inside a class that extends mysqli is reported; $link->init() on a variable of unknown class is not (runtime.mysqli_init_method)."
+		"reason": "parent::init(), mysqli::init() and (when the class has no init() or trait of its own) self::init() inside a class that extends mysqli are reported; $this->init() and static::init() may reach a subclass method, and $link->init() is on a variable of unknown class (runtime.mysqli_init_method)."
 	},
 	{
 		"version": "8.1",
@@ -271,11 +275,13 @@
 		"disposition": "rule",
 		"rule": "constant.pdo_fetch_serialize",
 		"fixtures": [
+			"constant.pdo_fetch_serialize~8.1-dep-fetch.fixture",
 			"constant.pdo_fetch_serialize~8.1-dep-query.fixture",
 			"constant.pdo_fetch_serialize~8.1-dep-set_fetch_mode.fixture",
-			"constant.pdo_fetch_serialize~8.1-dep.fixture"
+			"constant.pdo_fetch_serialize~8.1-dep.fixture",
+			"runtime.pdo_fetch_serialize_alone~8.1-dep.fixture"
 		],
-		"reason": "Reported where PDO::FETCH_SERIALIZE is written in an argument of fetchAll(), setFetchMode() or query(), the calls the runtimes showed to raise the notice; reading the constant elsewhere raises nothing and a mode kept in a variable is not followed."
+		"reason": "Reported where PDO::FETCH_CLASS | PDO::FETCH_SERIALIZE is written in an argument of fetch(), fetchAll(), setFetchMode() or query(), the calls the runtimes showed to raise the notice; the flag without PDO::FETCH_CLASS, or the constant read elsewhere, raises nothing (runtime.pdo_fetch_serialize_alone), and a mode kept in a variable or set through fetchObject() is not followed."
 	},
 	{
 		"version": "8.1",
@@ -333,6 +339,8 @@
 		"disposition": "rule",
 		"rule": "ini.auto_detect_line_endings",
 		"fixtures": [
+			"ini.auto_detect_line_endings~8.1-dep-float.fixture",
+			"ini.auto_detect_line_endings~8.1-dep-function_exists.fixture",
 			"ini.auto_detect_line_endings~8.1-dep-ini_alter.fixture",
 			"ini.auto_detect_line_endings~8.1-dep-string_values.fixture",
 			"ini.auto_detect_line_endings~8.1-dep-suppressed.fixture",

@@ -1,6 +1,6 @@
 <?php
 /**
- * A class, interface or trait named "_", deprecated in PHP 8.4.
+ * A class, interface, trait or enum named "_", deprecated in PHP 8.4.
  *
  * @package UpgradeWarden
  */
@@ -17,8 +17,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * The notice is raised when the file is compiled, in a namespace as well, so
  * no check around the declaration keeps it away. An enum named "_" raises it
- * too according to the notes, but enums need PHP 8.1 and no fixture can show
- * that on every runtime, so enums are left out.
+ * too. Enums do not parse before PHP 8.1, so that case is shown by the fixture
+ * runtime.underscore_enum_name~8.4-dep, which declares the enum through eval()
+ * on the runtimes that have enums.
  */
 final class Php84DepUnderscoreClass implements Rule {
 
@@ -30,6 +31,7 @@ final class Php84DepUnderscoreClass implements Rule {
 			Node\Stmt\Class_::class,
 			Node\Stmt\Interface_::class,
 			Node\Stmt\Trait_::class,
+			Node\Stmt\Enum_::class,
 		);
 	}
 

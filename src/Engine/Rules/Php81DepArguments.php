@@ -31,6 +31,12 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Php81DepArguments implements Rule {
 
+	/**
+	 * Asked of Context::function_is_guarded() to learn about a version check
+	 * only. Not a valid function name, so no function_exists() matches it.
+	 */
+	const VERSION_GUARD = 'php 8.1 version check';
+
 	const CTYPE = array(
 		'ctype_alnum'  => true,
 		'ctype_alpha'  => true,
@@ -115,7 +121,9 @@ final class Php81DepArguments implements Rule {
 				$finding->instead = $name . '( $image, $points, $color ) on PHP 8.0 and later';
 			}
 		} elseif ( 'mb_check_encoding' === $name ) {
-			if ( 0 === count( $args ) || ( 1 === count( $args ) && self::is_constant( $args[0], array( 'null' ) ) ) ) {
+			// A literal null as the value is the same as no value, with or
+			// without an encoding (fixture ...~8.1-dep-null_with_encoding).
+			if ( 0 === count( $args ) || ( count( $args ) <= 2 && self::is_constant( $args[0], array( 'null' ) ) ) ) {
 				$finding = $context->report( 'argument.mb_check_encoding_none', $node, array( 'deprecated' => '8.1' ) );
 			}
 		} elseif ( 'mysqli_get_client_info' === $name ) {
@@ -136,7 +144,12 @@ final class Php81DepArguments implements Rule {
 
 		if ( null !== $finding ) {
 			$finding->subject = $name;
-			$finding->guarded = $context->function_is_guarded( $name );
+			// Only a PHP version check keeps the notice away. function_exists()
+			// around the call does not: the function exists on every version,
+			// it is the way it is called that is deprecated (fixtures
+			// ...~8.1-dep-function_exists). The name below is no function, so
+			// only the version part of the guard can match.
+			$finding->guarded = $context->function_is_guarded( self::VERSION_GUARD );
 		}
 	}
 
@@ -230,6 +243,10 @@ final class Php81DepArguments implements Rule {
 
 		if ( $value instanceof Scalar\Int_ ) {
 			return 0 !== $value->value;
+		}
+
+		if ( $value instanceof Scalar\Float_ ) {
+			return abs( $value->value ) >= 1 && abs( $value->value ) < 1e9;
 		}
 
 		if ( $value instanceof Scalar\String_ ) {

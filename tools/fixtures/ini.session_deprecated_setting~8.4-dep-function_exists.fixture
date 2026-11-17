@@ -1,0 +1,12 @@
+--RULE--
+ini.session_deprecated_setting
+--CLAIM--
+{ "deprecated_in": "8.4" }
+--CODE--
+<?php
+// function_exists( 'ini_set' ) is a common check and no guard for this.
+if ( function_exists( 'ini_set' ) ) {
+	ini_set( 'session.use_trans_sid', 1 );
+}
+
+echo "set\n";

@@ -66,6 +66,8 @@ final class Php84DepTriggerError implements Rule {
 		$finding          = $context->report( 'call.trigger_error_e_user_error', $node, array( 'deprecated' => '8.4' ) );
 		$finding->subject = $name . '( ..., E_USER_ERROR )';
 		$finding->instead = 'throw an exception, or call exit() with the message';
-		$finding->guarded = $context->function_is_guarded( $name );
+		// Only a PHP version check keeps the notice away: function_exists( "trigger_error" )
+		// is true on every version and guards nothing (seen on the 8.4 runtime).
+		$finding->guarded = $context->function_is_guarded( '8.4-dep: version check only' );
 	}
 }
