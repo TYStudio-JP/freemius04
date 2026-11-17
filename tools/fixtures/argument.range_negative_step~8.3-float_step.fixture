@@ -1,0 +1,9 @@
+--RULE--
+argument.range_negative_step
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+// A negative whole-number float step on an increasing range: the sign was
+// ignored until 8.2; from 8.3 this is a ValueError as with an integer step.
+echo json_encode( range( 1, 5, -1.0 ) ), "\n";

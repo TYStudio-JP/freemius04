@@ -1,0 +1,15 @@
+--RULE--
+runtime.dynamic_property_other_object
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Post_Like {
+	public $id = 1;
+}
+
+// Which class $post has is known at run time only.
+$post        = new Post_Like();
+$post->extra = 'x';
+
+echo $post->extra, "\n";

@@ -1,0 +1,15 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Registry {
+	public function add( $key, $value ) {
+		$this->items[ $key ] = $value;
+
+		return count( $this->items );
+	}
+}
+
+echo ( new Registry() )->add( 'a', 1 ), "\n";

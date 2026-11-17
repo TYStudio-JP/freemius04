@@ -1,0 +1,15 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Counter {
+	public function start() {
+		$this->count = 1;
+
+		return $this->count;
+	}
+}
+
+echo ( new Counter() )->start(), "\n";

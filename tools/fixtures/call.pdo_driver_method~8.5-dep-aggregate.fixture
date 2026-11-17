@@ -1,0 +1,14 @@
+--RULE--
+call.pdo_driver_method
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$pdo = new PDO( 'sqlite::memory:' );
+$pdo->sqliteCreateAggregate(
+	'total_length',
+	function ( $context, $row, $value ) { return (int) $context + strlen( $value ); },
+	function ( $context, $rows ) { return (int) $context; }
+);
+$pdo->exec( "CREATE TABLE t (v TEXT); INSERT INTO t VALUES ('ab'), ('cde');" );
+echo $pdo->query( 'SELECT total_length(v) FROM t' )->fetchColumn(), "\n";

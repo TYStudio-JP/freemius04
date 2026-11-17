@@ -1,0 +1,28 @@
+--RULE--
+class.trait_static_property_redeclared
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+trait Counts {
+	protected static $count = 0;
+
+	public static function bump() {
+		return ++static::$count;
+	}
+}
+
+class Base_Widget {
+	use Counts;
+}
+
+class Middle_Widget extends Base_Widget {
+}
+
+class Child_Widget extends Middle_Widget {
+	use Counts;
+}
+
+Base_Widget::bump();
+Base_Widget::bump();
+echo Child_Widget::bump(), "\n";

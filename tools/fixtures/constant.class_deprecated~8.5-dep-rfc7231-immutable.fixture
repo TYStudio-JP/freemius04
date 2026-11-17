@@ -1,0 +1,8 @@
+--RULE--
+constant.class_deprecated
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$date = new DateTimeImmutable( '2024-02-03 04:05:06', new DateTimeZone( 'UTC' ) );
+echo $date->format( DateTimeImmutable::RFC7231 ), "\n";

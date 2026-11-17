@@ -1,0 +1,17 @@
+--RULE--
+call.openssl_pkey_derive_key_length
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$private = openssl_pkey_get_private( '-----BEGIN EC PRIVATE KEY-----
+MHcCAQEEIHrRMDamzTyP70O++CKv1qjfWRCidtA8RASFbRHePsCOoAoGCCqGSM49
+AwEHoUQDQgAEzt3BXUwbrjVxVdj66gVWXFZC5Bd5HwM9YNJvPJ5sWlaHch6cMm3c
+af1Rxk167gFTSixxix5oQpCRtGlIdcCqUw==
+-----END EC PRIVATE KEY-----' );
+$public  = openssl_pkey_get_public( '-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOMzVIVwZYgCG0XpLEgfbpDJxJNKk
+zj7RiK8yehIyvqV1W/Aaz0AGcV/4LQL+D/KhVPZ9nu+SpV/ZU0M7EdZWXw==
+-----END PUBLIC KEY-----' );
+$secret  = openssl_pkey_derive( $public, $private, 32 );
+var_dump( strlen( $secret ) );

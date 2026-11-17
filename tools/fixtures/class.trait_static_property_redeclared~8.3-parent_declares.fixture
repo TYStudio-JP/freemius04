@@ -1,0 +1,20 @@
+--RULE--
+class.trait_static_property_redeclared
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+trait Counts {
+	public static $count = 0;
+}
+
+class Base_Widget {
+	public static $count = 0;
+}
+
+class Child_Widget extends Base_Widget {
+	use Counts;
+}
+
+Base_Widget::$count = 5;
+echo Child_Widget::$count, "\n";

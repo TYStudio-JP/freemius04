@@ -1,0 +1,13 @@
+--RULE--
+runtime.spl_enforced_signature
+--CLAIM--
+{ "breaks_in": "8.2" }
+--CODE--
+<?php
+$file = new SplTempFileObject();
+$file->fwrite( 'abc' );
+$file->rewind();
+
+// The method takes no argument; before 8.2 an extra one was ignored.
+$file->fflush( 1 );
+echo "called\n";

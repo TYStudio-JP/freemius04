@@ -1,0 +1,9 @@
+--RULE--
+array.negative_key_then_implicit
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$levels = array( 'name' => 'scale', '-3' => 'low', 'next' );
+
+echo implode( ',', array_keys( $levels ) ), "\n";

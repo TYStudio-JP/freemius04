@@ -1,0 +1,13 @@
+--RULE--
+class.magic_method_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Bag {
+	public function __isset( $name ): int {
+		return 1;
+	}
+}
+
+echo 'declared', "\n";

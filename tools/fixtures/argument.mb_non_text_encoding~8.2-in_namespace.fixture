@@ -1,0 +1,9 @@
+--RULE--
+argument.mb_non_text_encoding
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+namespace Acme\Text;
+
+echo \mb_convert_encoding( "caf\xC3\xA9", 'HTML-ENTITIES', 'UTF-8' ), ' ', mb_strtoupper( 'abc', 'BASE64' ), "\n";

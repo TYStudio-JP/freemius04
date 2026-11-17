@@ -1,0 +1,14 @@
+--RULE--
+variable.php_errormsg
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+ini_set( 'track_errors', '1' );
+
+// Without a user error handler, as on a site where nobody installed one.
+set_error_handler( null );
+$contents = @file_get_contents( '/no/such/file' );
+restore_error_handler();
+
+echo isset( $php_errormsg ) ? 'last error recorded' : 'nothing recorded', "\n";

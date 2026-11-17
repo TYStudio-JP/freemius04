@@ -1,0 +1,7 @@
+--RULE--
+runtime.mb_convert_encoding_from_non_text
+--CLAIM--
+{}
+--CODE--
+<?php
+echo bin2hex( mb_convert_encoding( '&eacute;', 'UTF-8', array( 'HTML-ENTITIES', 'UTF-8' ) ) ), ' ', bin2hex( mb_convert_encoding( '&eacute;', 'UTF-8', 'HTML-ENTITIES, UTF-8' ) ), "\n";

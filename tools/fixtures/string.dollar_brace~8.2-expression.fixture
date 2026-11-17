@@ -1,0 +1,11 @@
+--RULE--
+string.dollar_brace
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+// "${expr}": the expression gives the name of the variable.
+$warden = 'value';
+$prefix = 'war';
+
+echo "found ${ $prefix . 'den' }\n";

@@ -1,0 +1,19 @@
+--RULE--
+class.incompatible_method_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Base_Filter {
+	public function apply( &$value ) {
+		$value = trim( $value );
+	}
+}
+
+class Lower_Filter extends Base_Filter {
+	public function apply( $value ) {
+		return strtolower( $value );
+	}
+}
+
+echo 'declared', "\n";

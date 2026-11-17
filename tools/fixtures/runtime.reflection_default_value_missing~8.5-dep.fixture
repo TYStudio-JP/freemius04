@@ -1,0 +1,13 @@
+--RULE--
+runtime.reflection_default_value_missing
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_Typed {
+	public int $count;
+}
+
+$property = new ReflectionProperty( 'Upgw_Typed', 'count' );
+// getDefaultValue() exists from PHP 8.0 on.
+var_dump( method_exists( $property, 'getDefaultValue' ) ? $property->getDefaultValue() : null );

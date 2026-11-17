@@ -1,0 +1,8 @@
+--RULE--
+call.finfo_buffer_context
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$info = finfo_open( FILEINFO_MIME_TYPE );
+echo finfo_buffer( $info, 'plain text', FILEINFO_MIME_TYPE, stream_context_create() ), "\n";

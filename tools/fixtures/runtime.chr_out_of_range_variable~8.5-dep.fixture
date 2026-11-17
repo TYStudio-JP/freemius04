@@ -1,0 +1,8 @@
+--RULE--
+runtime.chr_out_of_range_variable
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$code = 200 + 100;
+var_dump( bin2hex( chr( $code ) ) );

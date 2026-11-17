@@ -1,0 +1,8 @@
+--RULE--
+runtime.mb_non_text_encoding_not_raised
+--CLAIM--
+{}
+--CODE--
+<?php
+// The notes say "all Mbstring functions"; this one raises nothing.
+echo json_encode( mb_detect_encoding( 'abc', 'HTML-ENTITIES' ) ), "\n";

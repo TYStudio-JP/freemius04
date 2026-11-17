@@ -1,0 +1,9 @@
+--RULE--
+runtime.constant_redeclaration
+--CLAIM--
+{}
+--CODE--
+<?php
+const UPGW_TWICE_CONST = 1;
+const UPGW_TWICE_CONST = 2;
+var_dump( UPGW_TWICE_CONST );

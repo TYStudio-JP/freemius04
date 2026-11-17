@@ -1,0 +1,13 @@
+--RULE--
+variable.http_response_header
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_has_headers() {
+	global $http_response_header;
+
+	return isset( $http_response_header ) ? 1 : 0;
+}
+
+var_dump( upgw_has_headers() );

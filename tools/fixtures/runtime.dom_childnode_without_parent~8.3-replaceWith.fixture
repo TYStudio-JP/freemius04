@@ -1,0 +1,17 @@
+--RULE--
+runtime.dom_childnode_without_parent
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+$document = new DOMDocument();
+$element  = $document->createElement( 'a' );
+
+// 7.4 has no such method (Error); 8.0 to 8.2 throw a DOMException; from 8.3
+// the call does nothing.
+try {
+	$element->replaceWith( 'x' );
+	echo "nothing happened\n";
+} catch ( Throwable $error ) {
+	echo "throws\n";
+}

@@ -1,0 +1,9 @@
+--RULE--
+call.pdo_driver_method
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$pdo = new PDO( 'sqlite::memory:' );
+$pdo->sqliteCreateFunction( 'twice', function ( $x ) { return $x * 2; }, 1 );
+echo $pdo->query( 'SELECT twice(21)' )->fetchColumn(), "\n";

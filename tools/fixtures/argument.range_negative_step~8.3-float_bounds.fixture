@@ -1,0 +1,8 @@
+--RULE--
+argument.range_negative_step
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+// Float boundaries: the sign of the step was ignored until 8.2.
+echo json_encode( range( 0.0, 1.0, -0.25 ) ), "\n";

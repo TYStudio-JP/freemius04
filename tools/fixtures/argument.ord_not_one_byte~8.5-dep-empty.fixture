@@ -1,0 +1,7 @@
+--RULE--
+argument.ord_not_one_byte
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+var_dump( ord( '' ) );

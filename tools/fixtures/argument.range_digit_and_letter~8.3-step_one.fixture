@@ -1,0 +1,8 @@
+--RULE--
+argument.range_digit_and_letter
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// With an explicit step of 1: [0] until 8.2, the characters "0" to "z" from 8.3.
+echo json_encode( range( '0', 'z', 1 ) ), "\n";

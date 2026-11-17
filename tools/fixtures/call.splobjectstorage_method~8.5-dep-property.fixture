@@ -1,0 +1,22 @@
+--RULE--
+call.splobjectstorage_method
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_Registry {
+	private $items;
+
+	public function __construct() {
+		$this->items = new SplObjectStorage();
+	}
+
+	public function add( $item ) {
+		$this->items->attach( $item );
+
+		return count( $this->items );
+	}
+}
+
+$registry = new Upgw_Registry();
+var_dump( $registry->add( new stdClass() ) );

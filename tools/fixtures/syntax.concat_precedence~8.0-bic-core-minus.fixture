@@ -1,0 +1,9 @@
+--RULE--
+syntax.concat_precedence
+--CLAIM--
+{ "deprecated_in": "7.4", "changed_in": "8.0" }
+--CODE--
+<?php
+$total = 2;
+
+echo 'Remaining: ' . 10 - $total, "\n";

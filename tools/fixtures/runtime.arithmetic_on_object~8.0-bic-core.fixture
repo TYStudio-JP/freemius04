@@ -1,0 +1,9 @@
+--RULE--
+runtime.arithmetic_on_object
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$item = new stdClass();
+
+echo $item + 1, "\n";

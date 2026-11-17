@@ -1,0 +1,38 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "runtime.array_key_exists_object",
+	"claim": {
+		"deprecated_in": "7.4",
+		"breaks_in": "8.0"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "deprecated",
+		"8.0": "fatal",
+		"8.1": "fatal",
+		"8.2": "fatal",
+		"8.3": "fatal",
+		"8.4": "fatal",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"7.4": "E_DEPRECATED: array_key_exists(): Using array_key_exists() on objects is deprecated. Use isset() or property_exists() instead",
+		"8.0": "TypeError: array_key_exists(): Argument #2 ($array) must be of type array, stdClass given",
+		"8.1": "TypeError: array_key_exists(): Argument #2 ($array) must be of type array, stdClass given",
+		"8.2": "TypeError: array_key_exists(): Argument #2 ($array) must be of type array, stdClass given",
+		"8.3": "TypeError: array_key_exists(): Argument #2 ($array) must be of type array, stdClass given",
+		"8.4": "TypeError: array_key_exists(): Argument #2 ($array) must be of type array, stdClass given",
+		"8.5": "TypeError: array_key_exists(): Argument #2 ($array) must be of type array, stdClass given"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

@@ -1,0 +1,7 @@
+--RULE--
+argument.mb_non_text_encoding
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+echo json_encode( mb_strstr( 'abc', 'b', false, 'HTML-ENTITIES' ) ), "\n";

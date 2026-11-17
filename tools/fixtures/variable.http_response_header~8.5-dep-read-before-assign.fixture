@@ -1,0 +1,14 @@
+--RULE--
+variable.http_response_header
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_take_headers() {
+	$headers              = $http_response_header;
+	$http_response_header = null;
+
+	return $headers;
+}
+
+echo "loaded\n";

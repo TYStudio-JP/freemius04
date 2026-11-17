@@ -1,0 +1,20 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+// __get() alone does not take the assignment; only __set() would.
+class Bag {
+	public function __get( $name ) {
+		return 'magic';
+	}
+
+	public function fill() {
+		$this->value = 'real';
+
+		return $this->value;
+	}
+}
+
+echo ( new Bag() )->fill(), "\n";

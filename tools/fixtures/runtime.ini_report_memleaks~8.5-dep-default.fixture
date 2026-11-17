@@ -1,0 +1,8 @@
+--RULE--
+runtime.ini_report_memleaks
+--CLAIM--
+{}
+--CODE--
+<?php
+ini_set( 'report_memleaks', '1' );
+echo "set\n";

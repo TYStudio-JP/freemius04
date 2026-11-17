@@ -1,0 +1,16 @@
+--RULE--
+call.get_class_without_argument
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+class Shape {
+	public function namer() {
+		return function () {
+			return \get_class();
+		};
+	}
+}
+
+$namer = ( new Shape() )->namer();
+echo $namer(), "\n";

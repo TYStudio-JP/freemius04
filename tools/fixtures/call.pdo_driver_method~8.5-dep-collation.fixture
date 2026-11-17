@@ -1,0 +1,10 @@
+--RULE--
+call.pdo_driver_method
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$pdo = new PDO( 'sqlite::memory:' );
+$pdo->sqliteCreateCollation( 'reverse', function ( $a, $b ) { return strcmp( $b, $a ); } );
+$pdo->exec( "CREATE TABLE t (v TEXT); INSERT INTO t VALUES ('a'), ('c'), ('b');" );
+echo implode( ',', $pdo->query( 'SELECT v FROM t ORDER BY v COLLATE reverse' )->fetchAll( PDO::FETCH_COLUMN ) ), "\n";

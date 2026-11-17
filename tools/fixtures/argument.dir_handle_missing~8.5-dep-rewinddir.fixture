@@ -1,0 +1,10 @@
+--RULE--
+argument.dir_handle_missing
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$handle = opendir( __DIR__ );
+rewinddir();
+closedir( $handle );
+echo "rewound\n";

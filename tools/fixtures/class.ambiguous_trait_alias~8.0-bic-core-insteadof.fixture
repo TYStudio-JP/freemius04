@@ -1,0 +1,27 @@
+--RULE--
+class.ambiguous_trait_alias
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+trait Loads_Settings {
+	public function load() {
+		return 'settings';
+	}
+}
+
+trait Loads_Cache {
+	public function load() {
+		return 'cache';
+	}
+}
+
+class Loader {
+	use Loads_Settings, Loads_Cache {
+		Loads_Settings::load insteadof Loads_Cache;
+		load as load_first;
+	}
+}
+
+$loader = new Loader();
+echo $loader->load_first(), "\n";

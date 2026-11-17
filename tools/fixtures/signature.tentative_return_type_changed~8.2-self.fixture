@@ -1,0 +1,14 @@
+--RULE--
+signature.tentative_return_type_changed
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+// "self" is not "static": a child of Local_Date would still get a Local_Date.
+class Local_Date extends DateTime {
+	public static function createFromImmutable( $object ): self {
+		return new self( $object->format( 'Y-m-d' ) );
+	}
+}
+
+echo Local_Date::createFromImmutable( new DateTimeImmutable( '2020-01-02' ) )->format( 'Y-m-d' ), "\n";

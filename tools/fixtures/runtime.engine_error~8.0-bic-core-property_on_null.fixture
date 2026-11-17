@@ -1,0 +1,10 @@
+--RULE--
+runtime.engine_error
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$options       = null;
+$options->name = 'set';
+
+echo $options->name, "\n";

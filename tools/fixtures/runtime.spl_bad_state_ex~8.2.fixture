@@ -1,0 +1,13 @@
+--RULE--
+runtime.spl_bad_state_ex
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+$info = new SplFileInfo( __FILE__ );
+
+try {
+	$info->_bad_state_ex();
+} catch ( Throwable $e ) {
+	echo "thrown\n";
+}

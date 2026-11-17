@@ -1,0 +1,10 @@
+--RULE--
+runtime.closure_bind_internal_scope
+--CLAIM--
+{}
+--CODE--
+<?php
+$closure = function () {
+	return 1;
+};
+var_dump( null === Closure::bind( $closure, null, 'ArrayObject' ) );

@@ -1,0 +1,8 @@
+--RULE--
+variable.http_response_header
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$headers = isset( $http_response_header ) ? $http_response_header : array();
+var_dump( count( $headers ) );

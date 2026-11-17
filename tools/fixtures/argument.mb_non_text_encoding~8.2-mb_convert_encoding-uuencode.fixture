@@ -1,0 +1,8 @@
+--RULE--
+argument.mb_non_text_encoding
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+mb_convert_encoding( 'abc', 'UUENCODE', 'UTF-8' );
+echo "converted\n";

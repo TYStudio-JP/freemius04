@@ -1,0 +1,10 @@
+--RULE--
+runtime.array_key_exists_object
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+$settings        = new stdClass();
+$settings->color = 'red';
+
+echo array_key_exists( 'color', $settings ) ? 'has color' : 'no color', "\n";

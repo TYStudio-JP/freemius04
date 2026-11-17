@@ -1,0 +1,13 @@
+--RULE--
+callable.non_static_method_statically
+--CLAIM--
+{ "deprecated_in": "7.0", "breaks_in": "8.0" }
+--CODE--
+<?php
+class Greeter {
+	public function hello() {
+		return 'hello';
+	}
+}
+
+echo call_user_func( 'Greeter::hello' ), "\n";

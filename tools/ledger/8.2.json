@@ -1,0 +1,318 @@
+[
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "Date",
+		"quote": "DateTime::createFromImmutable() now has a tentative return type of static, previously it was DateTime.",
+		"disposition": "rule",
+		"rule": "signature.tentative_return_type_changed",
+		"fixtures": [
+			"signature.tentative_return_type_changed~8.2-datetime.fixture",
+			"signature.tentative_return_type_changed~8.2-namespaced.fixture",
+			"signature.tentative_return_type_changed~8.2-self.fixture",
+			"runtime.tentative_return_type_static~8.2.fixture",
+			"runtime.tentative_return_type_missing~8.2.fixture",
+			"runtime.tentative_return_type_will_change~8.2.fixture"
+		],
+		"reason": "An override in a class that extends DateTime and declares a return type other than static is visible in the class declaration and raises the notice when the class is declared; overrides without a return type are an 8.1 matter and #[\\ReturnTypeWillChange] silences it (both shown by runtime fixtures)."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "Date",
+		"quote": "DateTimeImmutable::createFromMutable() now has a tentative return type of static, previously it was DateTimeImmutable.",
+		"disposition": "rule",
+		"rule": "signature.tentative_return_type_changed",
+		"fixtures": [
+			"signature.tentative_return_type_changed~8.2-datetimeimmutable.fixture"
+		],
+		"reason": "Same check as for DateTime::createFromImmutable(): an override with a return type other than static in a class that extends DateTimeImmutable."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "ODBC",
+		"quote": "The ODBC extension now escapes the username and password for the case when both a connection string and username/password are passed, and the string must be appended to.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "None of the runtimes has the odbc extension (extension_loaded(\"odbc\") is false on 7.4 to 8.5), and the effect depends on the credential values at run time."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO_ODBC",
+		"quote": "The PDO_ODBC extension also escapes the username and password when a connection string is passed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "None of the runtimes has the pdo_odbc driver (PDO::getAvailableDrivers() lists only mysql and sqlite), and the effect depends on the credential values at run time."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "glob() returns empty array if all paths are restricted by open_basedir.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.glob_open_basedir~8.2.fixture"
+		],
+		"reason": "Depends on the open_basedir setting and on the paths at run time; the glob() call looks the same either way."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "strtolower() and strtoupper() are no longer locale-sensitive.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.strtolower_locale~8.2.fixture"
+		],
+		"reason": "Depends on the locale set at run time and on the bytes of the string; the runtimes here have no locale data, so the fixture shows the same output on every version and the change itself could not be observed."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "str_split() returns an empty array for an empty string now.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.str_split_empty~8.2.fixture"
+		],
+		"reason": "Only an empty string at run time is affected; a literal empty string as the argument is not something plugin code plausibly writes."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "ksort() and krsort() do numeric string comparison under SORT_REGULAR using the standard PHP 8 rules now.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.ksort_numeric_string~8.2.fixture",
+			"runtime.ksort_numeric_string~8.2-krsort.fixture"
+		],
+		"reason": "The order only changes for arrays that mix numeric and non-numeric string keys at run time."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "The following methods now enforce their signature:",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.spl_enforced_signature~8.2-fflush.fixture",
+			"runtime.spl_enforced_signature~8.2-fgetc.fixture",
+			"runtime.spl_enforced_signature~8.2-fpassthru.fixture",
+			"runtime.spl_enforced_signature~8.2-ftell.fixture",
+			"runtime.spl_enforced_signature~8.2-getCsvControl.fixture"
+		],
+		"reason": "Calls with extra arguments throw ArgumentCountError from 8.2, but whether $x->ftell( 1 ) is called on an SplFileObject is known at run time only."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::hasChildren() now has a tentative return type of false, previously it was bool",
+		"disposition": "rule",
+		"rule": "signature.tentative_return_type_changed",
+		"fixtures": [
+			"signature.tentative_return_type_changed~8.2-has_children.fixture",
+			"signature.tentative_return_type_changed~8.2-spltempfileobject.fixture"
+		],
+		"reason": "An override with a return type other than false in a class that extends SplFileObject or SplTempFileObject raises the notice when the class is declared."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::getChildren() now has a tentative return type of null, previously it was ?RecursiveIterator",
+		"disposition": "rule",
+		"rule": "signature.tentative_return_type_changed",
+		"fixtures": [
+			"signature.tentative_return_type_changed~8.2-get_children.fixture"
+		],
+		"reason": "An override with a return type other than null in a class that extends SplFileObject or SplTempFileObject raises the notice when the class is declared."
+	},
+	{
+		"version": "8.2",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "GlogIterator returns empty array if all paths are restricted by open_basedir.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.globiterator_open_basedir~8.2.fixture"
+		],
+		"reason": "Depends on the open_basedir setting and on the paths at run time."
+	},
+	{
+		"version": "8.2",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Creation of dynamic properties is deprecated, unless the class opts in by using the #[AllowDynamicProperties] attribute.",
+		"disposition": "rule",
+		"rule": "property.dynamic_on_this",
+		"fixtures": [
+			"property.dynamic_on_this~8.2-anonymous.fixture",
+			"property.dynamic_on_this~8.2-array_append.fixture",
+			"property.dynamic_on_this~8.2-array_key.fixture",
+			"property.dynamic_on_this~8.2-case.fixture",
+			"property.dynamic_on_this~8.2-coalesce_assign.fixture",
+			"property.dynamic_on_this~8.2-constructor.fixture",
+			"property.dynamic_on_this~8.2-get_only.fixture",
+			"property.dynamic_on_this~8.2-reference.fixture",
+			"property.dynamic_on_this~8.2-static_declared.fixture",
+			"property.dynamic_on_this~8.2.fixture",
+			"runtime.dynamic_property_allowed~8.2.fixture",
+			"runtime.dynamic_property_declared_by_child~8.2.fixture",
+			"runtime.dynamic_property_from_trait~8.2.fixture",
+			"runtime.dynamic_property_magic_set~8.2.fixture",
+			"runtime.dynamic_property_other_object~8.2.fixture",
+			"property.dynamic_on_this~8.2-compound_assign.fixture",
+			"property.dynamic_on_this~8.2-increment.fixture"
+		],
+		"reason": "Only \"$this->name = ...\" (also ??=, the other compound assignments and ++/--) inside a method of a class that extends nothing, uses no trait, is not abstract, has no __set() and no #[AllowDynamicProperties], and declares no such property, is certain from the file; every other object is a run-time matter (runtime fixtures)."
+	},
+	{
+		"version": "8.2",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Callables that are not accepted by the $callable() syntax (but are accepted by call_user_func) are deprecated.",
+		"disposition": "rule",
+		"rule": "callable.partially_supported",
+		"fixtures": [
+			"callable.partially_supported~8.2-array_filter.fixture",
+			"callable.partially_supported~8.2-array_map.fixture",
+			"callable.partially_supported~8.2-array_reduce.fixture",
+			"callable.partially_supported~8.2-array_walk.fixture",
+			"callable.partially_supported~8.2-call_user_func_array.fixture",
+			"callable.partially_supported~8.2-class_scoped.fixture",
+			"callable.partially_supported~8.2-closure_from_callable.fixture",
+			"callable.partially_supported~8.2-forward_static_call.fixture",
+			"callable.partially_supported~8.2-forward_static_call_array.fixture",
+			"callable.partially_supported~8.2-is_callable.fixture",
+			"callable.partially_supported~8.2-object_class.fixture",
+			"callable.partially_supported~8.2-object_scoped.fixture",
+			"callable.partially_supported~8.2-object_self.fixture",
+			"callable.partially_supported~8.2-outside_class.fixture",
+			"callable.partially_supported~8.2-parent_array.fixture",
+			"callable.partially_supported~8.2-parent_string.fixture",
+			"callable.partially_supported~8.2-preg_replace_callback.fixture",
+			"callable.partially_supported~8.2-self_array.fixture",
+			"callable.partially_supported~8.2-self_string.fixture",
+			"callable.partially_supported~8.2-short_array.fixture",
+			"callable.partially_supported~8.2-static_array.fixture",
+			"callable.partially_supported~8.2-static_method.fixture",
+			"callable.partially_supported~8.2-static_string.fixture",
+			"callable.partially_supported~8.2-uasort.fixture",
+			"callable.partially_supported~8.2-uksort.fixture",
+			"callable.partially_supported~8.2-uppercase.fixture",
+			"callable.partially_supported~8.2-usort.fixture",
+			"callable.partially_supported~8.2-version_check.fixture",
+			"runtime.partially_supported_callable_plain~8.2.fixture",
+			"runtime.partially_supported_callable_variable~8.2.fixture",
+			"callable.partially_supported~8.2-array_walk_recursive.fixture",
+			"callable.partially_supported~8.2-iterator_apply.fixture",
+			"callable.partially_supported~8.2-register_shutdown_function.fixture",
+			"callable.partially_supported~8.2-spl_autoload_register.fixture",
+			"callable.partially_supported~8.2-set_error_handler.fixture"
+		],
+		"reason": "String and array literals of the listed forms written directly as the callable argument of known internal functions are visible; callables in variables are not (runtime fixture)."
+	},
+	{
+		"version": "8.2",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The \"${var}\" and \"${expr}\" style string interpolations are deprecated and will be removed in PHP 9.",
+		"disposition": "rule",
+		"rule": "string.dollar_brace",
+		"fixtures": [
+			"string.dollar_brace.fixture",
+			"string.dollar_brace~8.2-expression.fixture"
+		],
+		"reason": "Covered by the existing rule string.dollar_brace (DollarBrace.php), which reports both forms; the \"${expr}\" form has a fixture of this tranche."
+	},
+	{
+		"version": "8.2",
+		"section": "Deprecated Functionality",
+		"area": "Mbstring",
+		"quote": "Use of QPrint, Base64, Uuencode, and HTML-ENTITIES 'text encodings' is deprecated for all Mbstring functions.",
+		"disposition": "rule",
+		"rule": "argument.mb_non_text_encoding",
+		"fixtures": [
+			"argument.mb_non_text_encoding~8.2-function_exists.fixture",
+			"argument.mb_non_text_encoding~8.2-in_namespace.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_check_encoding.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_case.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-base64.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-html.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-html_entities.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-lowercase.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-qprint.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-quoted_printable.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_encoding-uuencode.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_convert_variables.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_decode_numericentity.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_encode_mimeheader.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_encode_numericentity.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_encoding_aliases.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_scrub.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_str_split.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strcut.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strimwidth.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_stripos.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_stristr.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strlen.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strpos.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strrchr.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strrichr.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strripos.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strrpos.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strstr.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strtolower.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strtoupper.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_strwidth.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_substr.fixture",
+			"argument.mb_non_text_encoding~8.2-mb_substr_count.fixture",
+			"runtime.mb_convert_encoding_from_non_text~8.2-list.fixture",
+			"runtime.mb_convert_encoding_from_non_text~8.2.fixture",
+			"runtime.mb_non_text_encoding_not_raised~8.2-mb_detect_encoding.fixture",
+			"runtime.mb_non_text_encoding_not_raised~8.2-mb_detect_order.fixture",
+			"runtime.mb_non_text_encoding_not_raised~8.2-mb_http_output.fixture",
+			"runtime.mb_non_text_encoding_not_raised~8.2-mb_internal_encoding.fixture",
+			"runtime.mb_non_text_encoding_not_raised~8.2-mb_preferred_mime_name.fixture",
+			"runtime.mb_non_text_encoding_repeated~8.2.fixture",
+			"runtime.mb_non_text_encoding_variable~8.2.fixture"
+		],
+		"reason": "A literal encoding name in the encoding argument of the mbstring functions that do raise the notice is visible; the runtimes showed that some functions and the source encoding of mb_convert_encoding() raise nothing, and names in variables are a run-time matter."
+	},
+	{
+		"version": "8.2",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The SplFileInfo::_bad_state_ex() internal method has been deprecated.",
+		"disposition": "runtime-only",
+		"rule": null,
+		"fixtures": [
+			"runtime.spl_bad_state_ex~8.2.fixture"
+		],
+		"reason": "An undocumented internal method; the class of the object it is called on is known at run time only, and a user class may have a method of that name."
+	},
+	{
+		"version": "8.2",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "utf8_encode() and utf8_decode() have been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [
+			"function.deprecated.fixture"
+		],
+		"reason": "data/catalog/functions.php lists both as deprecated in 8.2 (evidence verified), reported by InternalFunctions."
+	}
+]

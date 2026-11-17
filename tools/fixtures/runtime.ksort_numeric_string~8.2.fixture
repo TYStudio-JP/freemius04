@@ -1,0 +1,14 @@
+--RULE--
+runtime.ksort_numeric_string
+--CLAIM--
+{ "changed_in": "8.2" }
+--CODE--
+<?php
+$list = array(
+	'10' => 1,
+	'a'  => 2,
+	'9'  => 3,
+);
+
+ksort( $list );
+echo implode( ',', array_keys( $list ) ), "\n";

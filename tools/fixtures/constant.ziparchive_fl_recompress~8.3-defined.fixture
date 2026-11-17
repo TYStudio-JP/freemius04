@@ -1,0 +1,15 @@
+--RULE--
+constant.ziparchive_fl_recompress
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+// The constant came with PHP 8.0, hence the check; defined() does not keep
+// the notice away.
+$flags = 0;
+
+if ( defined( 'ZipArchive::FL_RECOMPRESS' ) ) {
+	$flags = ZipArchive::FL_RECOMPRESS;
+}
+
+echo $flags >= 0 ? "done\n" : '';

@@ -1,0 +1,8 @@
+--RULE--
+runtime.ord_not_one_byte_variable
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$text = 'é';
+var_dump( ord( $text ) );

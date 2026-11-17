@@ -1,0 +1,21 @@
+--RULE--
+class.trait_static_property_redeclared
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+trait Counts {
+	public static $count = 0;
+}
+
+class Base_Widget {
+	use Counts;
+}
+
+class Child_Widget extends Base_Widget {
+	use Counts;
+}
+
+// Until 8.2 the child shares the storage of the parent; from 8.3 it has its own.
+Base_Widget::$count = 5;
+echo Child_Widget::$count, "\n";

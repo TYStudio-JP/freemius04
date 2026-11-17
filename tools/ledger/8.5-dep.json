@@ -1,0 +1,513 @@
+[
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Trying to produce output (e.g. with `echo`) within a user output handler is deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.output_handler_output",
+		"fixtures": [
+			"runtime.output_handler_output~8.5-dep.fixture"
+		],
+		"reason": "Whether a handler prints depends on its body and on when it runs, usually a callback named by a string or array; the fixture shows ob_end_flush() raising the notice from 8.5 for a named handler that echoes."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Non-canonical cast names (boolean), (integer), (double), and (binary) have been deprecated, use (bool), (int), (float), and (string) respectively.",
+		"disposition": "rule",
+		"rule": "syntax.noncanonical_cast",
+		"fixtures": [
+			"syntax.noncanonical_cast~binary.fixture",
+			"syntax.noncanonical_cast~boolean.fixture",
+			"syntax.noncanonical_cast~double.fixture",
+			"syntax.noncanonical_cast~integer.fixture"
+		],
+		"reason": "Already covered by the existing rule in Casts.php with four verified fixtures (deprecated 8.5); nothing new written."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The $exclude_disabled parameter of the get_defined_functions() function has been deprecated, as it no longer has any effect since PHP 8.0.",
+		"disposition": "rule",
+		"rule": "call.get_defined_functions_argument",
+		"fixtures": [
+			"call.get_defined_functions_argument~8.5-dep-false.fixture",
+			"call.get_defined_functions_argument~8.5-dep.fixture"
+		],
+		"reason": "Any argument raises the notice on 8.5; the runtimes showed that a literal false already raised it from 8.0 (\"Setting $exclude_disabled to false has no effect\"), so false is reported as deprecated in 8.0 and any other argument as 8.5."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Terminating case statements with a semicolon instead of a colon has been deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.case_semicolon",
+		"fixtures": [
+			"syntax.case_semicolon.fixture"
+		],
+		"reason": "Already covered by the existing rule CaseSemicolon.php with a verified fixture (deprecated 8.5); nothing new written."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The backtick operator as an alias for shell_exec() has been deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.backtick",
+		"fixtures": [
+			"syntax.backtick.fixture"
+		],
+		"reason": "Already covered by the existing rule Backtick.php with a verified fixture (deprecated 8.5); nothing new written."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Returning null from __debugInfo() has been deprecated.",
+		"disposition": "rule",
+		"rule": "method.debuginfo_return_null",
+		"fixtures": [
+			"method.debuginfo_return_null~8.5-dep-bare.fixture",
+			"method.debuginfo_return_null~8.5-dep.fixture"
+		],
+		"reason": "Reported at a literal \"return null;\" or bare \"return;\" directly in __debugInfo() (notice when var_dump() reads the object, from 8.5); a null from a variable or call is not visible and is not reported."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The report_memleaks INI directive has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": "runtime.ini_report_memleaks",
+		"fixtures": [
+			"runtime.ini_report_memleaks~8.5-dep-default.fixture",
+			"runtime.ini_report_memleaks~8.5-dep.fixture"
+		],
+		"reason": "INI directive for debug builds; the runtimes showed that only ini_set() to a non-default value (\"0\"/\"Off\") raises the notice on 8.5 while setting the default \"1\" or ini_get() raises nothing; plugin code has no reason to set it, so no rule."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Constant redeclaration has been deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.constant_redeclaration",
+		"fixtures": [
+			"runtime.constant_redeclaration~8.5-dep-const.fixture",
+			"runtime.constant_redeclaration~8.5-dep.fixture"
+		],
+		"reason": "The runtimes contradict the notes: redeclaring a constant with define() or const raises E_NOTICE on 7.4 and E_WARNING on 8.0-8.5 (\"this will be an error in PHP 9\" on 8.5), never E_DEPRECATED; whether define() runs twice depends on run-time flow, so nothing is reported."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Enacted the follow-up phase of the \"Path to Saner Increment/Decrement operators\" RFC, meaning that incrementing non-numeric strings is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.string_increment",
+		"fixtures": [
+			"runtime.string_increment~8.3-alphanumeric.fixture"
+		],
+		"reason": "Depends on the value of the variable being incremented; the existing fixture runtime.string_increment~8.3-alphanumeric shows 'abc'++ raising the notice from 8.5 (only the empty and non-alphanumeric cases started in 8.3)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The following closure binding issues, which already emit an E_WARNING, are now deprecated:",
+		"disposition": "runtime-only",
+		"rule": "runtime.closure_bind_static_instance",
+		"fixtures": [
+			"runtime.closure_bind_static_instance~8.5-dep.fixture",
+			"runtime.closure_bind_internal_scope~8.5-dep.fixture"
+		],
+		"reason": "The runtimes contradict the notes: binding an instance to a static closure and binding to the scope of an internal class still raise E_WARNING on 8.5 (now worded \"this will be an error in PHP 9\"), no E_DEPRECATED; the closure and the target are run-time values, so nothing is reported."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using null as an array offset or when calling array_key_exists() is now deprecated.",
+		"disposition": "rule",
+		"rule": "syntax.null_array_offset",
+		"fixtures": [
+			"syntax.null_array_offset~8.5-dep-isset.fixture",
+			"syntax.null_array_offset~8.5-dep-key.fixture",
+			"syntax.null_array_offset~8.5-dep-read.fixture",
+			"syntax.null_array_offset~8.5-dep-write.fixture",
+			"argument.array_key_exists_null~8.5-dep-key_exists.fixture",
+			"argument.array_key_exists_null~8.5-dep.fixture",
+			"runtime.null_array_offset_variable~8.5-dep.fixture"
+		],
+		"reason": "Literal null as an offset (read, write, isset, empty, ??), as an array or list() key, and as the key of array_key_exists()/key_exists() (rule argument.array_key_exists_null) is reported from 8.5; unset($a[null]) raised nothing and is not reported, $this[null] is skipped for ArrayAccess, a string literal receiver (\"abc\"[null] raised a warning, not this notice) is skipped, and a null held in a variable is runtime-only (runtime.null_array_offset_variable)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Deriving $_SERVER['argc'] and $_SERVER['argv'] from the query string for non-CLI SAPIs has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Concerns non-CLI SAPIs and the register_argc_argv INI setting; the CLI runtimes here cannot show it and source code reading $_SERVER['argv'] is fine under CLI."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "The __sleep() and __wakeup() magic methods have been soft-deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.sleep_wakeup_soft_deprecated",
+		"fixtures": [
+			"runtime.sleep_wakeup_soft_deprecated~8.5-dep.fixture"
+		],
+		"reason": "Soft deprecation only: the fixture shows serialize()/unserialize() with __sleep()/__wakeup() raising nothing on any version up to 8.5, so the scanner reports nothing for it."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Curl",
+		"quote": "The curl_close() function has been deprecated, as CurlHandle objects are freed automatically.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "curl_close is in data/catalog/functions.php (deprecated 8.5, verified)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Curl",
+		"quote": "The curl_share_close() function has been deprecated, as CurlShareHandle objects are freed automatically.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "curl_share_close is in data/catalog/functions.php (deprecated 8.5, verified)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Date",
+		"quote": "The DATE_RFC7231 and DateTimeInterface::RFC7231 constants have been deprecated.",
+		"disposition": "rule",
+		"rule": "constant.class_deprecated",
+		"fixtures": [
+			"constant.class_deprecated~8.5-dep-rfc7231-datetime.fixture",
+			"constant.class_deprecated~8.5-dep-rfc7231-immutable.fixture",
+			"constant.class_deprecated~8.5-dep-rfc7231-interface.fixture"
+		],
+		"reason": "DATE_RFC7231 is in data/catalog/constants.php (constant.deprecated, 8.5, verified); the class constant through DateTimeInterface::, DateTime:: or DateTimeImmutable:: is reported by the new rule Php85DepClassConstants (all three raise \"Constant DateTimeInterface::RFC7231 is deprecated\" on 8.5)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Date",
+		"quote": "The __wakeup() magic method of DateTimeInterface, DateTime, DateTimeImmutable, DateTimeZone, DateInterval, and DatePeriod has been deprecated in favour of the __unserialize() magic method.",
+		"disposition": "runtime-only",
+		"rule": "runtime.date_wakeup_call",
+		"fixtures": [
+			"runtime.date_wakeup_call~8.5-dep.fixture"
+		],
+		"reason": "Only an explicit ->__wakeup() call raises it (unserialize() of DateTime and of a subclass whose __wakeup() calls parent::__wakeup() raised nothing, since __unserialize() is used); the receiver's class is not known from the syntax tree, and on DateTime/DateTimeZone the call is already fatal on every version."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "FileInfo",
+		"quote": "The finfo_close() function has been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "finfo_close is in data/catalog/functions.php (deprecated 8.5, verified)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "FileInfo",
+		"quote": "The $context parameter of the finfo_buffer() and finfo::buffer() functions has been deprecated as it is ignored.",
+		"disposition": "rule",
+		"rule": "call.finfo_buffer_context",
+		"fixtures": [
+			"call.finfo_buffer_context~8.5-dep-method.fixture",
+			"call.finfo_buffer_context~8.5-dep.fixture"
+		],
+		"reason": "finfo_buffer() with a fourth argument is reported whatever its value; finfo::buffer() with a third argument only where the receiver is known to be new finfo() (local variable or $this property), since buffer() is a common method name."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "GD",
+		"quote": "The imagedestroy() function has been deprecated, as GdImage objects are freed automatically.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "imagedestroy is in data/catalog/functions.php (deprecated 8.5, verified)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Hash",
+		"quote": "The MHASH_* constants have been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "MHASH_* constants exist only when PHP is built with mhash support; defined('MHASH_MD5') is false on every runtime here, so nothing can be verified."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Intl",
+		"quote": "The intl.error_level INI setting has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "INI setting of the intl extension, which none of the runtimes here has."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "MySQLi",
+		"quote": "The mysqli_execute() alias function has been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "mysqli_execute is in data/catalog/functions.php (deprecated 8.5, verified)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "OpenSSL",
+		"quote": "The $key_length parameter for openssl_pkey_derive() has been deprecated.",
+		"disposition": "rule",
+		"rule": "call.openssl_pkey_derive_key_length",
+		"fixtures": [
+			"call.openssl_pkey_derive_key_length~8.5-dep.fixture"
+		],
+		"reason": "Any third argument raises the notice on 8.5, including 0 (checked with 32, 16 and 0); reported when the argument is written in the call."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "PDO",
+		"quote": "The \"uri:\" DSN scheme has been deprecated due to security concerns with DSNs coming from remote URIs.",
+		"disposition": "rule",
+		"rule": "call.pdo_uri_dsn",
+		"fixtures": [
+			"call.pdo_uri_dsn~8.5-dep-literal.fixture",
+			"call.pdo_uri_dsn~8.5-dep.fixture"
+		],
+		"reason": "new PDO() whose DSN (positional or named dsn:) is written as a string starting with \"uri:\" (also as the left end of a concatenation or the literal start of an interpolated string) is reported; a DSN from a variable is not visible."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "PDO",
+		"quote": "Driver specific constants in the PDO class have been deprecated.",
+		"disposition": "rule",
+		"rule": "constant.class_deprecated",
+		"fixtures": [
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_compress.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_direct_query.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_found_rows.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ignore_space.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_init_command.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_local_infile.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_multi_statements.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_server_public_key.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ssl_ca.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ssl_capath.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ssl_cert.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ssl_cipher.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ssl_key.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_ssl_verify_server_cert.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-mysql_attr_use_buffered_query.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_attr_extended_result_codes.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_attr_open_flags.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_attr_readonly_statement.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_deterministic.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_open_create.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_open_readonly.fixture",
+			"constant.class_deprecated~8.5-dep-pdo-sqlite_open_readwrite.fixture"
+		],
+		"reason": "The 15 PDO::MYSQL_ATTR_* and 7 PDO::SQLITE_* constants the runtimes define were each shown deprecated on 8.5 and are reported (guarded in the else branch of a Pdo\\Mysql/Pdo\\Sqlite check); DBLIB, FB, ODBC and PGSQL constants are not defined here, MYSQL_ATTR_MAX_BUFFER_SIZE/READ_DEFAULT_FILE/READ_DEFAULT_GROUP are libmysql-only and MYSQL_ATTR_LOCAL_INFILE_DIRECTORY (8.1+) has no fixture that runs on 7.4, so those are not reported."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "PDO",
+		"quote": "Driver specific methods in the PDO class have been deprecated.",
+		"disposition": "rule",
+		"rule": "call.pdo_driver_method",
+		"fixtures": [
+			"call.pdo_driver_method~8.5-dep-aggregate.fixture",
+			"call.pdo_driver_method~8.5-dep-collation.fixture",
+			"call.pdo_driver_method~8.5-dep-function.fixture"
+		],
+		"reason": "sqliteCreateFunction(), sqliteCreateCollation() and sqliteCreateAggregate() were shown deprecated on 8.5 and are reported by name (not on $this, not in a file declaring a method of that name); the pgsql*() methods cannot be shown without pdo_pgsql and are not reported."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "The setAccessible() methods of various Reflection objects have been deprecated, as those no longer have an effect.",
+		"disposition": "rule",
+		"rule": "call.reflection_set_accessible",
+		"fixtures": [
+			"call.reflection_set_accessible~8.5-dep-method.fixture",
+			"call.reflection_set_accessible~8.5-dep-property.fixture"
+		],
+		"reason": "ReflectionProperty::setAccessible() and ReflectionMethod::setAccessible() raise the notice on 8.5; reported by method name with exactly one argument (the Reflection signature), except on $this or in a file that declares setAccessible(); a PHP version check marks it guarded."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "Calling ReflectionClass::getConstant() for constants that do not exist has been deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_get_constant_missing",
+		"fixtures": [
+			"runtime.reflection_get_constant_missing~8.5-dep.fixture"
+		],
+		"reason": "Depends on whether the constant exists in the reflected class, which is a run-time fact."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Reflection",
+		"quote": "Calling ReflectionProperty::getDefaultValue() for properties without default values has been deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_default_value_missing",
+		"fixtures": [
+			"runtime.reflection_default_value_missing~8.5-dep.fixture"
+		],
+		"reason": "Depends on the reflected property; the runtimes showed the notice only for a typed property without default (an untyped property has an implicit null default and raised nothing)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "Unregistering all autoloaders by passing the spl_autoload_call() function as a callback argument to spl_autoload_unregister() has been deprecated.",
+		"disposition": "rule",
+		"rule": "call.spl_autoload_unregister_call",
+		"fixtures": [
+			"call.spl_autoload_unregister_call~8.5-dep.fixture"
+		],
+		"reason": "spl_autoload_unregister() with the string 'spl_autoload_call' (any case, optional leading backslash) is reported; a callback held in a variable is not visible."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "The SplObjectStorage::contains(), SplObjectStorage::attach(), and SplObjectStorage::detach() methods have been deprecated in favour of SplObjectStorage::offsetExists(), SplObjectStorage::offsetSet(), and SplObjectStorage::offsetUnset() respectively.",
+		"disposition": "rule",
+		"rule": "call.splobjectstorage_method",
+		"fixtures": [
+			"call.splobjectstorage_method~8.5-dep-attach.fixture",
+			"call.splobjectstorage_method~8.5-dep-contains.fixture",
+			"call.splobjectstorage_method~8.5-dep-detach.fixture",
+			"call.splobjectstorage_method~8.5-dep-parameter.fixture",
+			"call.splobjectstorage_method~8.5-dep-property.fixture",
+			"call.splobjectstorage_method~8.5-dep-subclass.fixture"
+		],
+		"reason": "Reported only where the receiver is certainly an SplObjectStorage (new SplObjectStorage() in the same function, a parameter or property declared with that type, $this/parent:: in a direct subclass that does not override the method), because attach()/detach()/contains() are common names (SplSubject, collections); top-level code is not looked at."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "SPL",
+		"quote": "Using ArrayObject and ArrayIterator with objects has been deprecated.",
+		"disposition": "rule",
+		"rule": "argument.arrayobject_object",
+		"fixtures": [
+			"argument.arrayobject_object~8.5-dep-cast.fixture",
+			"argument.arrayobject_object~8.5-dep-new.fixture",
+			"argument.arrayobject_object~8.5-dep-this.fixture",
+			"runtime.arrayobject_object_variable~8.5-dep.fixture"
+		],
+		"reason": "new ArrayObject/ArrayIterator/RecursiveArrayIterator with new X(), $this, an (object) cast or a closure written as the first argument is reported (even an ArrayObject or ArrayIterator passed in raised it); an object held in a variable, and exchangeArray(), are runtime-only (runtime.arrayobject_object_variable)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The socket_set_timeout() alias function has been deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "socket_set_timeout is in data/catalog/functions.php (deprecated 8.5, verified)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Passing null to to readdir(), rewinddir(), and closedir() to use the last opened directory has been deprecated.",
+		"disposition": "rule",
+		"rule": "argument.dir_handle_missing",
+		"fixtures": [
+			"argument.dir_handle_missing~8.5-dep-closedir.fixture",
+			"argument.dir_handle_missing~8.5-dep-null.fixture",
+			"argument.dir_handle_missing~8.5-dep-readdir.fixture",
+			"argument.dir_handle_missing~8.5-dep-rewinddir.fixture"
+		],
+		"reason": "Calling readdir(), rewinddir() or closedir() with no argument raises the same \"Passing null is deprecated\" notice on 8.5 as a literal null, so both are reported; a null from a variable is not visible."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Passing integers outside the interval [0, 255] to chr() is now deprecated.",
+		"disposition": "rule",
+		"rule": "argument.chr_out_of_range",
+		"fixtures": [
+			"argument.chr_out_of_range~8.5-dep-negative.fixture",
+			"argument.chr_out_of_range~8.5-dep.fixture",
+			"runtime.chr_out_of_range_variable~8.5-dep.fixture"
+		],
+		"reason": "A literal integer above 255 or below 0 is reported; a computed value is runtime-only (runtime.chr_out_of_range_variable)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "Passing a string which is not a single byte to ord() is now deprecated, this is indicative of a bug.",
+		"disposition": "rule",
+		"rule": "argument.ord_not_one_byte",
+		"fixtures": [
+			"argument.ord_not_one_byte~8.5-dep-empty.fixture",
+			"argument.ord_not_one_byte~8.5-dep.fixture",
+			"runtime.ord_not_one_byte_variable~8.5-dep.fixture"
+		],
+		"reason": "A literal string of zero or more than one byte is reported (the empty string has its own notice on 8.5); a string from a variable, such as a multibyte character, is runtime-only (runtime.ord_not_one_byte_variable)."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The locally predefined variable $http_response_header is deprecated.",
+		"disposition": "rule",
+		"rule": "variable.http_response_header",
+		"fixtures": [
+			"variable.http_response_header~8.5-dep-foreach.fixture",
+			"variable.http_response_header~8.5-dep-function.fixture",
+			"variable.http_response_header~8.5-dep-global.fixture",
+			"variable.http_response_header~8.5-dep-method-argument.fixture",
+			"variable.http_response_header~8.5-dep-read-before-assign.fixture",
+			"variable.http_response_header~8.5-dep-user-function-argument.fixture",
+			"variable.http_response_header~8.5-dep.fixture"
+		],
+		"reason": "Compile-time notice for each read of the variable (also in never-called functions, via global/static, foreach into it, and as an argument of a method, a constructor or a function PHP does not know when compiling the call) until the same scope has assigned it in source order; isset(), empty(), ??, ++, unset(), closure use and by-reference internal arguments raised nothing and are not reported, nor are reads after an assignment in that scope."
+	},
+	{
+		"version": "8.5",
+		"section": "Deprecated Functionality",
+		"area": "XML",
+		"quote": "The xml_parser_free() function has been deprecated, as XMLParser objects are freed automatically.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "xml_parser_free is in data/catalog/functions.php (deprecated 8.5, verified)."
+	}
+]

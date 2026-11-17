@@ -1,0 +1,23 @@
+--RULE--
+callable.partially_supported
+--CLAIM--
+{}
+--CODE--
+<?php
+class Sorter {
+	public static function pick() {
+		return 2;
+	}
+
+	public static function run() {
+		if ( PHP_VERSION_ID < 80200 ) {
+			return call_user_func( 'self::pick' );
+		}
+
+		return call_user_func( array( self::class, 'pick' ) );
+	}
+}
+
+echo Sorter::run(), "\n";
+--SCAN--
+{ "guarded": true }

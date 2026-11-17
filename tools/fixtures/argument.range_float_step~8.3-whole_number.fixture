@@ -1,0 +1,8 @@
+--RULE--
+argument.range_float_step
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// Floats until 8.2, integers from 8.3.
+var_dump( range( 1, 5, 2.0 ) );

@@ -1,0 +1,17 @@
+--RULE--
+callable.partially_supported
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Sorter {
+	public static function pick() {
+		return 2;
+	}
+
+	public static function run() {
+		return call_user_func( 'self::pick' );
+	}
+}
+
+echo Sorter::run(), "\n";

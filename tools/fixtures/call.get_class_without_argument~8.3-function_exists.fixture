@@ -1,0 +1,14 @@
+--RULE--
+call.get_class_without_argument
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+// function_exists() for the function itself is no guard.
+class Shape {
+	public function parent_name() {
+		return function_exists( 'get_parent_class' ) ? get_parent_class() : false;
+	}
+}
+
+var_dump( ( new Shape() )->parent_name() );

@@ -1,0 +1,13 @@
+--RULE--
+call.splobjectstorage_method
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_remember( SplObjectStorage $storage, $item ) {
+	$storage->attach( $item );
+}
+
+$storage = new SplObjectStorage();
+upgw_remember( $storage, new stdClass() );
+var_dump( count( $storage ) );

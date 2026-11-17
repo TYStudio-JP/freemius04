@@ -1,0 +1,17 @@
+--RULE--
+runtime.dom_createattributens_prefix_conflict
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+$document = new DOMDocument();
+$root     = $document->createElement( 'root' );
+$document->appendChild( $root );
+
+try {
+	$root->setAttributeNodeNS( $document->createAttributeNS( 'urn:a', 'p:one' ) );
+	$root->setAttributeNodeNS( $document->createAttributeNS( 'urn:b', 'p:two' ) );
+	echo $document->saveXML( $root ), "\n";
+} catch ( DOMException $error ) {
+	echo 'DOMException ', $error->getCode(), "\n";
+}

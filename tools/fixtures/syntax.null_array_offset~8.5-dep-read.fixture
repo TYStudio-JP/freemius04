@@ -1,0 +1,8 @@
+--RULE--
+syntax.null_array_offset
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$values = array( '' => 'empty key' );
+var_dump( $values[null] );

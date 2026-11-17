@@ -1,0 +1,9 @@
+--RULE--
+runtime.constant_redeclaration
+--CLAIM--
+{}
+--CODE--
+<?php
+define( 'UPGW_TWICE', 1 );
+var_dump( @define( 'UPGW_TWICE', 2 ) );
+var_dump( UPGW_TWICE );

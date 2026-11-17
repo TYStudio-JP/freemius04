@@ -1,0 +1,7 @@
+--RULE--
+argument.range_digit_and_letter
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+echo json_encode( range( 'a', '3' ) ), "\n";

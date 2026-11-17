@@ -1,0 +1,8 @@
+--RULE--
+runtime.hash_bracket_comment
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+#[ temporary ] echo 'debug', "\n";
+echo 'done', "\n";

@@ -1,0 +1,9 @@
+--RULE--
+syntax.concat_precedence
+--CLAIM--
+{ "deprecated_in": "7.4", "changed_in": "8.0" }
+--CODE--
+<?php
+$count = 2;
+
+echo '5' . $count + 10, "\n";

@@ -1,0 +1,25 @@
+--RULE--
+runtime.partially_supported_callable_variable
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Base_Sorter {
+	public static function pick( $a = 0, $b = 0 ) {
+		return 1;
+	}
+}
+
+class Sorter extends Base_Sorter {
+	public static function pick( $a = 0, $b = 0 ) {
+		return 2;
+	}
+
+	public function run() {
+		$callback = 'self::' . 'pick';
+		
+		return call_user_func( $callback );
+	}
+}
+
+echo json_encode( ( new Sorter() )->run() ), "\n";

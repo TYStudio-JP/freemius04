@@ -1,0 +1,15 @@
+--RULE--
+call.reflection_set_accessible
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_Hidden_Method {
+	private function value() {
+		return 5;
+	}
+}
+
+$method = new ReflectionMethod( 'Upgw_Hidden_Method', 'value' );
+$method->setAccessible( true );
+var_dump( $method->invoke( new Upgw_Hidden_Method() ) );

@@ -1,0 +1,15 @@
+--RULE--
+runtime.backtrace_reference_args
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function clean( &$value ) {
+	$trace                 = debug_backtrace();
+	$trace[0]['args'][0] = 'changed through the trace';
+
+	return $value;
+}
+
+$original = 'original';
+echo clean( $original ), "\n";

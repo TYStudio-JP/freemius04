@@ -1,0 +1,7 @@
+--RULE--
+constant.class_deprecated
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+var_dump( is_int( PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT ) );

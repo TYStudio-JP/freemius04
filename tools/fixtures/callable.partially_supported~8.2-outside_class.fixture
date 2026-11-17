@@ -1,0 +1,17 @@
+--RULE--
+callable.partially_supported
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Base_Sorter {
+	public static function pick() {
+		return 1;
+	}
+}
+
+class Sorter extends Base_Sorter {
+}
+
+// No class scope is needed for this form.
+echo call_user_func( array( 'Sorter', 'Base_Sorter::pick' ) ), "\n";

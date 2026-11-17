@@ -1,0 +1,11 @@
+--RULE--
+function.autoload_declared
+--CLAIM--
+{ "deprecated_in": "7.2", "breaks_in": "8.0" }
+--CODE--
+<?php
+function __autoload( $class ) {
+	echo 'loading ', $class, "\n";
+}
+
+echo class_exists( 'Not_There' ) ? 'found' : 'not found', "\n";

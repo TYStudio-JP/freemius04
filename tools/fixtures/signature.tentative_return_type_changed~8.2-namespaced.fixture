@@ -1,0 +1,17 @@
+--RULE--
+signature.tentative_return_type_changed
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+namespace Acme\Dates;
+
+use DateTime as Base;
+
+class Local_Date extends Base {
+	public static function createFromImmutable( $object ): Base {
+		return new self( $object->format( 'Y-m-d' ) );
+	}
+}
+
+echo Local_Date::createFromImmutable( new \DateTimeImmutable( '2020-01-02' ) )->format( 'Y-m-d' ), "\n";

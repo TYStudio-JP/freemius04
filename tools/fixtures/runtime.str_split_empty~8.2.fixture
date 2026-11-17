@@ -1,0 +1,9 @@
+--RULE--
+runtime.str_split_empty
+--CLAIM--
+{ "changed_in": "8.2" }
+--CODE--
+<?php
+$text = '';
+
+echo count( str_split( $text ) ), "\n";

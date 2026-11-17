@@ -1,0 +1,19 @@
+--RULE--
+runtime.dynamic_property_allowed
+--CLAIM--
+{}
+--CODE--
+<?php
+#[\AllowDynamicProperties]
+class Counter {
+	public function start() {
+		$this->count = 1;
+
+		return $this->count;
+	}
+}
+
+$plain       = new stdClass();
+$plain->name = 'x';
+
+echo ( new Counter() )->start(), $plain->name, "\n";

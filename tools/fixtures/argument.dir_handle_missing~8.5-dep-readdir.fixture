@@ -1,0 +1,10 @@
+--RULE--
+argument.dir_handle_missing
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$handle = opendir( __DIR__ );
+$entry  = readdir();
+closedir( $handle );
+var_dump( is_string( $entry ) );

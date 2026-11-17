@@ -1,0 +1,11 @@
+--RULE--
+runtime.strtolower_locale
+--CLAIM--
+{}
+--CODE--
+<?php
+// The runtimes here accept the locale name but have no locale data, so the
+// byte 0xC4 (A with diaeresis in ISO-8859-1) is left alone on every version.
+// On a server with real locales, PHP before 8.2 lowered it to 0xE4.
+echo false === setlocale( LC_ALL, 'de_DE.ISO-8859-1', 'de_DE' ) ? 'no locale' : 'locale set', "\n";
+echo bin2hex( strtolower( "\xC4BC" ) ), ' ', bin2hex( strtoupper( "\xE4bc" ) ), ' ', bin2hex( ucfirst( "\xE4bc" ) ), "\n";

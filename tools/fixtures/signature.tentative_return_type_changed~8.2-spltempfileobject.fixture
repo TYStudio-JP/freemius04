@@ -1,0 +1,14 @@
+--RULE--
+signature.tentative_return_type_changed
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Scratch extends SplTempFileObject {
+	public function hasChildren(): bool {
+		return false;
+	}
+}
+
+$file = new Scratch();
+echo $file->hasChildren() ? "children\n" : "no children\n";

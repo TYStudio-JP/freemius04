@@ -1,0 +1,13 @@
+--RULE--
+class.dom_member_conflict
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+class My_Node extends DOMText {
+	public function contains( $needle ) {
+		return false !== strpos( $this->data, $needle );
+	}
+}
+
+echo "loaded\n";

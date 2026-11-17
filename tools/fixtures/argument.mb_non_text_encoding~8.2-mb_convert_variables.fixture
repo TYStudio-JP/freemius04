@@ -1,0 +1,10 @@
+--RULE--
+argument.mb_non_text_encoding
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+$text = "caf\xC3\xA9";
+
+mb_convert_variables( 'HTML-ENTITIES', 'UTF-8', $text );
+echo $text, "\n";

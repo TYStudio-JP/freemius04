@@ -1,0 +1,10 @@
+--RULE--
+runtime.range_new_warning
+--CLAIM--
+{}
+--CODE--
+<?php
+// Same result on every version; from 8.3 with an E_WARNING, which the claim
+// format does not record (see the messages in the observed record).
+$start = '';
+echo json_encode( range( $start, 2 ) ), "\n";

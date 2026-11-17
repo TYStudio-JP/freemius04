@@ -1,0 +1,10 @@
+--RULE--
+runtime.anonymous_class_name
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$list = new class extends ArrayObject {
+};
+
+echo strstr( get_class( $list ), "\0", true ), "\n";

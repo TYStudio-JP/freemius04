@@ -1,0 +1,8 @@
+--RULE--
+argument.range_negative_step
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+// Until 8.2 the sign of the step is ignored; from 8.3 this is a ValueError.
+echo json_encode( range( 1, 5, -1 ) ), "\n";

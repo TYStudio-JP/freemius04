@@ -1,0 +1,10 @@
+--RULE--
+argument.mb_non_text_encoding
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+// function_exists() is true on every version and keeps no notice away.
+if ( function_exists( 'mb_convert_encoding' ) ) {
+	echo mb_convert_encoding( "caf\xC3\xA9", 'HTML-ENTITIES', 'UTF-8' ), "\n";
+}

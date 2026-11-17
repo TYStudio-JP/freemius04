@@ -1,0 +1,19 @@
+--RULE--
+call.get_class_without_argument
+--CLAIM--
+{}
+--CODE--
+<?php
+class Shape {
+	public function parent_name() {
+		if ( PHP_VERSION_ID < 80300 ) {
+			return get_parent_class();
+		}
+
+		return get_parent_class( $this );
+	}
+}
+
+var_dump( ( new Shape() )->parent_name() );
+--SCAN--
+{ "guarded": true }

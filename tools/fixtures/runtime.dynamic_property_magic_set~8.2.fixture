@@ -1,0 +1,21 @@
+--RULE--
+runtime.dynamic_property_magic_set
+--CLAIM--
+{}
+--CODE--
+<?php
+class Bag {
+	private $data = array();
+
+	public function __set( $name, $value ) {
+		$this->data[ $name ] = $value;
+	}
+
+	public function fill() {
+		$this->value = 'real';
+
+		return count( $this->data );
+	}
+}
+
+echo ( new Bag() )->fill(), "\n";

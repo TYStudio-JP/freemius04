@@ -1,0 +1,16 @@
+--RULE--
+runtime.unbind_this_method
+--CLAIM--
+{ "deprecated_in": "7.4", "changed_in": "8.0" }
+--CODE--
+<?php
+class Widget {
+	public function name() {
+		return 'widget';
+	}
+}
+
+$closure = Closure::fromCallable( array( new Widget(), 'name' ) );
+$unbound = $closure->bindTo( null );
+
+echo null === $unbound ? 'not unbound' : 'unbound', "\n";

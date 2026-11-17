@@ -1,0 +1,12 @@
+--RULE--
+runtime.reflection_get_constant_missing
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_With_Constant {
+	const PRESENT = 1;
+}
+
+$class = new ReflectionClass( 'Upgw_With_Constant' );
+var_dump( $class->getConstant( 'MISSING' ) );

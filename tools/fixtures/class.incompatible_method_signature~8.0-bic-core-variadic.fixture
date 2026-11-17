@@ -1,0 +1,19 @@
+--RULE--
+class.incompatible_method_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Base_Logger {
+	public function log( ...$parts ) {
+		return implode( ' ', $parts );
+	}
+}
+
+class File_Logger extends Base_Logger {
+	public function log( $message ) {
+		return $message;
+	}
+}
+
+echo 'declared', "\n";

@@ -1,0 +1,20 @@
+--RULE--
+runtime.unbind_this_closure
+--CLAIM--
+{ "deprecated_in": "7.4", "changed_in": "8.0" }
+--CODE--
+<?php
+class Widget {
+	public $name = 'widget';
+
+	public function getter() {
+		return function () {
+			return $this->name;
+		};
+	}
+}
+
+$widget  = new Widget();
+$unbound = $widget->getter()->bindTo( null );
+
+echo null === $unbound ? 'not unbound' : 'unbound', "\n";

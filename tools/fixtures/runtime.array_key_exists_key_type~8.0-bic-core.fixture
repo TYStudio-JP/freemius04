@@ -1,0 +1,9 @@
+--RULE--
+runtime.array_key_exists_key_type
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$flag = true;
+
+echo array_key_exists( $flag, array( 1 => 'one' ) ) ? 'found' : 'not found', "\n";

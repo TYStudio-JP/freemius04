@@ -1,0 +1,21 @@
+--RULE--
+runtime.dynamic_property_declared_by_child
+--CLAIM--
+{}
+--CODE--
+<?php
+// The same assignment in an abstract class: nothing happens when the
+// class that is instantiated declares the property.
+abstract class Base_Widget {
+	public function boot() {
+		$this->title = 'set';
+
+		return $this->title;
+	}
+}
+
+class Widget extends Base_Widget {
+	public $title;
+}
+
+echo ( new Widget() )->boot(), "\n";

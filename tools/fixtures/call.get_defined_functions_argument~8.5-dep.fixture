@@ -1,0 +1,8 @@
+--RULE--
+call.get_defined_functions_argument
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$functions = get_defined_functions( true );
+var_dump( isset( $functions['internal'] ) );

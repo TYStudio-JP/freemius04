@@ -1,0 +1,9 @@
+--RULE--
+runtime.non_numeric_string_arithmetic
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$quantity = 'many';
+
+echo $quantity * 2, "\n";

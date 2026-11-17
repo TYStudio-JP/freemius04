@@ -1,0 +1,8 @@
+--RULE--
+argument.range_negative_step
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+// Two digits written as strings.
+echo json_encode( range( '1', '5', -1 ) ), "\n";

@@ -1,0 +1,11 @@
+--RULE--
+runtime.engine_error
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$map            = array();
+$key            = array( 'id' );
+$map[ $key ]    = 'value';
+
+echo count( $map ), "\n";

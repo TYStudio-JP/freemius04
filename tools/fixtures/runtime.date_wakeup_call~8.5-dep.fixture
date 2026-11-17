@@ -1,0 +1,9 @@
+--RULE--
+runtime.date_wakeup_call
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$interval = new DateInterval( 'P1D' );
+$interval->__wakeup();
+var_dump( $interval->d );

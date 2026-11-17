@@ -1,0 +1,16 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Holder {
+	public function hold( array &$data ) {
+		$this->data = &$data;
+
+		return count( $this->data );
+	}
+}
+
+$data = array( 1, 2 );
+echo ( new Holder() )->hold( $data ), "\n";

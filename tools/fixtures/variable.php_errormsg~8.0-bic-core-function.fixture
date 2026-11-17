@@ -1,0 +1,16 @@
+--RULE--
+variable.php_errormsg
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function read_settings() {
+	ini_set( 'track_errors', '1' );
+	set_error_handler( null );
+	$contents = @file_get_contents( '/no/such/file' );
+	restore_error_handler();
+
+	return false === $contents && isset( $php_errormsg ) ? 'failed with a message' : 'failed silently';
+}
+
+echo read_settings(), "\n";

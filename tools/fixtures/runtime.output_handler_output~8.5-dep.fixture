@@ -1,0 +1,15 @@
+--RULE--
+runtime.output_handler_output
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_output_handler( $buffer ) {
+	echo 'noise';
+
+	return strtoupper( $buffer );
+}
+
+ob_start( 'upgw_output_handler' );
+echo "hello\n";
+ob_end_flush();

@@ -1,0 +1,10 @@
+--RULE--
+runtime.string_offset_multibyte
+--CLAIM--
+{}
+--CODE--
+<?php
+$code    = 'abc';
+$code[0] = 'xy';
+
+echo $code, "\n";

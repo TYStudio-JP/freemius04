@@ -1,0 +1,13 @@
+--RULE--
+call.finfo_buffer_context
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_mime( $text ) {
+	$info = new finfo( FILEINFO_MIME_TYPE );
+
+	return $info->buffer( $text, FILEINFO_MIME_TYPE, stream_context_create() );
+}
+
+echo upgw_mime( 'plain text' ), "\n";

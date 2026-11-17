@@ -1,0 +1,9 @@
+--RULE--
+call.pdo_uri_dsn
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+file_put_contents( sys_get_temp_dir() . '/upgw-dsn.txt', 'sqlite::memory:' );
+$pdo = new PDO( 'uri:file://' . sys_get_temp_dir() . '/upgw-dsn.txt' );
+echo $pdo->query( 'SELECT 1 + 1' )->fetchColumn(), "\n";

@@ -1,0 +1,621 @@
+[
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "`match` is now a reserved keyword.",
+		"disposition": "rule",
+		"rule": "syntax.reserved_name",
+		"fixtures": [
+			"syntax.reserved_name.fixture",
+			"syntax.match_class_name~8.0-bic-core-class.fixture",
+			"syntax.match_class_name~8.0-bic-core-interface.fixture"
+		],
+		"reason": "A function called match is the existing syntax.reserved_name (ReservedNames); a class, interface or trait called match (a parse error from 8.0, in a namespace too) is the new syntax.match_class_name (Php80BicCoreMatchClassName); methods and class constants called match still work on 8.0 and are not reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Assertion failures now throw by default.",
+		"disposition": "runtime-only",
+		"rule": "runtime.assert_throws",
+		"fixtures": [
+			"runtime.assert_throws~8.0-bic-core.fixture"
+		],
+		"reason": "Whether an assert() fails depends on the value it checks (and on zend.assertions); the runtimes show a warning on 7.4 and an uncaught AssertionError from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Methods with the same name as the class are no longer interpreted as constructors.",
+		"disposition": "rule",
+		"rule": "syntax.php4_constructor",
+		"fixtures": [
+			"syntax.php4_constructor.fixture",
+			"syntax.php4_constructor~by_position.fixture",
+			"syntax.php4_constructor~parent_call.fixture",
+			"syntax.php4_constructor~reference_and_rest.fixture"
+		],
+		"reason": "Covered by the existing OldConstructor rule and its fixtures."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed ability to call non-static methods statically.",
+		"disposition": "rule",
+		"rule": "call.non_static_method_statically",
+		"fixtures": [
+			"call.non_static_method_statically~8.0-bic-core-function.fixture",
+			"call.non_static_method_statically~8.0-bic-core-inherited.fixture",
+			"call.non_static_method_statically~8.0-bic-core-other_class.fixture",
+			"call.non_static_method_statically~8.0-bic-core-static_method.fixture",
+			"call.non_static_method_statically~8.0-bic-core-top_level.fixture",
+			"callable.non_static_method_statically~8.0-bic-core-array.fixture",
+			"callable.non_static_method_statically~8.0-bic-core-call_user_func_array.fixture",
+			"callable.non_static_method_statically~8.0-bic-core-string.fixture",
+			"call.is_callable_non_static_method~8.0-bic-core.fixture"
+		],
+		"reason": "Php80BicCoreNonStaticCall reports Class::method(), call_user_func( array( 'Class', 'method' ) ) / 'Class::method' (deprecated 7.0, Error from 8.0) and is_callable() of such a callable (true on 7.4, false from 8.0), only when class and method are in the same file and the call cannot have a $this of that class; calls in closures and through WordPress hooks (add_action) are not judged."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed (real) cast.",
+		"disposition": "rule",
+		"rule": "syntax.real_cast",
+		"fixtures": [
+			"syntax.real_cast.fixture"
+		],
+		"reason": "Covered by the existing Casts rule."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed (unset) cast.",
+		"disposition": "rule",
+		"rule": "syntax.unset_cast",
+		"fixtures": [
+			"syntax.unset_cast.fixture"
+		],
+		"reason": "Covered by the existing Casts rule."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed track_errors ini directive.",
+		"disposition": "rule",
+		"rule": "variable.php_errormsg",
+		"fixtures": [
+			"variable.php_errormsg~8.0-bic-core-function.fixture",
+			"variable.php_errormsg~8.0-bic-core.fixture"
+		],
+		"reason": "Php80BicCorePhpErrormsg reports a read of $php_errormsg after an @ in the same scope (changed in 8.0: it is never set); the runtimes show no deprecation on 7.4 for ini_set( 'track_errors' ), and from 8.0 ini_set/ini_get of it return false."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed the ability to define case-insensitive constants.",
+		"disposition": "rule",
+		"rule": "call.define_case_insensitive",
+		"fixtures": [
+			"call.define_case_insensitive~8.0-bic-core.fixture"
+		],
+		"reason": "Php80BicCoreDefineCaseInsensitive reports define( 'NAME', v, true ) when the same file uses the constant in another case (unqualified or \\NAME; Other\\NAME is another constant) (deprecated 7.3, Error from 8.0); with every use in the defined case the runtimes show only a warning from 8.0 and the same output, which no finding level describes, so that part is not reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Access to undefined constants now always results in an Error exception.",
+		"disposition": "runtime-only",
+		"rule": "runtime.undefined_constant",
+		"fixtures": [
+			"runtime.undefined_constant~8.0-bic-core.fixture"
+		],
+		"reason": "Whether a bare constant is defined depends on what other files (WordPress core, other plugins) define at run time; 7.4 warned and used the name as a string, 8.0 throws Error."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed ability to specify an autoloader using an __autoload() function.",
+		"disposition": "rule",
+		"rule": "function.autoload_declared",
+		"fixtures": [
+			"function.autoload_declared~8.0-bic-core.fixture"
+		],
+		"reason": "Php80BicCoreAutoloadFunction reports a global function named __autoload (deprecated 7.2 at compile time, a compile error from 8.0 even if never used); namespaced functions and methods of that name are fine on 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed the $errcontext argument for custom error handlers.",
+		"disposition": "rule",
+		"rule": "callable.error_handler_errcontext",
+		"fixtures": [
+			"callable.error_handler_errcontext~8.0-bic-core-closure.fixture",
+			"callable.error_handler_errcontext~8.0-bic-core-function.fixture"
+		],
+		"reason": "Php80BicCoreErrorHandlerContext reports a set_error_handler() closure, arrow function or same-file function whose fifth parameter has no default: ArgumentCountError from 8.0 at the first error; 7.4 raised no deprecation for it."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed create_function().",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [
+			"function.removed.fixture"
+		],
+		"reason": "create_function is in data/catalog/functions.php (deprecated 7.2, removed 8.0) and reported by InternalFunctions."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed each().",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [
+			"function.removed.fixture"
+		],
+		"reason": "each is in data/catalog/functions.php (deprecated 7.2, removed 8.0) and reported by InternalFunctions."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed ability to unbind $this from closures that were created from a method, using Closure::fromCallable() or ReflectionMethod::getClosure().",
+		"disposition": "runtime-only",
+		"rule": "runtime.unbind_this_method",
+		"fixtures": [
+			"runtime.unbind_this_method~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on which closure object reaches bindTo( null ) at run time; the runtimes show a deprecation and an unbound closure on 7.4, a warning and null from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Also removed ability to unbind $this from proper closures that contain uses of $this.",
+		"disposition": "runtime-only",
+		"rule": "runtime.unbind_this_closure",
+		"fixtures": [
+			"runtime.unbind_this_closure~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on which closure reaches bindTo( null ) at run time; deprecated on 7.4, a warning and null from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed ability to use array_key_exists() with objects.",
+		"disposition": "runtime-only",
+		"rule": "runtime.array_key_exists_object",
+		"fixtures": [
+			"runtime.array_key_exists_object~8.0-bic-core.fixture"
+		],
+		"reason": "Whether the second argument is an object is a run-time value; deprecated on 7.4, TypeError from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Made the behavior of array_key_exists() regarding the type of the key parameter consistent with isset() and normal array access.",
+		"disposition": "runtime-only",
+		"rule": "runtime.array_key_exists_key_type",
+		"fixtures": [
+			"runtime.array_key_exists_key_type~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on the type of the key value; a bool key gave a warning and false on 7.4 and is coerced (true) from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Any array that has a number n as its first numeric key will use n+1 for its next implicit key, even if n is negative.",
+		"disposition": "rule",
+		"rule": "array.negative_key_then_implicit",
+		"fixtures": [
+			"array.negative_key_then_implicit~8.0-bic-core-literal.fixture",
+			"array.negative_key_then_implicit~8.0-bic-core-short_syntax_variables.fixture",
+			"array.negative_key_then_implicit~8.0-bic-core-string_key.fixture"
+		],
+		"reason": "Php80BicCoreNegativeArrayKey works out the keys of an array literal with literal keys on both versions and reports it when they differ (changed in 8.0, also with variable values); appending to an existing array ($a[] = after $a[-5]) changed only in 8.3 on the runtimes and belongs to the 8.3 ledger."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The default error_reporting level is now E_ALL.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A php.ini default (error_reporting), not something PHP source code expresses."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "display_startup_errors is now enabled by default.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A php.ini default (display_startup_errors), not something PHP source code expresses."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Using \"parent\" inside a class that has no parent will now result in a fatal compile-time error.",
+		"disposition": "rule",
+		"rule": "class.parent_without_parent",
+		"fixtures": [
+			"class.parent_without_parent~8.0-bic-core-anonymous.fixture",
+			"class.parent_without_parent~8.0-bic-core-call.fixture",
+			"class.parent_without_parent~8.0-bic-core-type.fixture"
+		],
+		"reason": "Php80BicCoreParentWithoutParent reports parent (calls, constants, new parent, types) in a class or anonymous class without extends: deprecated 7.4 at compile time, compile error from 8.0; inside closures the runtimes compile it on 8.0, so those are not reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The @ operator will no longer silence fatal errors (E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR, E_PARSE).",
+		"disposition": "rule",
+		"rule": "call.error_reporting_zero_check",
+		"fixtures": [
+			"call.error_reporting_zero_check~8.0-bic-core-equal.fixture",
+			"call.error_reporting_zero_check~8.0-bic-core-not.fixture"
+		],
+		"reason": "Php80BicCoreErrorReportingZero reports error_reporting() == / === / != / !== 0 and ! error_reporting() inside a function, method or closure with two to five parameters in a file that calls set_error_handler (the handler idiom the notes name; elsewhere the comparison asks whether reporting is off altogether, which means the same on 8.0): on @ the handler saw 0 on 7.4 and 4437 from 8.0 (changed). That @ no longer hides fatal errors themselves depends on run time and is not reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Following the hash comment operator # immediately with an opening bracket is not supported as a comment anymore since this syntax is now used for attributes.",
+		"disposition": "not-detectable",
+		"rule": "runtime.hash_bracket_comment",
+		"fixtures": [
+			"runtime.hash_bracket_comment~8.0-bic-core.fixture"
+		],
+		"reason": "Real (parse error from 8.0, fixture), but the scanner cannot see it: the bundled php-parser has no reverse emulation for #[ (AttributeEmulator::reverseEmulate is a TODO), so such a file is rejected by both grammars and only shows up as 'could not be parsed'; a #[ that parses as an attribute on 8.0 is ordinary modern code."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Inheritance errors due to incompatible method signatures (LSP violations) will now always generate a fatal error.",
+		"disposition": "rule",
+		"rule": "class.incompatible_method_signature",
+		"fixtures": [
+			"class.incompatible_method_signature~8.0-bic-core-by_reference.fixture",
+			"class.incompatible_method_signature~8.0-bic-core-fewer.fixture",
+			"class.incompatible_method_signature~8.0-bic-core-required.fixture",
+			"class.incompatible_method_signature~8.0-bic-core-variadic.fixture"
+		],
+		"reason": "Php80BicCoreIncompatibleOverride reports an override of a concrete parent method in the same file whose parameter list conflicts (more required, fewer, dropped variadic, by-reference): warning on 7.4, compile error from 8.0; types are not compared, and parents in other files (WP_Widget, Walker_Nav_Menu) are not judged."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The precedence of the concatenation operator has changed relative to bitshifts and addition as well as subtraction.",
+		"disposition": "rule",
+		"rule": "syntax.concat_precedence",
+		"fixtures": [
+			"syntax.concat_precedence~8.0-bic-core-minus.fixture",
+			"syntax.concat_precedence~8.0-bic-core-plus.fixture",
+			"syntax.concat_precedence~8.0-bic-core-shift.fixture"
+		],
+		"reason": "Php80BicCoreConcatPrecedence reports '.' followed by an unparenthesized +, -, << or >> (deprecated 7.4 at compile time, changed from 8.0); arithmetic before the '.' means the same on every version."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Arguments with a default value that resolves to null at runtime will no longer implicitly mark the argument type as nullable.",
+		"disposition": "runtime-only",
+		"rule": "runtime.default_constant_null",
+		"fixtures": [
+			"runtime.default_constant_null~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on the value of the constant at run time (usually defined elsewhere); with a null value the call ran on 7.4 and is a TypeError from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "A number of warnings have been converted into Error exceptions:",
+		"disposition": "runtime-only",
+		"rule": "runtime.engine_error",
+		"fixtures": [
+			"runtime.engine_error~8.0-bic-core-append_after_int_max.fixture",
+			"runtime.engine_error~8.0-bic-core-illegal_offset_type.fixture",
+			"runtime.engine_error~8.0-bic-core-property_on_null.fixture",
+			"runtime.engine_error~8.0-bic-core-scalar_as_array.fixture",
+			"runtime.engine_error~8.0-bic-core-unpack_non_array.fixture"
+		],
+		"reason": "Every listed case depends on run-time values (null or scalar variables, PHP_INT_MAX keys, array keys, unpacked strings); the five warnings are Errors from 8.0 on the runtimes. The notice-to-warning half changes no output and no claim can express it, so it has no fixture."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Attempting to assign multiple bytes to a string offset will now emit a warning.",
+		"disposition": "runtime-only",
+		"rule": "runtime.string_offset_multibyte",
+		"fixtures": [
+			"runtime.string_offset_multibyte~8.0-bic-core.fixture"
+		],
+		"reason": "Whether the target is a string and the value longer than one byte is a run-time matter; the runtimes show only a new warning from 8.0 and the same result, hence the empty claim."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Unexpected characters in source files (such as null bytes outside of strings) will now result in a ParseError exception instead of a compile warning.",
+		"disposition": "not-detectable",
+		"rule": "runtime.unexpected_character",
+		"fixtures": [
+			"runtime.unexpected_character~8.0-bic-core.fixture"
+		],
+		"reason": "Real (7.4 ran it, ParseError from 8.0, fixture), but the scanner's parser rejects such a file with both grammars, so it is only reported as 'could not be parsed'; stray NUL bytes are not plausible in plugin source."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Uncaught exceptions now go through \"clean shutdown\", which means that destructors will be called after an uncaught exception.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Destructors after an uncaught exception run after the fixture harness has written its report (the harness also catches every throwable itself), so no fixture can show the difference; whether an exception goes uncaught is a run-time matter."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Compile time fatal error \"Only variables can be passed by reference\" has been delayed until runtime and converted to \"Argument cannot be passed by reference\" exception.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Only moves an error from compile time to run time: code with such a call failed on 7.4 already, and code that ran on 7.4 is unaffected, so there is nothing to report."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Some \"Only variables should be passed by reference\" notices have been converted to \"Argument cannot be passed by reference\" exception.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The runtimes did not show any converted case: dynamic calls with a literal for a by-reference parameter were already an Error on 7.4, and end( explode() ) and call_user_func_array() with values stay a notice/warning on 8.5; without an observed case nothing is reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The generated name for anonymous classes has changed.",
+		"disposition": "runtime-only",
+		"rule": "runtime.anonymous_class_name",
+		"fixtures": [
+			"runtime.anonymous_class_name~8.0-bic-core.fixture"
+		],
+		"reason": "Only code that inspects the generated class name sees it, and that is a run-time string; class@anonymous on 7.4, ArrayObject@anonymous from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Non-absolute trait method references in trait alias adaptations are now required to be unambiguous:",
+		"disposition": "rule",
+		"rule": "class.ambiguous_trait_alias",
+		"fixtures": [
+			"class.ambiguous_trait_alias~8.0-bic-core-insteadof.fixture",
+			"class.ambiguous_trait_alias~8.0-bic-core-two_uses.fixture",
+			"class.ambiguous_trait_alias~8.0-bic-core.fixture"
+		],
+		"reason": "Php80BicCoreAmbiguousTraitAlias reports an alias without a trait name for a method that two used traits in the same file have; the runtimes show the 8.0 compile error even when insteadof settles the conflict and for visibility-only aliases."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The signature of abstract methods defined in traits is now checked against the implementing class method:",
+		"disposition": "rule",
+		"rule": "class.abstract_trait_method_mismatch",
+		"fixtures": [
+			"class.abstract_trait_method_mismatch~8.0-bic-core-parameters.fixture",
+			"class.abstract_trait_method_mismatch~8.0-bic-core-return_type.fixture"
+		],
+		"reason": "Php80BicCoreAbstractTraitMethod reports a class method that conflicts with a public/protected abstract trait method of the same file (parameter list, or different built-in scalar return types); 7.4 accepted it silently. The notes' own example (abstract private) is a compile error on 7.4 already."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Disabled functions are now treated exactly like non-existent functions.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "disable_functions is an INI setting of the host, not something the source expresses."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "data: stream wrappers are no longer writable, which matches the documented behavior.",
+		"disposition": "runtime-only",
+		"rule": "runtime.data_stream_not_writable",
+		"fixtures": [
+			"runtime.data_stream_not_writable~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on the stream URL and mode at run time; fopen( 'data:...', 'w' ) fails on every version, while 'r+' wrote on 7.4 and fwrite() returns false from 8.0. Not plausible as literal code in plugins."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "The arithmetic and bitwise operators +, -, *, /, **, %, <<, >>, &, |, ^, ~, ++, -- will now consistently throw a TypeError when one of the operands is an array, resource or non-overloaded object.",
+		"disposition": "runtime-only",
+		"rule": "runtime.arithmetic_on_object",
+		"fixtures": [
+			"runtime.arithmetic_on_object~8.0-bic-core.fixture"
+		],
+		"reason": "Operand types are run-time values; object + 1 was a notice on 7.4 and a TypeError from 8.0 (array + int was already fatal on 7.4)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Float to string casting will now always behave locale-independently.",
+		"disposition": "runtime-only",
+		"rule": "runtime.float_to_string_locale",
+		"fixtures": [
+			"runtime.float_to_string_locale~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on the locale set at run time; the php-wasm runtimes accept setlocale( LC_ALL, 'de_DE.UTF-8' ) but print 1.5 on 7.4 too, so the change cannot be shown here and the fixture claim is empty."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Removed support for deprecated curly braces for offset access",
+		"disposition": "rule",
+		"rule": "syntax.curly_offset",
+		"fixtures": [
+			"syntax.curly_offset.fixture"
+		],
+		"reason": "Covered by the existing CurlyOffset rule."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Applying the final modifier on a private method will now produce a warning unless that method is the constructor.",
+		"disposition": "not-detectable",
+		"rule": "runtime.final_private_method",
+		"fixtures": [
+			"runtime.final_private_method~8.0-bic-core.fixture"
+		],
+		"reason": "Visible in the source, but on every runtime it is only a compile warning (seen through error_get_last(), as a user error handler never gets E_COMPILE_WARNING) with unchanged behaviour; the finding levels (deprecated, changed, error) have no level for a warning, so no rule reports it."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "If an object constructor exit()s, the object destructor will no longer be called.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Whether a constructor reaches exit() is a run-time matter, and the destructor output on 7.4 comes after the fixture harness has written its report, so the runtimes cannot be shown the difference here."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Non-strict comparisons between numbers and non-numeric strings now work by casting the number to string and comparing the strings.",
+		"disposition": "runtime-only",
+		"rule": "runtime.string_number_comparison",
+		"fixtures": [
+			"runtime.string_number_comparison~8.0-bic-core.fixture"
+		],
+		"reason": "Depends on the values compared; 0 == 'not-a-number' is true on 7.4 and false from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Namespaced names can no longer contain whitespace: While `Foo\\Bar` will be recognized as a namespaced name, `Foo \\ Bar` will not.",
+		"disposition": "not-detectable",
+		"rule": "runtime.namespaced_name_whitespace",
+		"fixtures": [
+			"runtime.namespaced_name_whitespace~8.0-bic-core.fixture"
+		],
+		"reason": "Real (parse error from 8.0, fixture), but the bundled php-parser reads names as single tokens with both grammars, so such a file is only reported as 'could not be parsed'; the new\\x reinterpretation is not plausible in plugin code."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Nested ternaries now require explicit parentheses.",
+		"disposition": "rule",
+		"rule": "syntax.nested_ternary",
+		"fixtures": [
+			"syntax.nested_ternary.fixture"
+		],
+		"reason": "Covered by the existing NestedTernary rule."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "debug_backtrace() and Exception::getTrace() will no longer provide references to arguments.",
+		"disposition": "runtime-only",
+		"rule": "runtime.backtrace_reference_args",
+		"fixtures": [
+			"runtime.backtrace_reference_args~8.0-bic-core.fixture"
+		],
+		"reason": "Only code that writes into debug_backtrace() args sees it, and which frame is written is a run-time value; with a by-reference parameter the write reached the variable on 7.4 and no longer from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Numeric string handling has been altered to be more intuitive and less error-prone.",
+		"disposition": "runtime-only",
+		"rule": "runtime.numeric_string_trailing_whitespace",
+		"fixtures": [
+			"runtime.numeric_string_trailing_whitespace~8.0-bic-core.fixture",
+			"runtime.non_numeric_string_arithmetic~8.0-bic-core.fixture"
+		],
+		"reason": "String contents are run-time values; is_numeric( '42 ' ) is false on 7.4 and true from 8.0, and 'many' * 2 was a warning on 7.4 and is a TypeError from 8.0. '5 apples' + 1 only went from notice to warning with the same result."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Magic Methods will now have their arguments and return types checked if they have them declared.",
+		"disposition": "rule",
+		"rule": "class.magic_method_signature",
+		"fixtures": [
+			"class.magic_method_signature~8.0-bic-core-get_param.fixture",
+			"class.magic_method_signature~8.0-bic-core-isset_nullable.fixture",
+			"class.magic_method_signature~8.0-bic-core-isset_return.fixture",
+			"class.magic_method_signature~8.0-bic-core-set_return.fixture",
+			"class.magic_method_signature~8.0-bic-core-set_state_return.fixture",
+			"class.magic_method_signature~8.0-bic-core-sleep_return.fixture",
+			"class.magic_method_signature~8.0-bic-core-tostring_return.fixture",
+			"class.magic_method_signature~8.0-bic-core-unset_param.fixture",
+			"class.magic_method_signature~8.0-bic-core-wakeup_return.fixture"
+		],
+		"reason": "Php80BicCoreMagicMethodSignature reports declared magic method types 8.0 rejects at compile time (wrong return type of __isset/__set/__unset/__wakeup/__sleep/__serialize/__unserialize/__toString/__set_state, non-string name parameter); the runtimes also reject __toString(): int although the notes do not list __toString, and accept __set( $n, int $v )."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "call_user_func_array() array keys will now be interpreted as parameter names, instead of being silently ignored.",
+		"disposition": "rule",
+		"rule": "call.call_user_func_array_named_error",
+		"fixtures": [
+			"call.call_user_func_array_named_error~8.0-bic-core-closure.fixture",
+			"call.call_user_func_array_named_error~8.0-bic-core-positional_after_named.fixture",
+			"call.call_user_func_array_named_error~8.0-bic-core-unknown_name.fixture",
+			"call.call_user_func_array_named_order~8.0-bic-core-default_skipped.fixture",
+			"call.call_user_func_array_named_order~8.0-bic-core-swapped.fixture"
+		],
+		"reason": "Php80BicCoreCallUserFuncArrayKeys binds a literal argument array with string keys to a same-file function or closure on both versions: call.call_user_func_array_named_error when 8.0 throws (unknown name, positional after named), call.call_user_func_array_named_order when values reach other parameters (changed); arrays built at run time are not judged."
+	}
+]

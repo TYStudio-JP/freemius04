@@ -1,0 +1,13 @@
+--RULE--
+class.parent_without_parent
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+class Widget {
+	public function render() {
+		return parent::render();
+	}
+}
+
+echo 'declared', "\n";

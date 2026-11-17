@@ -1,0 +1,10 @@
+--RULE--
+runtime.range_numeric_string_float_step
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+$start = '1';
+$end   = '3';
+$step  = 2.0;
+var_dump( range( $start, $end, $step ) );

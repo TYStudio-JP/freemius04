@@ -1,0 +1,15 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Queue {
+	public function push( $value ) {
+		$this->items[] = $value;
+
+		return count( $this->items );
+	}
+}
+
+echo ( new Queue() )->push( 1 ), "\n";

@@ -1,0 +1,16 @@
+--RULE--
+runtime.dom_parentnode_without_document
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+$element = new DOMElement( 'a' );
+
+// 7.4 has no such method (Error); 8.0 to 8.2 throw a hierarchy request
+// DOMException; from 8.3 the text is appended.
+try {
+	$element->append( 'x' );
+	echo 'appended: ', $element->textContent, "\n";
+} catch ( Throwable $error ) {
+	echo "throws\n";
+}

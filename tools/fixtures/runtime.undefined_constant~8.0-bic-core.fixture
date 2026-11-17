@@ -1,0 +1,7 @@
+--RULE--
+runtime.undefined_constant
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+echo PLUGIN_NOT_DEFINED_ANYWHERE, "\n";

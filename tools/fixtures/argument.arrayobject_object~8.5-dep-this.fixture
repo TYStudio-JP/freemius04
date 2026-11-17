@@ -1,0 +1,18 @@
+--RULE--
+argument.arrayobject_object
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_Bag implements IteratorAggregate {
+	public $a = 1;
+
+	#[\ReturnTypeWillChange]
+	public function getIterator() {
+		return new ArrayIterator( $this );
+	}
+}
+
+foreach ( new Upgw_Bag() as $key => $value ) {
+	echo $key, '=', $value, "\n";
+}

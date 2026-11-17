@@ -1,0 +1,9 @@
+--RULE--
+runtime.float_to_string_locale
+--CLAIM--
+{}
+--CODE--
+<?php
+$locale = setlocale( LC_ALL, 'de_DE.UTF-8', 'de_DE' );
+
+echo false === $locale ? 'no locale' : 'locale set', ' ', (string) 1.5, "\n";

@@ -1,0 +1,13 @@
+--RULE--
+signature.tentative_return_type_changed
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Local_Date extends DateTimeImmutable {
+	public static function createFromMutable( $object ): DateTimeImmutable {
+		return new self( $object->format( 'Y-m-d' ) );
+	}
+}
+
+echo Local_Date::createFromMutable( new DateTime( '2020-01-02' ) )->format( 'Y-m-d' ), "\n";

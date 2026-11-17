@@ -1,0 +1,14 @@
+--RULE--
+runtime.namespaced_name_whitespace
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+namespace Shop;
+
+class Cart {
+	public $items = 'none';
+}
+
+$cart = new \Shop \ Cart();
+echo $cart->items, "\n";

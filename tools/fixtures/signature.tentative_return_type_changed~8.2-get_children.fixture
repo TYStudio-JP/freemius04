@@ -1,0 +1,13 @@
+--RULE--
+signature.tentative_return_type_changed
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Lines extends SplFileObject {
+	public function getChildren(): ?RecursiveIterator {
+		return null;
+	}
+}
+
+echo method_exists( 'Lines', 'getChildren' ) ? "declared\n" : "missing\n";

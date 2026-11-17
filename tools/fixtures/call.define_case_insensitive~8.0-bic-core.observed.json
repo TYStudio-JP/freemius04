@@ -1,0 +1,40 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "call.define_case_insensitive",
+	"claim": {
+		"deprecated_in": "7.3",
+		"breaks_in": "8.0"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "deprecated",
+		"8.0": "fatal",
+		"8.1": "fatal",
+		"8.2": "fatal",
+		"8.3": "fatal",
+		"8.4": "fatal",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"7.4": "E_DEPRECATED: define(): Declaration of case-insensitive constants is deprecated",
+		"8.0": "Error: Undefined constant \"plugin_slug\"",
+		"8.1": "Error: Undefined constant \"plugin_slug\"",
+		"8.2": "Error: Undefined constant \"plugin_slug\"",
+		"8.3": "Error: Undefined constant \"plugin_slug\"",
+		"8.4": "Error: Undefined constant \"plugin_slug\"",
+		"8.5": "Error: Undefined constant \"plugin_slug\""
+	},
+	"fix": "none",
+	"not_checked": [
+		"deprecated_in 7.3: seen from 7.4 on; the exact first version comes from the notes"
+	],
+	"problems": []
+}

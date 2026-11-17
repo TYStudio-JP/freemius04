@@ -1,0 +1,22 @@
+--RULE--
+runtime.final_private_method
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+class Widget {
+	final private function secret() {
+		return 'secret';
+	}
+
+	public function show() {
+		return $this->secret();
+	}
+}
+
+$widget = new Widget();
+echo $widget->show(), "\n";
+
+// The compile warning cannot reach an error handler; error_get_last() sees it.
+$last = error_get_last();
+echo null === $last ? 'no warning' : $last['message'], "\n";

@@ -1,0 +1,17 @@
+--RULE--
+variable.http_response_header
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_Headers_Reader {
+	public function last() {
+		return $this->parse( $http_response_header );
+	}
+
+	private function parse( $headers ) {
+		return is_array( $headers ) ? count( $headers ) : 0;
+	}
+}
+
+echo "loaded\n";

@@ -1,0 +1,9 @@
+--RULE--
+runtime.numeric_string_trailing_whitespace
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$input = '42 ';
+
+echo is_numeric( $input ) ? 'numeric' : 'not numeric', "\n";

@@ -1,0 +1,14 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Settings {
+	public function __construct( $options ) {
+		$this->options = $options;
+	}
+}
+
+$settings = new Settings( array( 'a' => 1 ) );
+echo count( $settings->options ), "\n";

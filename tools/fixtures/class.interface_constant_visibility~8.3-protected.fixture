@@ -1,0 +1,20 @@
+--RULE--
+class.interface_constant_visibility
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+// Overriding an interface constant is allowed from 8.1 only, so the
+// declarations are made conditional: on 7.4 and 8.0 they are skipped. 8.1 and
+// 8.2 accept the narrower visibility; from 8.3 it is a compile error.
+if ( PHP_VERSION_ID >= 80100 ) {
+	interface Has_Limit {
+		const LIMIT = 10;
+	}
+
+	class Small_Limit implements Has_Limit {
+		protected const LIMIT = 5;
+	}
+}
+
+echo "loaded\n";

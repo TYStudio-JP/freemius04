@@ -1,0 +1,8 @@
+--RULE--
+argument.file_flag_append
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+$lines = file( __FILE__, FILE_IGNORE_NEW_LINES | FILE_APPEND );
+echo is_array( $lines ) ? "read\n" : "not read\n";

@@ -1,0 +1,36 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "runtime.data_stream_not_writable",
+	"claim": {
+		"changed_in": "8.0"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "ok",
+		"8.0": "notice",
+		"8.1": "notice",
+		"8.2": "notice",
+		"8.3": "notice",
+		"8.4": "notice",
+		"8.5": "notice"
+	},
+	"messages": {
+		"8.0": "E_NOTICE: fwrite(): Stream is not writable",
+		"8.1": "E_NOTICE: fwrite(): Stream is not writable",
+		"8.2": "E_NOTICE: fwrite(): Stream is not writable",
+		"8.3": "E_NOTICE: fwrite(): Stream is not writable",
+		"8.4": "E_NOTICE: fwrite(): Stream is not writable",
+		"8.5": "E_NOTICE: fwrite(): Stream is not writable"
+	},
+	"fix": "none",
+	"not_checked": [],
+	"problems": []
+}

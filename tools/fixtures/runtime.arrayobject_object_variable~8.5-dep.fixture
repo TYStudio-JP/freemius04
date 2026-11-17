@@ -1,0 +1,10 @@
+--RULE--
+runtime.arrayobject_object_variable
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$source    = new stdClass();
+$source->a = 1;
+$object    = new ArrayIterator( $source );
+var_dump( count( $object ) );

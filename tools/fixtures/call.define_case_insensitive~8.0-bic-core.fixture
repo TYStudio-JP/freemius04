@@ -1,0 +1,9 @@
+--RULE--
+call.define_case_insensitive
+--CLAIM--
+{ "deprecated_in": "7.3", "breaks_in": "8.0" }
+--CODE--
+<?php
+define( 'PLUGIN_SLUG', 'gallery', true );
+
+echo 'slug: ', plugin_slug, "\n";

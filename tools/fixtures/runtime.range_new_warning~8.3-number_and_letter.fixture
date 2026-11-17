@@ -1,0 +1,9 @@
+--RULE--
+runtime.range_new_warning
+--CLAIM--
+{}
+--CODE--
+<?php
+$start = 5;
+$end   = 'z';
+echo json_encode( range( $start, $end ) ), "\n";

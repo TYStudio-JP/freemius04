@@ -1,0 +1,24 @@
+--RULE--
+class.abstract_trait_method_mismatch
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+trait Has_Label {
+	abstract public function label(): string;
+
+	public function describe() {
+		return 'label ' . $this->label();
+	}
+}
+
+class Item {
+	use Has_Label;
+
+	public function label(): int {
+		return 42;
+	}
+}
+
+$item = new Item();
+echo $item->describe(), "\n";

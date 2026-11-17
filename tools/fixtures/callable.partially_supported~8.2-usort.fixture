@@ -1,0 +1,25 @@
+--RULE--
+callable.partially_supported
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Base_Sorter {
+	public static function pick( $a = 0, $b = 0 ) {
+		return 1;
+	}
+}
+
+class Sorter extends Base_Sorter {
+	public static function pick( $a = 0, $b = 0 ) {
+		return 2;
+	}
+
+	public function run() {
+		$list = array( 1, 2 );
+		
+		return usort( $list, 'self::pick' );
+	}
+}
+
+echo json_encode( ( new Sorter() )->run() ), "\n";

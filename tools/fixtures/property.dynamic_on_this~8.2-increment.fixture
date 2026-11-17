@@ -1,0 +1,15 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Hits {
+	public function hit() {
+		$this->hits++;
+
+		return 'hit';
+	}
+}
+
+echo ( new Hits() )->hit(), "\n";

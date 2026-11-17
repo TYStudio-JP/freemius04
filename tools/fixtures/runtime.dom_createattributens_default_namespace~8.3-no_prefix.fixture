@@ -1,0 +1,11 @@
+--RULE--
+runtime.dom_createattributens_default_namespace
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+$document = new DOMDocument();
+$root     = $document->createElement( 'root' );
+$document->appendChild( $root );
+$root->setAttributeNodeNS( $document->createAttributeNS( 'urn:a', 'attr' ) );
+echo $document->saveXML( $root ), "\n";

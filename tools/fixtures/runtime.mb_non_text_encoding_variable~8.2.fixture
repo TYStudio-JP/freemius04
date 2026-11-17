@@ -1,0 +1,9 @@
+--RULE--
+runtime.mb_non_text_encoding_variable
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+$encoding = 'HTML-' . 'ENTITIES';
+
+echo mb_convert_encoding( "caf\xC3\xA9", $encoding, 'UTF-8' ), "\n";

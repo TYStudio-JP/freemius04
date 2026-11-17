@@ -1,0 +1,13 @@
+--RULE--
+call.is_callable_non_static_method
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+class Greeter {
+	public function hello() {
+		return 'hello';
+	}
+}
+
+echo is_callable( array( 'Greeter', 'hello' ) ) ? 'callable' : 'not callable', "\n";

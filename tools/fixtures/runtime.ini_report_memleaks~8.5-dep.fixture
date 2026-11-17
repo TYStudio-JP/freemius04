@@ -1,0 +1,8 @@
+--RULE--
+runtime.ini_report_memleaks
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+ini_set( 'report_memleaks', '0' );
+echo "set\n";

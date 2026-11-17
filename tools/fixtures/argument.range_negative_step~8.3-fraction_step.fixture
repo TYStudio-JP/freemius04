@@ -1,0 +1,8 @@
+--RULE--
+argument.range_negative_step
+--CLAIM--
+{ "breaks_in": "8.3" }
+--CODE--
+<?php
+// A negative step that is not a whole number, on an increasing range.
+echo json_encode( range( 1, 5, -0.5 ) ), "\n";

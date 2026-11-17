@@ -1,0 +1,24 @@
+--RULE--
+class.abstract_trait_method_mismatch
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+trait Formats {
+	abstract public function format( $value );
+
+	public function show() {
+		return $this->format( 1, 2 );
+	}
+}
+
+class Number_Format {
+	use Formats;
+
+	public function format( $value, $decimals ) {
+		return $value + $decimals;
+	}
+}
+
+$format = new Number_Format();
+echo $format->show(), "\n";

@@ -1,0 +1,15 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Lazy {
+	public function value() {
+		$this->cache ??= 'computed';
+
+		return $this->cache;
+	}
+}
+
+echo ( new Lazy() )->value(), "\n";

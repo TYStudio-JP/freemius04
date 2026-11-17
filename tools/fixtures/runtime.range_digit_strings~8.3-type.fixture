@@ -1,0 +1,10 @@
+--RULE--
+runtime.range_digit_strings
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// Two digits written as strings: integers until 8.2, one-character strings
+// from 8.3. Not reported: implode() or == give the same result on every
+// version, only the type differs.
+var_dump( range( '0', '2' ) );

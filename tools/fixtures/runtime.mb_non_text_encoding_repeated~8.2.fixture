@@ -1,0 +1,25 @@
+--RULE--
+runtime.mb_non_text_encoding_repeated
+--CLAIM--
+{ "changed_in": "8.2" }
+--CODE--
+<?php
+// Seen on the runtimes: the notice comes once for a run of calls that name
+// the same encoding, not once per call. The handler counts the notices and
+// keeps them, so what changes here is the number printed.
+$notices = 0;
+
+set_error_handler(
+	static function () use ( &$notices ) {
+		++$notices;
+
+		return true;
+	},
+	E_DEPRECATED
+);
+
+mb_strlen( 'abc', 'HTML-ENTITIES' );
+mb_substr( 'abc', 0, 1, 'HTML-ENTITIES' );
+mb_strtoupper( 'abc', 'HTML-ENTITIES' );
+
+echo $notices, "\n";

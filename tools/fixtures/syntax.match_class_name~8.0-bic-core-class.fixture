@@ -1,0 +1,12 @@
+--RULE--
+syntax.match_class_name
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Match {
+	public $label = 'matched';
+}
+
+$found = new Match();
+echo $found->label, "\n";

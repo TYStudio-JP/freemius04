@@ -1,0 +1,9 @@
+--RULE--
+runtime.data_stream_not_writable
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$handle = fopen( 'data://text/plain,abc', 'r+' );
+
+echo false === fwrite( $handle, 'x' ) ? 'not written' : 'written', "\n";

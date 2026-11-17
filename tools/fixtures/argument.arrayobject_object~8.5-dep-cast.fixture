@@ -1,0 +1,8 @@
+--RULE--
+argument.arrayobject_object
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+$object = new ArrayObject( (object) array( 'a' => 1 ) );
+var_dump( count( $object ) );

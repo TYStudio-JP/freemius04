@@ -1,0 +1,11 @@
+--RULE--
+call.call_user_func_array_named_error
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+function greet( $greeting, $name ) {
+	return $greeting . ', ' . $name;
+}
+
+echo call_user_func_array( 'greet', array( 'first' => 'Hello', 'second' => 'World' ) ), "\n";

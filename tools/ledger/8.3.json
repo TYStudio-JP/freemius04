@@ -1,0 +1,432 @@
+[
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Programs that were very close to overflowing the call stack may now throw an Error when using more than `zend.max_allowed_stack_size-zend.reserved_stack_size` bytes of stack (`fiber.stack_size-zend.reserved_stack_size` for fibers).",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Whether a program comes close to the stack limit depends on recursion depth at run time and on INI settings; nothing in the source tells it apart, and a fixture near the limit would not be deterministic on the php-wasm runtimes."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Executing proc_get_status() multiple times will now always return the right value on posix systems.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Needs a child process (fixtures may not touch the shell) and only differs on the second and later call for the same process at run time; the call itself looks the same on every version."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Zend Max Execution Timers is now enabled by default for ZTS builds on Linux.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A build default of ZTS PHP on Linux, not something PHP source code expresses."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Uses of traits with static properties will now redeclare static properties inherited from the parent class.",
+		"disposition": "rule",
+		"rule": "class.trait_static_property_redeclared",
+		"fixtures": [
+			"class.trait_static_property_redeclared~8.3-grandparent.fixture",
+			"class.trait_static_property_redeclared~8.3-parent_declares.fixture",
+			"class.trait_static_property_redeclared~8.3-parent_uses_trait.fixture"
+		],
+		"reason": "Php83TraitStaticProperty reports a class whose trait brings a static property the parent chain already passes on (changed in 8.3: separate storage, seen on the runtimes); only when trait, class and parents are all in the same file."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Assigning a negative index n to an empty array will now make sure that the next index is n+1 instead of 0.",
+		"disposition": "runtime-only",
+		"rule": "runtime.array_negative_index_append",
+		"fixtures": [
+			"runtime.array_negative_index_append~8.3-assignment.fixture"
+		],
+		"reason": "Depends on the array being empty and on the index value when $a[] is appended; the runtimes show 0 until 8.2 and n+1 from 8.3. An array literal array( -5 => 'a', 'b' ) already gives -4 from 8.0, so it is not part of this change."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "Class constant visibility variance is now correctly checked when inherited from interfaces.",
+		"disposition": "rule",
+		"rule": "class.interface_constant_visibility",
+		"fixtures": [
+			"class.interface_constant_visibility~8.3-private_through_interface.fixture",
+			"class.interface_constant_visibility~8.3-protected.fixture"
+		],
+		"reason": "Php83InterfaceConstantVisibility reports a protected or private constant overriding a constant of an interface the class implements (directly or through extended interfaces) when the interface is in the same file; 8.1 and 8.2 accept it, 8.3 fails to compile it (7.4 and 8.0 refuse any override, hence conditional declarations in the fixtures)."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "WeakMaps entries whose key maps to itself (possibly transitively) may now be removed during cycle collection if the key is not reachable except by iterating over the WeakMap (reachability via iteration is considered weak).",
+		"disposition": "runtime-only",
+		"rule": "runtime.weakmap_self_reference",
+		"fixtures": [
+			"runtime.weakmap_self_reference~8.3-collected.fixture"
+		],
+		"reason": "Depends on which objects are reachable when the cycle collector runs; the runtimes show the entry kept until 8.2 and collected from 8.3."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Core",
+		"quote": "In addition to whitespace characters, now comments are allowed between `yield` and `from`.",
+		"disposition": "runtime-only",
+		"rule": "runtime.yield_from_comment_token",
+		"fixtures": [
+			"runtime.yield_from_comment_token~8.3-token_get_all.fixture"
+		],
+		"reason": "Only widens the grammar: code that ran on 8.2 cannot contain a comment there. The difference old code can see is what token_get_all() returns for such source text, which depends on the string at run time (fixture: different token count from 8.3)."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "DOMChildNode::after(), DOMChildNode::before(), DOMChildNode::replaceWith() on a node that has no parent is now a no-op instead of a hierarchy exception, which is the behaviour spec demands.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dom_childnode_without_parent",
+		"fixtures": [
+			"runtime.dom_childnode_without_parent~8.3-after.fixture",
+			"runtime.dom_childnode_without_parent~8.3-replaceWith.fixture"
+		],
+		"reason": "Whether the node has a parent is known at run time only, and after()/before()/replaceWith() are method names on objects of unknown class."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "Using the DOMParentNode and DOMChildNode methods without a document now works instead of throwing a HIERARCHY_REQUEST_ERR DOMException.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dom_parentnode_without_document",
+		"fixtures": [
+			"runtime.dom_parentnode_without_document~8.3-append.fixture",
+			"runtime.dom_parentnode_without_document~8.3-prepend.fixture"
+		],
+		"reason": "Whether the node belongs to a document is known at run time only; append()/prepend() are common method names on objects of unknown class."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "createAttributeNS() without specifying a prefix would incorrectly create a default namespace, placing the element inside the namespace instead of the attribute.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dom_createattributens_default_namespace",
+		"fixtures": [
+			"runtime.dom_createattributens_default_namespace~8.3-no_prefix.fixture"
+		],
+		"reason": "The serialized result changes only for certain namespace and name values on a DOMDocument receiver, which the syntax tree cannot establish; the runtimes show the different saveXML() output from 8.3."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "createAttributeNS() would previously incorrectly throw a NAMESPACE_ERR when the prefix was already used for a different uri.",
+		"disposition": "runtime-only",
+		"rule": "runtime.dom_createattributens_prefix_conflict",
+		"fixtures": [
+			"runtime.dom_createattributens_prefix_conflict~8.3-two_uris.fixture"
+		],
+		"reason": "Depends on prefixes and URIs already used in the document at run time; the runtimes show the DOMException until 8.2 and a renamed prefix from 8.3."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "DOM",
+		"quote": "New methods and properties were added to some DOM classes.",
+		"disposition": "rule",
+		"rule": "class.dom_member_conflict",
+		"fixtures": [
+			"class.dom_member_conflict~8.3-contains.fixture",
+			"class.dom_member_conflict~8.3-getAttributeNames.fixture",
+			"class.dom_member_conflict~8.3-getRootNode.fixture",
+			"class.dom_member_conflict~8.3-inherited_by_text.fixture",
+			"class.dom_member_conflict~8.3-insertAdjacentElement.fixture",
+			"class.dom_member_conflict~8.3-insertAdjacentText.fixture",
+			"class.dom_member_conflict~8.3-isEqualNode.fixture",
+			"class.dom_member_conflict~8.3-property_className.fixture",
+			"class.dom_member_conflict~8.3-property_id.fixture",
+			"class.dom_member_conflict~8.3-property_isConnected.fixture",
+			"class.dom_member_conflict~8.3-property_parentElement.fixture",
+			"class.dom_member_conflict~8.3-replaceChildren_document.fixture",
+			"class.dom_member_conflict~8.3-replaceChildren_element.fixture",
+			"class.dom_member_conflict~8.3-replaceChildren_fragment.fixture",
+			"class.dom_member_conflict~8.3-toggleAttribute.fixture"
+		],
+		"reason": "Php83DomMemberConflict reports a class that directly extends a DOM class and declares one of the methods added in 8.3 without a return type, or one of the added properties without a type; every such case in the fixtures is a compile error from 8.3. Typed declarations may be compatible and are not reported."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "FFI",
+		"quote": "C functions that have a return type of void now return null instead of returning the following object object(FFI\\CData:void) { }",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The FFI extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Opcache",
+		"quote": "The opcache.consistency_checks INI directive was removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "An INI directive of opcache, set by the server configuration rather than by plugin code."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Phar",
+		"quote": "The type of Phar class constants are now declared.",
+		"disposition": "rule",
+		"rule": "class.phar_constant_redeclared",
+		"fixtures": [
+			"class.phar_constant_redeclared~8.3-phar.fixture"
+		],
+		"reason": "Php83PharConstant reports a class extending Phar that redeclares one of its constants without a type: a compile error from 8.3 on the runtimes. The same declaration in a subclass of PharData still loads on 8.3 to 8.5 and is not reported."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The range() function has had various changes:",
+		"disposition": "rule",
+		"rule": "argument.range_negative_step",
+		"fixtures": [
+			"argument.range_negative_step~8.3-increasing.fixture",
+			"argument.range_negative_step~8.3-float_step.fixture",
+			"argument.range_negative_step~8.3-fraction_step.fixture",
+			"argument.range_negative_step~8.3-float_bounds.fixture",
+			"argument.range_negative_step~8.3-letters.fixture",
+			"argument.range_negative_step~8.3-digit_strings.fixture",
+			"argument.range_digit_and_letter~8.3-digit_first.fixture",
+			"argument.range_digit_and_letter~8.3-letter_first.fixture",
+			"argument.range_digit_and_letter~8.3-step_one.fixture",
+			"argument.range_float_step~8.3-whole_number.fixture",
+			"argument.range_float_step~8.3-negative_decreasing.fixture",
+			"runtime.range_boundary_type~8.3-array.fixture",
+			"runtime.range_nan_step~8.3-nan.fixture",
+			"runtime.range_new_warning~8.3-empty_string.fixture",
+			"runtime.range_new_warning~8.3-float_step_for_letters.fixture",
+			"runtime.range_new_warning~8.3-more_than_one_byte.fixture",
+			"runtime.range_new_warning~8.3-number_and_letter.fixture",
+			"runtime.range_numeric_string_float_step~8.3-strings.fixture",
+			"runtime.range_digit_strings~8.3-type.fixture"
+		],
+		"reason": "Php83Range reports literal calls with three ids: argument.range_negative_step (any negative step on an increasing range of two number literals, integer or float, or with an integer step of two single letters or two single digits written as strings; ValueError from 8.3), argument.range_digit_and_letter (one digit and one letter, no step or a step of 1, numbers until 8.2 and characters from 8.3) and argument.range_float_step (whole-number float step with integer bounds, positive or negative on a decreasing range, floats until 8.2 and integers from 8.3). Two single digits as strings, range( '0', '9' ), now give strings instead of integers (runtime.range_digit_strings, changed in 8.3); that is not reported because implode() and == see no difference. Arrays, NAN, empty or multi-byte strings and the new warnings depend on values and are runtime.range_* fixtures only."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The file() flags error check now catches all invalid flags.",
+		"disposition": "rule",
+		"rule": "argument.file_flag_append",
+		"fixtures": [
+			"argument.file_flag_append~8.3-alone.fixture",
+			"argument.file_flag_append~8.3-combined.fixture"
+		],
+		"reason": "Php83FileFlags reports file() whose flags, written as constants joined with | or +, contain FILE_APPEND: silently accepted until 8.2, a ValueError from 8.3. Other unknown flags were already a ValueError on 8.0 (seen on the runtimes) and are not part of this change."
+	},
+	{
+		"version": "8.3",
+		"section": "Backward Incompatible Changes",
+		"area": "SNMP",
+		"quote": "The type of SNMP class constants are now declared.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The snmp extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using the ++ operator on empty, non-numeric, or non-alphanumeric strings is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.string_increment",
+		"fixtures": [
+			"runtime.string_increment~8.3-alphanumeric.fixture",
+			"runtime.string_increment~8.3-empty.fixture",
+			"runtime.string_increment~8.3-non_alphanumeric.fixture"
+		],
+		"reason": "Depends on the string value of the variable at run time. Empty and non-alphanumeric strings raise E_DEPRECATED from 8.3; incrementing an alphanumeric string such as 'abc' (soft deprecated in the notes) raises nothing on 8.3 and 8.4 and E_DEPRECATED only from 8.5."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Using the -- operator on empty or non-numeric strings is now deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.string_decrement",
+		"fixtures": [
+			"runtime.string_decrement~8.3-empty.fixture",
+			"runtime.string_decrement~8.3-non_numeric.fixture"
+		],
+		"reason": "Depends on the string value of the variable at run time; the runtimes show E_DEPRECATED from 8.3 for '' and 'abc'."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Core",
+		"quote": "Calling get_class() and get_parent_class() without arguments is now deprecated.",
+		"disposition": "rule",
+		"rule": "call.get_class_without_argument",
+		"fixtures": [
+			"call.get_class_without_argument~8.3-closure.fixture",
+			"call.get_class_without_argument~8.3-function_exists.fixture",
+			"call.get_class_without_argument~8.3-get_class.fixture",
+			"call.get_class_without_argument~8.3-get_parent_class.fixture",
+			"call.get_class_without_argument~8.3-version_check.fixture"
+		],
+		"reason": "Php83GetClassNoArgument reports both calls without arguments inside a class, trait or enum (not inside a named function declared in a method, which has no class scope and is an Error from 8.0 on the runtimes); function_exists() is no guard, a PHP version check is; get_class() directly in a method of a class is fixed to self::class (fixed program verified)."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "DBA",
+		"quote": "Calling dba_fetch() with $dba as the 3rd argument is now deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The dba extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "FFI",
+		"quote": "Calling FFI::cast(), FFI::new(), and FFI::type() statically is now deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The FFI extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Intl",
+		"quote": "The U_MULTIPLE_DECIMAL_SEP*E*RATORS constant had been deprecated, using the U_MULTIPLE_DECIMAL_SEP*A*RATORS instead is recommended.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Intl",
+		"quote": "The NumberFormatter::TYPE_CURRENCY has been deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The intl extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "LDAP",
+		"quote": "Calling ldap_connect() with separate hostname and port is deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ldap extension is in none of the php-wasm runtimes, so nothing about it could be run; no claim enters the product."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "MBString",
+		"quote": "Passing a negative $width to mb_strimwidth() is now deprecated.",
+		"disposition": "rule",
+		"rule": "argument.mb_strimwidth_negative_width",
+		"fixtures": [
+			"argument.mb_strimwidth_negative_width~8.3-literal.fixture",
+			"runtime.mb_strimwidth_negative_width~8.3-value.fixture"
+		],
+		"reason": "Php83MbStrimwidthNegative reports a width written as a negative integer literal; a negative width from a variable is known at run time only (runtime fixture). A plugin's own global mb_strimwidth() polyfill is left alone."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Phar",
+		"quote": "Calling Phar::setStub() with a resource and a length is now deprecated.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "setStub() is a method on an object of unknown class whose first argument is a resource only at run time; the runtimes cannot show it either, because phar.readonly is 1 in their php.ini and ini_set() cannot lower it, so every Phar write throws before the deprecation could be raised."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Random",
+		"quote": "The MT_RAND_PHP Mt19937 variant is deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "MT_RAND_PHP is in data/catalog/constants.php (deprecated 8.3, verified)."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The assert_options() function is now deprecated.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "assert_options() is in data/catalog/functions.php (deprecated 8.3, verified)."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Standard",
+		"quote": "The ASSERT_ACTIVE, ASSERT_BAIL, ASSERT_CALLBACK, ASSERT_EXCEPTION, and ASSERT_WARNING constants have been deprecated.",
+		"disposition": "catalog",
+		"rule": "constant.deprecated",
+		"fixtures": [],
+		"reason": "All five constants are in data/catalog/constants.php (deprecated 8.3, verified)."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "SQLite3",
+		"quote": "Using exceptions is now preferred, warnings will be removed in the future.",
+		"disposition": "rule",
+		"rule": "call.sqlite3_enable_exceptions_false",
+		"fixtures": [
+			"call.sqlite3_enable_exceptions_false~8.3-no_argument.fixture",
+			"call.sqlite3_enable_exceptions_false~8.3-property.fixture",
+			"call.sqlite3_enable_exceptions_false~8.3-subclass.fixture",
+			"call.sqlite3_enable_exceptions_false~8.3-variable.fixture",
+			"call.sqlite3_enable_exceptions_false~8.3-parameter.fixture",
+			"runtime.sqlite3_enable_exceptions_false~8.3-value.fixture"
+		],
+		"reason": "Php83Sqlite3EnableExceptions reports enableExceptions( false ) and enableExceptions() without an argument (also deprecated on the 8.3 runtime, the default being false) when the object is known to be an SQLite3: new SQLite3 in the same function or class, a parameter declared as SQLite3 and not reassigned, or $this in a subclass that does not declare enableExceptions() itself. An argument from a variable is runtime-only."
+	},
+	{
+		"version": "8.3",
+		"section": "Deprecated Functionality",
+		"area": "Zip",
+		"quote": "The ZipArchive::FL_RECOMPRESS constant is deprecated and will be removed in a future version of libzip",
+		"disposition": "rule",
+		"rule": "constant.ziparchive_fl_recompress",
+		"fixtures": [
+			"constant.ziparchive_fl_recompress~8.3-defined.fixture",
+			"constant.ziparchive_fl_recompress~8.3-self_in_subclass.fixture"
+		],
+		"reason": "Php83ZipFlRecompress reports ZipArchive::FL_RECOMPRESS, and self::, static:: or parent::FL_RECOMPRESS in a class that extends ZipArchive directly; defined( 'ZipArchive::FL_RECOMPRESS' ) is no guard on the runtimes, a PHP version check is."
+	}
+]

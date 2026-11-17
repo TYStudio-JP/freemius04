@@ -1,0 +1,8 @@
+--RULE--
+runtime.assert_throws
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+assert( 1 === 2 );
+echo 'after the assertion', "\n";

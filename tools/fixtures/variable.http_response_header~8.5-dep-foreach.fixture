@@ -1,0 +1,19 @@
+--RULE--
+variable.http_response_header
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_count_headers() {
+	$count = 0;
+
+	if ( isset( $http_response_header ) ) {
+		foreach ( $http_response_header as $line ) {
+			++$count;
+		}
+	}
+
+	return $count;
+}
+
+var_dump( upgw_count_headers() );

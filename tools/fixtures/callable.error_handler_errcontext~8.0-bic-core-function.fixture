@@ -1,0 +1,15 @@
+--RULE--
+callable.error_handler_errcontext
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+function plugin_error_handler( $number, $message, $file, $line, $context ) {
+	echo 'handled: ', $message, "\n";
+	return true;
+}
+
+set_error_handler( 'plugin_error_handler' );
+
+trigger_error( 'custom notice', E_USER_NOTICE );
+echo 'after', "\n";

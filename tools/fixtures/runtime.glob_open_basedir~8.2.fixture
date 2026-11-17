@@ -1,0 +1,10 @@
+--RULE--
+runtime.glob_open_basedir
+--CLAIM--
+{ "changed_in": "8.2" }
+--CODE--
+<?php
+ini_set( 'open_basedir', __DIR__ );
+
+// Every path of the pattern is outside open_basedir.
+var_dump( glob( '/etc/*' ) );

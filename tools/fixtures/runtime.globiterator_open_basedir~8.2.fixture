@@ -1,0 +1,14 @@
+--RULE--
+runtime.globiterator_open_basedir
+--CLAIM--
+{ "changed_in": "8.2" }
+--CODE--
+<?php
+ini_set( 'open_basedir', __DIR__ );
+
+try {
+	$iterator = new GlobIterator( '/etc/*' );
+	echo 'entries: ', count( $iterator ), "\n";
+} catch ( UnexpectedValueException $e ) {
+	echo "UnexpectedValueException\n";
+}

@@ -1,0 +1,17 @@
+--RULE--
+callable.partially_supported
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+class Runner {
+	public static function pick( $a = 0, $b = 0 ) {
+		return false;
+	}
+
+	public function run() {
+		register_shutdown_function( 'self::pick' ); return "registered";
+	}
+}
+
+echo json_encode( ( new Runner() )->run() ), "\n";

@@ -1,0 +1,14 @@
+--RULE--
+call.sqlite3_enable_exceptions_false
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+class Store extends SQLite3 {
+	public function __construct() {
+		parent::__construct( ':memory:' );
+		$this->enableExceptions( false );
+	}
+}
+
+echo ( new Store() )->querySingle( 'SELECT 1 + 1' ), "\n";

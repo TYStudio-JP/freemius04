@@ -1,0 +1,20 @@
+--RULE--
+runtime.weakmap_self_reference
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// WeakMap exists from 8.0; 7.4 prints what 8.0 to 8.2 print. An entry whose
+// value is its own key, with the key reachable only through the map, stays
+// until 8.2 and is removed by the cycle collector from 8.3.
+if ( ! class_exists( 'WeakMap' ) ) {
+	echo "1\n";
+	return;
+}
+
+$map       = new WeakMap();
+$key       = new stdClass();
+$map[$key] = $key;
+unset( $key );
+gc_collect_cycles();
+echo count( $map ), "\n";

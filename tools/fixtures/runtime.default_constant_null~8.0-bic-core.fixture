@@ -1,0 +1,13 @@
+--RULE--
+runtime.default_constant_null
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+const PLUGIN_DEFAULT_LIMIT = null;
+
+function show_items( int $limit = PLUGIN_DEFAULT_LIMIT ) {
+	return var_export( $limit, true );
+}
+
+echo show_items(), "\n";

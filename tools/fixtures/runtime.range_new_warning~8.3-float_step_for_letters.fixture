@@ -1,0 +1,8 @@
+--RULE--
+runtime.range_new_warning
+--CLAIM--
+{}
+--CODE--
+<?php
+$step = 1.5;
+echo json_encode( range( 'a', 'e', $step ) ), "\n";

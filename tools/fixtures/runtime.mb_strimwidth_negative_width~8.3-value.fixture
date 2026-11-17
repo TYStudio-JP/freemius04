@@ -1,0 +1,8 @@
+--RULE--
+runtime.mb_strimwidth_negative_width
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+$width = -3;
+echo mb_strimwidth( 'Hello World', 0, $width, '..', 'UTF-8' ), "\n";

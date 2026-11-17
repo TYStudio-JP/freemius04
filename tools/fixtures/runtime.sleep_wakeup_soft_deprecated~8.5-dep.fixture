@@ -1,0 +1,20 @@
+--RULE--
+runtime.sleep_wakeup_soft_deprecated
+--CLAIM--
+{}
+--CODE--
+<?php
+class Upgw_Sleeper {
+	public $a = 1;
+	public $b = 2;
+
+	public function __sleep() {
+		return array( 'a' );
+	}
+
+	public function __wakeup() {
+		$this->b = 3;
+	}
+}
+
+var_dump( unserialize( serialize( new Upgw_Sleeper() ) ) );

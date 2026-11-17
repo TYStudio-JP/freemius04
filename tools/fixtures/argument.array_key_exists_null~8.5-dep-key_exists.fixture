@@ -1,0 +1,7 @@
+--RULE--
+argument.array_key_exists_null
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+var_dump( key_exists( null, array( '' => 1 ) ) );

@@ -1,0 +1,15 @@
+--RULE--
+method.debuginfo_return_null
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+class Upgw_Debug_Null {
+	public $secret = 1;
+
+	public function __debugInfo() {
+		return null;
+	}
+}
+
+var_dump( new Upgw_Debug_Null() );

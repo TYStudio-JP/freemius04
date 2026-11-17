@@ -1,0 +1,11 @@
+--RULE--
+array.negative_key_then_implicit
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function levels( $low, $next ) {
+	return [ -2 => $low, $next, $next ];
+}
+
+echo implode( ',', array_keys( levels( 'a', 'b' ) ) ), "\n";

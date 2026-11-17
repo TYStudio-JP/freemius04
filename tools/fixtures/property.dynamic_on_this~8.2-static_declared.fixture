@@ -1,0 +1,19 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+// A static property of the same name does not declare the instance property:
+// PHP gives a notice and makes a second, dynamic one.
+class Mode_Holder {
+	public static $mode = 'static';
+
+	public function set() {
+		$this->mode = 'instance';
+
+		return self::$mode;
+	}
+}
+
+echo ( new Mode_Holder() )->set(), "\n";

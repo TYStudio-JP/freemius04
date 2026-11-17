@@ -1,0 +1,15 @@
+--RULE--
+runtime.tentative_return_type_missing
+--CLAIM--
+{ "deprecated_in": "8.1" }
+--CODE--
+<?php
+// No return type at all: already deprecated in 8.1, whatever the tentative
+// type is. Not part of the 8.2 change.
+class Local_Date extends DateTime {
+	public static function createFromImmutable( $object ) {
+		return new self( $object->format( 'Y-m-d' ) );
+	}
+}
+
+echo Local_Date::createFromImmutable( new DateTimeImmutable( '2020-01-02' ) )->format( 'Y-m-d' ), "\n";

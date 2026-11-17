@@ -1,0 +1,12 @@
+--RULE--
+runtime.engine_error
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+function count_items( ...$items ) {
+	return count( $items );
+}
+
+$items = 'not a list';
+echo count_items( ...$items ), "\n";

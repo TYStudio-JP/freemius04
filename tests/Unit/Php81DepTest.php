@@ -146,7 +146,9 @@ $tests['8.1-dep: init(), FETCH_SERIALIZE and ssl_method are reported only where 
 	$clean( 'class DB extends mysqli { function __construct() { parent::__construct(); self::init(); $this->init(); static::init(); } function init() {} }', 'Not parent::init().' );
 	$clean( 'class DB extends mysqli { function __construct() { parent::real_connect(); mysqli_init(); } }', 'Other methods, and mysqli_init().' );
 	$clean( "namespace App;\nclass DB extends mysqli { function __construct() { parent::init(); } }", 'App\\mysqli is another class.' );
-	$clean( 'class DB { function __construct() { parent::init(); } }', 'No parent in sight.' );
+	// Without a parent class, parent:: itself is the problem (a compile error
+	// from 8.0, class.parent_without_parent); it is not a mysqli init() call.
+	upgw_same( array( 'class.parent_without_parent' ), upgw_rules_in( "<?php\nclass DB { function __construct() { parent::init(); } }" ), 'No parent in sight.' );
 
 	$clean( '$statement->fetchAll( PDO::FETCH_CLASS, "Row" ); $statement->setFetchMode( PDO::FETCH_ASSOC ); $pdo->query( $sql, PDO::FETCH_NUM );', 'Other fetch modes.' );
 	$clean( 'echo PDO::FETCH_SERIALIZE; $modes = array( PDO::FETCH_SERIALIZE => "serialize" ); if ( $mode & PDO::FETCH_SERIALIZE ) {}', 'The constant read, not used to fetch.' );

@@ -1,0 +1,13 @@
+--RULE--
+runtime.tentative_return_type_static
+--CLAIM--
+{}
+--CODE--
+<?php
+// Already declared as the new type: nothing on any version that can parse it.
+if ( PHP_VERSION_ID >= 80000 ) {
+	eval( 'class Local_Date extends DateTime { public static function createFromImmutable( $object ): static { return new static( $object->format( "Y-m-d" ) ); } }' );
+	echo Local_Date::createFromImmutable( new DateTimeImmutable( '2020-01-02' ) )->format( 'Y-m-d' ), "\n";
+} else {
+	echo "2020-01-02\n";
+}

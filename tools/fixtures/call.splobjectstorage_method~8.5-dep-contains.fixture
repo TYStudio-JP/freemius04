@@ -1,0 +1,14 @@
+--RULE--
+call.splobjectstorage_method
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_storage_contains() {
+	$storage = new SplObjectStorage();
+	$item    = new stdClass();
+	$storage[ $item ] = null;
+	return $storage->contains( $item ) ? 1 : 0;
+}
+
+var_dump( upgw_storage_contains() );

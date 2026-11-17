@@ -1,0 +1,15 @@
+--RULE--
+runtime.tentative_return_type_will_change
+--CLAIM--
+{}
+--CODE--
+<?php
+// The attribute is a comment for PHP 7 and silences the notice from 8.1 on.
+class Local_Date extends DateTime {
+	#[\ReturnTypeWillChange]
+	public static function createFromImmutable( $object ): DateTime {
+		return new self( $object->format( 'Y-m-d' ) );
+	}
+}
+
+echo Local_Date::createFromImmutable( new DateTimeImmutable( '2020-01-02' ) )->format( 'Y-m-d' ), "\n";

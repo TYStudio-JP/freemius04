@@ -1,0 +1,20 @@
+--RULE--
+call.error_reporting_zero_check
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+set_error_handler(
+	function ( $number, $message ) {
+		if ( ! error_reporting() ) {
+			echo 'silenced', "\n";
+			return true;
+		}
+
+		echo 'reported', "\n";
+		return true;
+	}
+);
+
+$value = @$undefined_variable;
+echo 'done', "\n";

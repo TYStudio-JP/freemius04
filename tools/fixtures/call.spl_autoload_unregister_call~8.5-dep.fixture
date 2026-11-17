@@ -1,0 +1,8 @@
+--RULE--
+call.spl_autoload_unregister_call
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+spl_autoload_register( function ( $class ) {} );
+var_dump( spl_autoload_unregister( 'spl_autoload_call' ) );

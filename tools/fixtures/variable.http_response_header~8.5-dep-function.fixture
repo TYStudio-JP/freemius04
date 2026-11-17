@@ -1,0 +1,15 @@
+--RULE--
+variable.http_response_header
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+function upgw_last_headers() {
+	if ( isset( $http_response_header ) && is_array( $http_response_header ) ) {
+		return $http_response_header;
+	}
+
+	return array();
+}
+
+var_dump( upgw_last_headers() );

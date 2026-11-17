@@ -1,0 +1,9 @@
+--RULE--
+runtime.yield_from_comment_token
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// "yield", a comment and "from" are one T_YIELD_FROM token from 8.3; before,
+// they were separate tokens (and the code a parse error).
+echo count( token_get_all( '<?php function g() { yield /* c */ from f(); }' ) ), "\n";

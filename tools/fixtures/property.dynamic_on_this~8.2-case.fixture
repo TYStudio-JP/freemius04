@@ -1,0 +1,18 @@
+--RULE--
+property.dynamic_on_this
+--CLAIM--
+{ "deprecated_in": "8.2" }
+--CODE--
+<?php
+// Property names are case-sensitive: $Verbose does not declare $verbose.
+class Ftp_Like {
+	public $Verbose = false;
+
+	public function connect() {
+		$this->verbose = true;
+
+		return json_encode( array( $this->Verbose, $this->verbose ) );
+	}
+}
+
+echo ( new Ftp_Like() )->connect(), "\n";

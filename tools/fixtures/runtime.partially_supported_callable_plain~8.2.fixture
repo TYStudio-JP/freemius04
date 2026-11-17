@@ -1,0 +1,23 @@
+--RULE--
+runtime.partially_supported_callable_plain
+--CLAIM--
+{}
+--CODE--
+<?php
+class Base_Sorter {
+	public static function pick( $a = 0, $b = 0 ) {
+		return 1;
+	}
+}
+
+class Sorter extends Base_Sorter {
+	public static function pick( $a = 0, $b = 0 ) {
+		return 2;
+	}
+
+	public function run() {
+		return call_user_func( 'Sorter::pick' ) + call_user_func( array( 'Sorter', 'pick' ) ) + call_user_func( array( $this, 'pick' ) ) + call_user_func( array( self::class, 'pick' ) ) + call_user_func( array( static::class, 'pick' ) );
+	}
+}
+
+echo json_encode( ( new Sorter() )->run() ), "\n";

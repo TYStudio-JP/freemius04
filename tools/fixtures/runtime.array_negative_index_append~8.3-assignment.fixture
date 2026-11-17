@@ -1,0 +1,13 @@
+--RULE--
+runtime.array_negative_index_append
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// The next automatic index after a negative one in an empty array: 0 until
+// 8.2, n + 1 from 8.3. (An array literal, array( -5 => 'a', 'b' ), already
+// changed in 8.0.)
+$list      = array();
+$list[-5] = 'a';
+$list[]   = 'b';
+echo json_encode( array_keys( $list ) ), "\n";

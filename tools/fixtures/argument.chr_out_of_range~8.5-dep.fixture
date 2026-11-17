@@ -1,0 +1,7 @@
+--RULE--
+argument.chr_out_of_range
+--CLAIM--
+{"deprecated_in": "8.5"}
+--CODE--
+<?php
+var_dump( bin2hex( chr( 256 ) ) );

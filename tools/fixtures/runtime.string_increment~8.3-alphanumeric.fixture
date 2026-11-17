@@ -1,0 +1,10 @@
+--RULE--
+runtime.string_increment
+--CLAIM--
+{ "deprecated_in": "8.5" }
+--CODE--
+<?php
+// "Soft deprecated" in the 8.3 notes: no notice on 8.3 and 8.4.
+$value = 'abc';
+$value++;
+var_dump( $value );

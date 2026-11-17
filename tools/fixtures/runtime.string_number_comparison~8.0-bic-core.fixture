@@ -1,0 +1,9 @@
+--RULE--
+runtime.string_number_comparison
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$status = 'not-a-number';
+
+echo 0 == $status ? 'equal' : 'not equal', "\n";

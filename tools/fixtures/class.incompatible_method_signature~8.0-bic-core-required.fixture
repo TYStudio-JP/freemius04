@@ -1,0 +1,19 @@
+--RULE--
+class.incompatible_method_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Base_Field {
+	public function render( $value ) {
+		return 'base ' . $value;
+	}
+}
+
+class Text_Field extends Base_Field {
+	public function render( $value, $attributes ) {
+		return 'text ' . $value;
+	}
+}
+
+echo 'declared', "\n";

@@ -1,0 +1,30 @@
+--RULE--
+call.get_class_without_argument
+--CLAIM--
+{ "deprecated_in": "8.3" }
+--CODE--
+<?php
+class Shape {
+	public function name() {
+		return get_class();
+	}
+}
+
+class Circle extends Shape {
+}
+
+$circle = new Circle();
+echo $circle->name(), "\n";
+--FIXED--
+<?php
+class Shape {
+	public function name() {
+		return self::class;
+	}
+}
+
+class Circle extends Shape {
+}
+
+$circle = new Circle();
+echo $circle->name(), "\n";
