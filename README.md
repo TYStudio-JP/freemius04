@@ -5,10 +5,13 @@ plugins and themes of a WordPress site, and fixes what can be fixed safely.
 To be sold through Freemius: a free edition that scans, a Pro edition that
 fixes.
 
-**Status: engine only.** There is no WordPress plugin yet: no admin screen, no
-database, no Freemius integration. What exists is the scan engine, the fixer,
-the tooling that checks every claim on real PHP runtimes, and command-line
-scripts to try them on real code.
+**Status: 0.1.0, not released.** The plugin runs in WordPress (Tools >
+Upgrade Warden): stepwise scan, results per plugin and theme for PHP 8.0 to
+8.6, and in Pro a preview of the fixes, apply with backup, and undo. All 602
+items of the PHP 8.0-8.6 upgrade notes have a recorded verdict in
+`tools/ledger/`; 152 rules; 899 fixtures run on seven real PHP versions.
+Not done: the run-time monitor, Freemius keys, translations, MySQL and
+browser checks, PHP 8.6 on a real runtime.
 
 - Why this product, and the evidence for and against (Japanese): `docs/market-research.ja.md`
 - Design, current state, limits and open decisions (Japanese): `docs/product-design.ja.md`
@@ -30,7 +33,10 @@ notes, quoted word for word, and is labelled as such all the way to the result.
 | `data/catalog/` | Internal functions and constants that PHP deprecates or removes. **Generated**, do not edit. |
 | `lib/php-parser/` | nikic/PHP-Parser 5.9.0 (BSD-3-Clause) under this plugin's own namespace. **Copied by a script**, do not edit. |
 | `tools/` | Development only, never shipped. Runs PHP 7.4 to 8.5 through php-wasm, builds the catalog, checks the fixtures. |
-| `tools/fixtures/` | One file per verified claim, and `observed.json`, the record of what the runtimes did. |
+| `tools/fixtures/` | One file per verified claim, each with `<name>.observed.json`, the record of what the runtimes did. |
+| `tools/ledger/` | One entry per bullet of the PHP 8.0-8.6 upgrade notes: rule, catalog, run-time only, not detectable or out of scope, with the reason. |
+| `src/Scan/`, `src/Admin/`, `src/Store/` | WordPress side: stepwise scan job, stored results, the screen. |
+| `premium/` | Pro: the fixer, preview/apply/undo. Removed from the free build by Freemius. |
 | `tests/` | PHP tests. They tie the engine to the fixtures. |
 | `bin/` | Command-line scripts. |
 
@@ -69,7 +75,19 @@ PHP can differ without PHP having changed.
 `catalog-src/` holds the few hand-written inputs. Each must quote the upgrade
 notes exactly; the build fails on a quote that is not in the notes.
 
+## Checking in a real WordPress
+
+```
+cd tools
+node wp-check.mjs <wordpress-release-folder> <sqlite-database-integration-checkout> 7.4 8.5
+```
+
+Installs WordPress on SQLite inside each runtime and drives the plugin: 31
+checks covering activation, scan, results, screens, fix, undo.
+
 ## Adding a rule
+
+See `docs/adding-rules.md` first. In short:
 
 1. Write a fixture in `tools/fixtures/`: the claim, a small program that uses
    the feature and prints something, and, if there is a fix, the fixed program
