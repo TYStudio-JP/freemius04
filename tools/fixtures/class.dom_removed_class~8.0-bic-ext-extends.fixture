@@ -1,0 +1,10 @@
+--RULE--
+class.dom_removed_class
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Plugin_Error_Locator extends DOMLocator {
+}
+
+echo "declared\n";

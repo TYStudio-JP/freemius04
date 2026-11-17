@@ -1,0 +1,12 @@
+--RULE--
+runtime.stream_bucket_class
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// stream_bucket_new() and stream_bucket_make_writeable() return a StreamBucket
+// from 8.4, a stdClass before. Reading $bucket->data works the same.
+$stream = fopen( 'php://memory', 'r+' );
+$bucket = stream_bucket_new( $stream, 'abc' );
+
+echo get_class( $bucket ), ' ', $bucket->data, "\n";

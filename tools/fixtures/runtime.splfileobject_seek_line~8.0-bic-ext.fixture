@@ -1,0 +1,10 @@
+--RULE--
+runtime.splfileobject_seek_line
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$file = new SplTempFileObject();
+$file->fwrite( "a\nb\nc\n" );
+$file->seek( 1 );
+echo json_encode( $file->fgets() ), "\n";

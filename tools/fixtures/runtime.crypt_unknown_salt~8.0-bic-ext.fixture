@@ -1,0 +1,7 @@
+--RULE--
+runtime.crypt_unknown_salt
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+echo crypt( 'secret', '$9$plugin' ), "\n";

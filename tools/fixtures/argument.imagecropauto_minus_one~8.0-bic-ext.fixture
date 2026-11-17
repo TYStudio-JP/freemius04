@@ -1,0 +1,16 @@
+--RULE--
+argument.imagecropauto_minus_one
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+$image   = imagecreatetruecolor( 4, 4 );
+$cropped = imagecropauto( $image, -1 );
+
+echo false === $cropped ? "nothing cropped\n" : "cropped\n";
+--FIXED--
+<?php
+$image   = imagecreatetruecolor( 4, 4 );
+$cropped = imagecropauto( $image, IMG_CROP_DEFAULT );
+
+echo false === $cropped ? "nothing cropped\n" : "cropped\n";

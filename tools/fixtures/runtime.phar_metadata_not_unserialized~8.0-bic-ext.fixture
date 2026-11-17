@@ -1,0 +1,15 @@
+--RULE--
+runtime.phar_metadata_not_unserialized
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+class Plugin_Meta {
+	public function __wakeup() {
+		echo "metadata unserialized\n";
+	}
+}
+
+$path = sys_get_temp_dir() . '/upgw-8-0-bic-ext.phar';
+file_put_contents( $path, base64_decode( 'PD9waHAgX19IQUxUX0NPTVBJTEVSKCk7ID8+DQpWAAAAAQAAABEAAAABAAAAAAAjAAAATzoxMToiUGx1Z2luX01ldGEiOjE6e3M6MToidiI7aToxO30FAAAAYS50eHQBAAAAAAAAAAEAAACDFtyMpAEAAAAAAAB4g1m0zA/4uZD3uxUdziL4h7NTTDT2TshDA/hmhufYd8MDAAAAR0JNQg==' ) );
+echo file_get_contents( 'phar://' . $path . '/a.txt' ), "\n";

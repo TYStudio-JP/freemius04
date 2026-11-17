@@ -1,0 +1,8 @@
+--RULE--
+runtime.token_comment_newline
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$tokens = token_get_all( "<?php // note\n\$a = 1;" );
+echo json_encode( $tokens[1][1] ), "\n";

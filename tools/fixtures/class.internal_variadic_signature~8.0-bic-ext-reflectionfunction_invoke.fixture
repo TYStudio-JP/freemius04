@@ -1,0 +1,14 @@
+--RULE--
+class.internal_variadic_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Plugin_Function_Reflector extends ReflectionFunction {
+	#[\ReturnTypeWillChange]
+	public function invoke( $args = null ) {
+		return parent::invoke( $args );
+	}
+}
+
+echo "declared\n";

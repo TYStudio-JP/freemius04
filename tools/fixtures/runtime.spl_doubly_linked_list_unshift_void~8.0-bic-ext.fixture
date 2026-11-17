@@ -1,0 +1,8 @@
+--RULE--
+runtime.spl_doubly_linked_list_unshift_void
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$list = new SplDoublyLinkedList();
+var_dump( $list->unshift( 1 ) );

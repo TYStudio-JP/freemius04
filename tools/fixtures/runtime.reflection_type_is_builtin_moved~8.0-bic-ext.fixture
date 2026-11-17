@@ -1,0 +1,8 @@
+--RULE--
+runtime.reflection_type_is_builtin_moved
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( method_exists( 'ReflectionType', 'isBuiltin' ) );
+var_dump( method_exists( 'ReflectionNamedType', 'isBuiltin' ) );

@@ -1,0 +1,10 @@
+--RULE--
+argument.vsprintf_non_array
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+echo vsprintf( 'Hello %s', 'world' ), "\n";
+--FIXED--
+<?php
+echo vsprintf( 'Hello %s', array( 'world' ) ), "\n";

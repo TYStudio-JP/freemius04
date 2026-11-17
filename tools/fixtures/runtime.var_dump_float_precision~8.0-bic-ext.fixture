@@ -1,0 +1,7 @@
+--RULE--
+runtime.var_dump_float_precision
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( 0.1 + 0.2 );

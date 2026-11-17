@@ -1,0 +1,7 @@
+--RULE--
+argument.empty_needle
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( strstr( 'abc', '' ) );

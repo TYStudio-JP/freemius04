@@ -1,0 +1,7 @@
+--RULE--
+runtime.quotemeta_empty_string
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( quotemeta( '' ) );

@@ -1,0 +1,30 @@
+--RULE--
+runtime.soap_typemap_array
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// SoapClient::$typemap was a resource and is an array from 8.4. The property
+// is private from 8.1 (reading $client->typemap from outside throws an Error
+// there), so it is read here through an array cast, which works on every
+// version. No request is sent: a non-WSDL client connects only on a call.
+$client = new SoapClient(
+	null,
+	array(
+		'location' => 'http://localhost/soap',
+		'uri'      => 'urn:upgw',
+		'typemap'  => array(
+			array(
+				'type_ns'   => 'urn:upgw',
+				'type_name' => 'thing',
+				'from_xml'  => 'strval',
+			),
+		),
+	)
+);
+
+foreach ( (array) $client as $key => $value ) {
+	if ( false !== strpos( $key, 'typemap' ) ) {
+		var_dump( is_resource( $value ), null !== $value );
+	}
+}

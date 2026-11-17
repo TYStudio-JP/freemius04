@@ -1,0 +1,14 @@
+--RULE--
+class.internal_variadic_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Logging_PDO extends PDO {
+	#[\ReturnTypeWillChange]
+	public function query( $statement ) {
+		return parent::query( $statement );
+	}
+}
+
+echo "declared\n";

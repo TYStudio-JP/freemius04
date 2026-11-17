@@ -1,0 +1,1362 @@
+[
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "COM",
+		"quote": "Removed the ability to import case-insensitive constants from type libraries.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The COM (Windows only) extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Curl",
+		"quote": "CURLOPT_POSTFIELDS no longer accepts objects as arrays.",
+		"disposition": "runtime-only",
+		"rule": "runtime.curl_postfields_object",
+		"fixtures": [
+			"runtime.curl_postfields_object~8.0-bic-ext.fixture"
+		],
+		"reason": "Whether the value given for CURLOPT_POSTFIELDS is an object is a run-time matter; the runtimes accept a stdClass on 7.4 and throw an Error (\"could not be converted to string\") from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Date",
+		"quote": "mktime() and gmmktime() now require at least one argument.",
+		"disposition": "rule",
+		"rule": "call.mktime_without_argument",
+		"fixtures": [
+			"call.mktime_without_argument~8.0-bic-ext-gmmktime.fixture",
+			"call.mktime_without_argument~8.0-bic-ext-mktime.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports mktime() and gmmktime() with no argument (deprecated 7.4 on the runtime, which the 7.x notes do not date, ArgumentCountError from 8.0) with a fix to time()."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "dom",
+		"quote": "Remove unimplemented classes from ext/dom that had no behavior and contained test data.",
+		"disposition": "rule",
+		"rule": "class.dom_removed_class",
+		"fixtures": [
+			"class.dom_removed_class~8.0-bic-ext-extends.fixture",
+			"class.dom_removed_class~8.0-bic-ext-new.fixture"
+		],
+		"reason": "Php80BicExtRemovedClasses reports new and extends of the eight removed classes that the 7.4 runtime had (Error from 8.0); DomError did not exist on 7.4 either, and instanceof, types and catch do not fail, so those are not reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Enchant",
+		"quote": "enchant_broker_list_dicts(), enchant_broker_describe() and enchant_dict_suggest() will now return an empty array instead of null.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Enchant extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Enchant",
+		"quote": "enchant_broker_init() will now return an EnchantBroker object rather than a resource.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Enchant extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Enchant",
+		"quote": "enchant_broker_request_dict() and enchant_broker_request_pwl_dict() will now return an EnchantDictionary object rather than a resource.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Enchant extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Exif",
+		"quote": "Removed read_exif_data().",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "read_exif_data() is in data/catalog/functions.php (deprecated 7.2, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Filter",
+		"quote": "The FILTER_FLAG_SCHEME_REQUIRED and FILTER_FLAG_HOST_REQUIRED flags for the FILTER_VALIDATE_URL filter have been removed.",
+		"disposition": "catalog",
+		"rule": "constant.removed",
+		"fixtures": [],
+		"reason": "FILTER_FLAG_SCHEME_REQUIRED and FILTER_FLAG_HOST_REQUIRED are in data/catalog/constants.php (deprecated 7.3, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Filter",
+		"quote": "The INPUT_REQUEST and INPUT_SESSION source for filter_input() etc have been removed.",
+		"disposition": "catalog",
+		"rule": "constant.removed",
+		"fixtures": [],
+		"reason": "INPUT_REQUEST and INPUT_SESSION are in data/catalog/constants.php (removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "GD",
+		"quote": "The GD extension now uses a GdImage objects as the underlying data structure for images, rather than resources.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-gd_direct.fixture",
+			"call.is_resource_on_object~8.0-bic-ext-gd_variable.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on a GD image-creating call or on a local only assigned one (false from 8.0, so the code silently takes the failure branch), with the fix ( false !== ... ); imagedestroy() having no effect changes no output."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "GD",
+		"quote": "The deprecated function image2wbmp() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "image2wbmp() is in data/catalog/functions.php (deprecated 7.3, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "GD",
+		"quote": "The deprecated functions png2wbmp() and jpeg2wbmp() have been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "png2wbmp() and jpeg2wbmp() are in data/catalog/functions.php (deprecated 7.2, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "GD",
+		"quote": "The default $mode parameter of imagecropauto() no longer accepts -1.",
+		"disposition": "rule",
+		"rule": "argument.imagecropauto_minus_one",
+		"fixtures": [
+			"argument.imagecropauto_minus_one~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a literal -1 mode (deprecated 7.4 per the 7.4 notes, ValueError from 8.0) with the verified fix IMG_CROP_DEFAULT."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "GMP",
+		"quote": "gmp_random() has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The GMP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Iconv",
+		"quote": "iconv() implementations which do not properly set errno in case of errors are no longer supported.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "A property of the iconv library PHP is built against, not of PHP code."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "IMAP",
+		"quote": "The unused default_host argument of imap_headerinfo() has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The IMAP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "IMAP",
+		"quote": "The imap_header() function which is an alias of imap_headerinfo() has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The IMAP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "The deprecated constant INTL_IDNA_VARIANT_2003 has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Intl extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "The deprecated Normalizer::NONE constant has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Intl extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Intl",
+		"quote": "The IntlDateFormatter::RELATIVE_FULL, IntlDateFormatter::RELATIVE_LONG, IntlDateFormatter::RELATIVE_MEDIUM, and IntlDateFormatter::RELATIVE_SHORT constants have been added.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Constants were added, which breaks nothing; the Intl extension is not in the runtimes either."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "LDAP",
+		"quote": "The deprecated function ldap_sort has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The LDAP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "LDAP",
+		"quote": "The deprecated function ldap_control_paged_result has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The LDAP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "LDAP",
+		"quote": "The deprecated function ldap_control_paged_result_response has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The LDAP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "LDAP",
+		"quote": "The interface of ldap_set_rebind_proc has changed; the $callback parameter does not accept empty string anymore; null value shall be used instead.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The LDAP extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "The mbstring.func_overload directive has been removed.",
+		"disposition": "catalog",
+		"rule": "constant.removed",
+		"fixtures": [],
+		"reason": "MB_OVERLOAD_MAIL, MB_OVERLOAD_STRING and MB_OVERLOAD_REGEX are in data/catalog/constants.php (removed 8.0); the INI directive and the mb_get_info() entries are configuration, not code."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "mb_parse_str() can no longer be used without specifying a result array.",
+		"disposition": "rule",
+		"rule": "call.parse_str_without_result",
+		"fixtures": [
+			"call.parse_str_without_result~8.0-bic-ext-mb_parse_str.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports mb_parse_str() with one argument (deprecated 7.4: the 7.2 notes deprecate only parse_str(), so the 7.4 runtime dates it; ArgumentCountError from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "A number of deprecated mbregex aliases have been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "All fourteen mbreg*() aliases are in data/catalog/functions.php (deprecated 7.3, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "The 'e' modifier for mb_ereg_replace() has been removed.",
+		"disposition": "runtime-only",
+		"rule": "runtime.mb_ereg_replace_e_option",
+		"fixtures": [
+			"runtime.mb_ereg_replace_e_option~8.0-bic-ext-mb_ereg_replace.fixture",
+			"runtime.mb_ereg_replace_e_option~8.0-bic-ext-mb_eregi_replace.fixture"
+		],
+		"reason": "Visible in the source (a literal options string with e: deprecated 7.1, ValueError from 8.0), but every mb_ereg*() call already gets function.deprecated (8.6, documented) from the catalog, so a rule fixture cannot show one rule alone; the fixtures hold the evidence and the rule waits for a shared change (see report)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "A non-string pattern argument to mb_ereg_replace() will now be interpreted as a string instead of an ASCII codepoint.",
+		"disposition": "runtime-only",
+		"rule": "runtime.mb_ereg_replace_int_pattern",
+		"fixtures": [
+			"runtime.mb_ereg_replace_int_pattern~8.0-bic-ext.fixture"
+		],
+		"reason": "An int literal pattern is visible (deprecated 7.4 on the runtime, read as a string from 8.0), but like the e option it cannot get a rule fixture next to the 8.6 catalog deprecation of mb_ereg_replace(); a pattern in a variable is a run-time matter anyway."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "The needle argument for mb_strpos(), mb_strrpos(), mb_stripos(), mb_strripos(), mb_strstr(), mb_stristr(), mb_strrchr() and mb_strrichr() can now be empty.",
+		"disposition": "rule",
+		"rule": "argument.empty_needle",
+		"fixtures": [
+			"argument.empty_needle~8.0-bic-ext-mb_strpos.fixture",
+			"argument.empty_needle~8.0-bic-ext-mb_strrchr.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a literal empty needle: false (with a warning for some) on 7.4, a position or string from 8.0; on the runtimes mb_strrchr() and mb_strrichr() went from false to an empty string."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "The $is_hex parameter, which was not used internally, has been removed from mb_decode_numericentity().",
+		"disposition": "rule",
+		"rule": "call.mb_decode_numericentity_is_hex",
+		"fixtures": [
+			"call.mb_decode_numericentity_is_hex~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a fourth argument (ignored on 7.4, ArgumentCountError from 8.0) with a verified fix that removes it."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "The legacy behavior of passing the encoding as the third argument instead of an offset for the mb_strrpos() function has been removed; provide an explicit 0 offset with the encoding as the fourth argument instead.",
+		"disposition": "rule",
+		"rule": "argument.mb_strrpos_encoding",
+		"fixtures": [
+			"argument.mb_strrpos_encoding~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a non-numeric string literal as third argument (deprecated 7.4, TypeError from 8.0) with the verified fix that inserts a 0 offset."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "The ISO_8859-* character encoding aliases have been replaced by ISO8859-* aliases for better interoperability with the iconv extension.",
+		"disposition": "rule",
+		"rule": "argument.mb_iso8859_alias",
+		"fixtures": [
+			"argument.mb_iso8859_alias~8.0-bic-ext-convert.fixture",
+			"runtime.mb_regex_iso8859_alias~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports 'ISO_8859-N' given to an mb_*() function (ValueError from 8.0) with the fix 'ISO-8859-N', which works on every runtime, whereas the notes' 'ISO8859-N' failed on 7.4; the mbregex names 'ISO8859_N' fail from 8.0 too (runtime fixture) but mb_regex_encoding() is already reported as deprecated in 8.6 by the catalog."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Mbstring",
+		"quote": "mb_ereg() and mb_eregi() will now return boolean true on a successful match.",
+		"disposition": "runtime-only",
+		"rule": "runtime.mb_ereg_returns_true",
+		"fixtures": [
+			"runtime.mb_ereg_returns_true~8.0-bic-ext.fixture"
+		],
+		"reason": "Only code that uses the number mb_ereg() returned notices; the runtimes return int 1 or the match length on 7.4 and true from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OCI8",
+		"quote": "The OCI-Lob class is now called OCILob, and the OCI-Collection class is now called OCICollection for name compliance enforced by PHP 8 arginfo type annotation tooling.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The OCI8 extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OCI8",
+		"quote": "Several alias functions have been marked as deprecated.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The OCI8 extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OCI8",
+		"quote": "oci_internal_debug() and its alias ociinternaldebug() have been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The OCI8 extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "ODBC",
+		"quote": "odbc_connect() no longer reuses persistent connections.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ODBC extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "ODBC",
+		"quote": "The unused flags parameter of odbc_exec() has been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The ODBC extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OpenSSL",
+		"quote": "openssl_x509_read() and openssl_csr_sign() will now return an OpenSSLCertificate object rather than a resource.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-openssl_csr_sign.fixture",
+			"call.is_resource_on_object~8.0-bic-ext-openssl_x509_read.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on openssl_x509_read() and openssl_csr_sign() results followed within a function (true on 7.4, false from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OpenSSL",
+		"quote": "The openssl_x509_free() function is deprecated and no longer has an effect, instead the OpenSSLCertificate instance is automatically destroyed if it is no longer referenced.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "openssl_x509_free() is in data/catalog/functions.php (deprecated 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OpenSSL",
+		"quote": "openssl_csr_new() will now return an OpenSSLCertificateSigningRequest object rather than a resource.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-openssl_csr_new.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on an openssl_csr_new() result (true on 7.4, false from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OpenSSL",
+		"quote": "openssl_pkey_new() will now return an OpenSSLAsymmetricKey object rather than a resource.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-openssl_pkey_new.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on an openssl_pkey_new() result (true on 7.4, false from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OpenSSL",
+		"quote": "The openssl_pkey_free() function is deprecated and no longer has an effect, instead the OpenSSLAsymmetricKey instance is automatically destroyed if it is no longer referenced.",
+		"disposition": "catalog",
+		"rule": "function.deprecated",
+		"fixtures": [],
+		"reason": "openssl_pkey_free() is in data/catalog/functions.php (deprecated 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "OpenSSL",
+		"quote": "openssl_seal() and openssl_open() now require $method to be passed, as the previous default of \"RC4\" is considered insecure.",
+		"disposition": "rule",
+		"rule": "call.openssl_seal_without_method",
+		"fixtures": [
+			"call.openssl_seal_without_method~8.0-bic-ext-open.fixture",
+			"call.openssl_seal_without_method~8.0-bic-ext-seal.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports openssl_seal() and openssl_open() called with exactly four arguments (ran on 7.4, ArgumentCountError from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "PCRE",
+		"quote": "When passing invalid escape sequences they are no longer interpreted as literals.",
+		"disposition": "rule",
+		"rule": "argument.pcre_invalid_escape",
+		"fixtures": [
+			"argument.pcre_invalid_escape~8.0-bic-ext-character_class.fixture",
+			"argument.pcre_invalid_escape~8.0-bic-ext-preg_match.fixture",
+			"argument.pcre_invalid_escape~8.0-bic-ext-preg_split.fixture"
+		],
+		"reason": "Php80BicExtPcreEscape reports literal patterns containing one of the escaped letters i j l m q u y F I J L M O T U Y, which the runtimes compiled as the letter on 7.4 and reject from 8.0 (false and a warning); the other unknown escapes behaved the same on both or take arguments."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "The default error handling mode has been changed from \"silent\" to \"exceptions\".",
+		"disposition": "runtime-only",
+		"rule": "runtime.pdo_default_errmode_exception",
+		"fixtures": [
+			"runtime.pdo_default_errmode_exception~8.0-bic-ext.fixture"
+		],
+		"reason": "Whether a query fails is a run-time matter; with SQLite the runtimes return false on 7.4 and throw an uncaught PDOException from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO",
+		"quote": "The signatures of some PDO methods have changed:",
+		"disposition": "rule",
+		"rule": "class.internal_variadic_signature",
+		"fixtures": [
+			"class.internal_variadic_signature~8.0-bic-ext-pdo_query.fixture",
+			"class.internal_variadic_signature~8.0-bic-ext-pdostatement_setfetchmode.fixture"
+		],
+		"reason": "Php80BicExtInternalOverride reports a class extending PDO or PDOStatement whose query() or setFetchMode() has no variadic parameter (accepted on 7.4, compile error from 8.0); calls are unaffected."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO MySQL",
+		"quote": "PDO::inTransaction() now reports the actual transaction state of the connection, rather than an approximation maintained by PDO.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Depends on the statements a MySQL server runs inside a transaction, and no runtime here has a MySQL server."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "PDO_ODBC",
+		"quote": "The php.ini directive pdo_odbc.db2_instance_name has been removed",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "An INI directive of PDO_ODBC, which none of the runtimes has."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "pgsql",
+		"quote": "The deprecated pg_connect() syntax using multiple parameters instead of a connection string is no longer supported.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "pgsql",
+		"quote": "The deprecated pg_lo_import() and pg_lo_export() signature that passes the connection as the last argument is no longer supported.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "pgsql",
+		"quote": "pg_fetch_all() will now return an empty array instead of false for result sets with zero rows.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The pgsql extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Phar",
+		"quote": "Metadata associated with a phar will no longer be automatically unserialized, to fix potential security vulnerabilities due to object instantiation, autoloading, etc.",
+		"disposition": "runtime-only",
+		"rule": "runtime.phar_metadata_not_unserialized",
+		"fixtures": [
+			"runtime.phar_metadata_not_unserialized~8.0-bic-ext.fixture"
+		],
+		"reason": "Which phar a file path reaches is a run-time matter; with a phar whose metadata is an object, opening a file inside it ran __wakeup() on 7.4 and not from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Reflection",
+		"quote": "The method signatures",
+		"disposition": "rule",
+		"rule": "class.internal_variadic_signature",
+		"fixtures": [
+			"class.internal_variadic_signature~8.0-bic-ext-reflectionclass_newinstance.fixture",
+			"class.internal_variadic_signature~8.0-bic-ext-reflectionfunction_invoke.fixture",
+			"class.internal_variadic_signature~8.0-bic-ext-reflectionmethod_invoke.fixture"
+		],
+		"reason": "Php80BicExtInternalOverride reports a class extending ReflectionClass, ReflectionFunction or ReflectionMethod whose newInstance() or invoke() has no variadic parameter (accepted on 7.4, compile error from 8.0); calls are unaffected."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Reflection",
+		"quote": "The ReflectionType::__toString() method will now return a complete debug representation of the type, and is no longer deprecated.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_type_to_string",
+		"fixtures": [
+			"runtime.reflection_type_to_string~8.0-bic-ext.fixture"
+		],
+		"reason": "Which type a ReflectionType describes is a run-time matter; for ?int the runtimes print \"int\" with a deprecation on 7.4 and \"?int\" without one from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Reflection",
+		"quote": "Reflection export() methods have been removed.",
+		"disposition": "rule",
+		"rule": "call.reflection_export",
+		"fixtures": [
+			"call.reflection_export~8.0-bic-ext-class.fixture",
+			"call.reflection_export~8.0-bic-ext-method.fixture"
+		],
+		"reason": "Php80BicExtRemovedMethods reports Reflection*::export() static calls (deprecated 7.4, Error from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Reflection",
+		"quote": "The following methods can now return information about default values of parameters of internal functions:",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_internal_default_value",
+		"fixtures": [
+			"runtime.reflection_internal_default_value~8.0-bic-ext.fixture"
+		],
+		"reason": "Which function a ReflectionParameter belongs to is a run-time matter; for str_pad() the runtimes answer false on 7.4 and true from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Reflection",
+		"quote": "ReflectionMethod::isConstructor() and ReflectionMethod::isDestructor() now also return true for `__construct` and `__destruct` methods of interfaces.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_interface_constructor",
+		"fixtures": [
+			"runtime.reflection_interface_constructor~8.0-bic-ext.fixture"
+		],
+		"reason": "Which method is reflected is a run-time matter; for an interface __construct the runtimes answer false on 7.4 and true from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Reflection",
+		"quote": "ReflectionType::isBuiltin() method has been moved to ReflectionNamedType.",
+		"disposition": "runtime-only",
+		"rule": "runtime.reflection_type_is_builtin_moved",
+		"fixtures": [
+			"runtime.reflection_type_is_builtin_moved~8.0-bic-ext.fixture"
+		],
+		"reason": "Calls of isBuiltin() on a ReflectionNamedType still work, and the receiver type is a run-time matter; the runtimes show ReflectionType::isBuiltin() existing on 7.4 and not from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sockets",
+		"quote": "The deprecated AI_IDN_ALLOW_UNASSIGNED and AI_IDN_USE_STD3_ASCII_RULES flags for socket_addrinfo_lookup() have been removed.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sockets extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sockets",
+		"quote": "socket_create(), socket_create_listen(), socket_accept(), socket_import_stream(), socket_addrinfo_connect(), socket_addrinfo_bind(), and socket_wsaprotocol_info_import() will now return a Socket object rather than a resource.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sockets extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sockets",
+		"quote": "socket_addrinfo_lookup() will now return an array of AddressInfo objects rather than resources.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sockets extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::fgetss() has been removed.",
+		"disposition": "rule",
+		"rule": "call.splfileobject_fgetss",
+		"fixtures": [
+			"call.splfileobject_fgetss~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtRemovedMethods reports ->fgetss() calls, a name no other internal class has, unless the enclosing class declares fgetss() (deprecated 7.3, Error from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFileObject::seek() now always seeks to the beginning of the line.",
+		"disposition": "runtime-only",
+		"rule": "runtime.splfileobject_seek_line",
+		"fixtures": [
+			"runtime.splfileobject_seek_line~8.0-bic-ext.fixture"
+		],
+		"reason": "Whether the receiver is an SplFileObject and what is read after seek() is a run-time matter; seek( 1 ) then fgets() returned the third line on 7.4 and the second from 8.0 (current() after seek() was already right on 7.4)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplHeap::compare($a, $b) now specifies a method signature.",
+		"disposition": "rule",
+		"rule": "class.splheap_compare_signature",
+		"fixtures": [
+			"class.splheap_compare_signature~8.0-bic-ext-splheap_three_required.fixture",
+			"class.splheap_compare_signature~8.0-bic-ext-splheap_typed.fixture",
+			"class.splheap_compare_signature~8.0-bic-ext-splpriorityqueue_typed.fixture",
+			"class.splheap_compare_signature~8.0-bic-ext-splheap_one_parameter.fixture"
+		],
+		"reason": "Php80BicExtInternalOverride reports a direct SplHeap or SplPriorityQueue subclass whose compare() types one of its two parameters, requires more than two or accepts fewer than two (accepted on 7.4, compile error from 8.0); SplMinHeap and SplMaxHeap already failed on 7.4."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplDoublyLinkedList::push() now returns void instead of true",
+		"disposition": "runtime-only",
+		"rule": "runtime.spl_doubly_linked_list_push_void",
+		"fixtures": [
+			"runtime.spl_doubly_linked_list_push_void~8.0-bic-ext.fixture"
+		],
+		"reason": "The receiver type is a run-time matter; push() returned true on 7.4 and null from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplDoublyLinkedList::unshift() now returns void instead of true",
+		"disposition": "runtime-only",
+		"rule": "runtime.spl_doubly_linked_list_unshift_void",
+		"fixtures": [
+			"runtime.spl_doubly_linked_list_unshift_void~8.0-bic-ext.fixture"
+		],
+		"reason": "The receiver type is a run-time matter; unshift() returned true on 7.4 and null from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplQueue::enqueue() now returns void instead of true",
+		"disposition": "runtime-only",
+		"rule": "runtime.spl_queue_enqueue_void",
+		"fixtures": [
+			"runtime.spl_queue_enqueue_void~8.0-bic-ext.fixture"
+		],
+		"reason": "The receiver type is a run-time matter; enqueue() returned true on 7.4 and null from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "spl_autoload_register() will now always throw a TypeError on invalid arguments, therefore the second argument $do_throw is ignored and a notice will be emitted if it is set to false.",
+		"disposition": "runtime-only",
+		"rule": "runtime.spl_autoload_register_invalid_callback",
+		"fixtures": [
+			"runtime.spl_autoload_register_invalid_callback~8.0-bic-ext.fixture"
+		],
+		"reason": "Whether the callback is valid is a run-time matter; with $do_throw false an unknown function returned false on 7.4 and throws a TypeError from 8.0, while a valid callback with false only gains a notice, which no finding level describes."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "SPL",
+		"quote": "SplFixedArray is now an IteratorAggregate and not an Iterator.",
+		"disposition": "rule",
+		"rule": "call.splfixedarray_iterator_method",
+		"fixtures": [
+			"call.splfixedarray_iterator_method~8.0-bic-ext-from_array.fixture",
+			"call.splfixedarray_iterator_method~8.0-bic-ext-new.fixture"
+		],
+		"reason": "Php80BicExtRemovedMethods reports rewind(), current(), key(), next() and valid() on new SplFixedArray() or on a local only assigned new SplFixedArray() or SplFixedArray::fromArray() (Error from 8.0); foreach keeps working."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "assert() will no longer evaluate string arguments, instead they will be treated like any other argument.",
+		"disposition": "rule",
+		"rule": "call.assert_string",
+		"fixtures": [
+			"call.assert_string~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports assert() with a string literal (deprecated 7.2 per the 7.2 notes; from 8.0 the string is not evaluated, so a failing assertion passes); ASSERT_QUIET_EVAL is in the catalog."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "parse_str() can no longer be used without specifying a result array.",
+		"disposition": "rule",
+		"rule": "call.parse_str_without_result",
+		"fixtures": [
+			"call.parse_str_without_result~8.0-bic-ext-parse_str.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports parse_str() with one argument (deprecated 7.2 per the 7.2 notes, ArgumentCountError from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "fgetss() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "fgetss() is in data/catalog/functions.php (deprecated 7.3, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The string.strip_tags filter has been removed.",
+		"disposition": "rule",
+		"rule": "argument.strip_tags_filter",
+		"fixtures": [
+			"argument.strip_tags_filter~8.0-bic-ext-php_filter.fixture",
+			"argument.strip_tags_filter~8.0-bic-ext-stream_filter_append.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports the literal filter name in stream_filter_append()/prepend() and in php://filter URLs (deprecated 7.3 per the 7.3 notes; from 8.0 a warning and unfiltered data)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The needle argument of strpos(), strrpos(), stripos(), strripos(), strstr(), strchr(), strrchr(), and stristr() will now always be interpreted as a string.",
+		"disposition": "rule",
+		"rule": "argument.needle_not_string",
+		"fixtures": [
+			"argument.needle_not_string~8.0-bic-ext-strpos.fixture",
+			"argument.needle_not_string~8.0-bic-ext-strstr.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports an int literal needle (deprecated 7.3 per the 7.3 notes, read as digits from 8.0); a needle in a variable is a run-time matter."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The needle argument for strpos(), strrpos(), stripos(), strripos(), strstr(), stristr() and strrchr() can now be empty.",
+		"disposition": "rule",
+		"rule": "argument.empty_needle",
+		"fixtures": [
+			"argument.empty_needle~8.0-bic-ext-strpos.fixture",
+			"argument.empty_needle~8.0-bic-ext-strrpos.fixture",
+			"argument.empty_needle~8.0-bic-ext-strstr.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a literal '' needle; strrchr() is not reported because the runtimes return false for it on every version, contrary to the notes."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The length argument for substr(), substr_count(), substr_compare(), and iconv_substr() can now be null.",
+		"disposition": "rule",
+		"rule": "argument.length_null",
+		"fixtures": [
+			"argument.length_null~8.0-bic-ext-iconv_substr.fixture",
+			"argument.length_null~8.0-bic-ext-substr.fixture",
+			"argument.length_null~8.0-bic-ext-substr_count.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a literal null length for substr(), substr_count() and iconv_substr() (empty on 7.4, the rest of the string from 8.0); substr_compare() with null gave the same result on 7.4 and 8.0, so it is not reported."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The length argument for array_splice() can now be null.",
+		"disposition": "rule",
+		"rule": "argument.length_null",
+		"fixtures": [
+			"argument.length_null~8.0-bic-ext-array_splice.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a literal null length for array_splice() (removed nothing on 7.4, everything to the end from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The args argument of vsprintf(), vfprintf(), and vprintf() must now be an array.",
+		"disposition": "rule",
+		"rule": "argument.vsprintf_non_array",
+		"fixtures": [
+			"argument.vsprintf_non_array~8.0-bic-ext-vfprintf.fixture",
+			"argument.vsprintf_non_array~8.0-bic-ext-vprintf.fixture",
+			"argument.vsprintf_non_array~8.0-bic-ext-vsprintf.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a scalar literal as the values (TypeError from 8.0) with the verified fix array( ... ); a non-array variable is a run-time matter."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The 'salt' option of password_hash() is no longer supported.",
+		"disposition": "rule",
+		"rule": "argument.password_hash_salt",
+		"fixtures": [
+			"argument.password_hash_salt~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports a 'salt' key in a literal options array (deprecated on the 7.4 runtime, which the 7.x notes do not date; ignored with a warning from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The quotemeta() function will now return an empty string if an empty string was passed.",
+		"disposition": "runtime-only",
+		"rule": "runtime.quotemeta_empty_string",
+		"fixtures": [
+			"runtime.quotemeta_empty_string~8.0-bic-ext.fixture"
+		],
+		"reason": "The argument's value is a run-time matter; quotemeta( '' ) returned false on 7.4 and '' from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "hebrevc() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "hebrevc() is in data/catalog/functions.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "convert_cyr_string() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "convert_cyr_string() is in data/catalog/functions.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "money_format() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "money_format() is in data/catalog/functions.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "ezmlm_hash() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "ezmlm_hash() is in data/catalog/functions.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "restore_include_path() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "restore_include_path() is in data/catalog/functions.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "get_magic_quotes_gpc() and get_magic_quotes_runtime() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "get_magic_quotes_gpc() and get_magic_quotes_runtime() are in data/catalog/functions.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "FILTER_SANITIZE_MAGIC_QUOTES has been removed.",
+		"disposition": "catalog",
+		"rule": "constant.removed",
+		"fixtures": [],
+		"reason": "FILTER_SANITIZE_MAGIC_QUOTES is in data/catalog/constants.php (deprecated 7.4, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Calling implode() with parameters in a reverse order ($pieces, $glue) is no longer supported.",
+		"disposition": "rule",
+		"rule": "call.implode_reversed",
+		"fixtures": [
+			"call.implode_reversed~8.0-bic-ext-implode.fixture",
+			"call.implode_reversed~8.0-bic-ext-join.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports implode()/join() with a string literal second or an array literal first (deprecated 7.4 per the 7.4 notes, TypeError from 8.0) with the verified fix that swaps them; WordPress 4.0 had ten such calls."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "parse_url() will now distinguish absent and empty queries and fragments:",
+		"disposition": "runtime-only",
+		"rule": "runtime.parse_url_empty_query",
+		"fixtures": [
+			"runtime.parse_url_empty_query~8.0-bic-ext.fixture"
+		],
+		"reason": "Depends on the URL; a trailing ? or # gave null on 7.4 and an empty string from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "var_dump() and debug_zval_dump() will now print floating-point numbers using serialize_precision rather than precision.",
+		"disposition": "runtime-only",
+		"rule": "runtime.var_dump_float_precision",
+		"fixtures": [
+			"runtime.var_dump_float_precision~8.0-bic-ext.fixture"
+		],
+		"reason": "Depends on the float printed; var_dump( 0.1 + 0.2 ) printed 0.3 on 7.4 and 0.30000000000000004 from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "If the array returned by __sleep() contains non-existing properties, these are now silently ignored.",
+		"disposition": "runtime-only",
+		"rule": "runtime.sleep_missing_property",
+		"fixtures": [
+			"runtime.sleep_missing_property~8.0-bic-ext.fixture"
+		],
+		"reason": "Whether a property exists is a run-time matter; the missing property was serialized as N with a notice on 7.4 and left out from 8.0, but with a warning, not silently as the notes say."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The default locale on startup is now always \"C\".",
+		"disposition": "runtime-only",
+		"rule": "runtime.default_locale_c",
+		"fixtures": [
+			"runtime.default_locale_c~8.0-bic-ext.fixture"
+		],
+		"reason": "Depends on the environment; on the runtimes LC_CTYPE was inherited (en_US.UTF-8) on 7.4 and is C from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Removed deprecated DES fallback in crypt().",
+		"disposition": "runtime-only",
+		"rule": "runtime.crypt_unknown_salt",
+		"fixtures": [
+			"runtime.crypt_unknown_salt~8.0-bic-ext.fixture"
+		],
+		"reason": "Salts usually come from variables; an unknown '$9$' salt gave a DES hash on 7.4 and *0 from 8.0 (a two-character DES salt still works)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Specifying out of range rounds for sha256/sha512 crypt() will now fail with *0 instead of clamping to the closest limit.",
+		"disposition": "runtime-only",
+		"rule": "runtime.crypt_rounds_out_of_range",
+		"fixtures": [
+			"runtime.crypt_rounds_out_of_range~8.0-bic-ext.fixture"
+		],
+		"reason": "Depends on the salt; rounds=10 for sha256 was clamped to 1000 on 7.4 and gives *0 from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The result of sorting functions may have changed, if the array contains elements that compare as equal.",
+		"disposition": "runtime-only",
+		"rule": "runtime.sort_stable",
+		"fixtures": [
+			"runtime.sort_stable~8.0-bic-ext.fixture"
+		],
+		"reason": "Depends on the data; equal elements came out in a different order on 7.4 and in their original order from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Sort comparison functions that return true or false will now throw a deprecation warning, and should be replaced with an implementation that returns an integer less than, equal to, or greater than zero.",
+		"disposition": "rule",
+		"rule": "callable.sort_bool_return",
+		"fixtures": [
+			"callable.sort_bool_return~8.0-bic-ext-uasort_arrow.fixture",
+			"callable.sort_bool_return~8.0-bic-ext-uksort.fixture",
+			"callable.sort_bool_return~8.0-bic-ext-usort_closure.fixture"
+		],
+		"reason": "Php80BicExtSortBoolReturn reports a closure or arrow function given to usort(), uasort() or uksort() whose every return value is a comparison (deprecated from 8.0, same order); named callbacks are not looked into."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Any functions accepting callbacks that are not explicitly specified to accept parameters by reference will now warn if a callback with reference parameters is used.",
+		"disposition": "not-detectable",
+		"rule": "runtime.callback_by_reference_param",
+		"fixtures": [
+			"runtime.callback_by_reference_param~8.0-bic-ext.fixture"
+		],
+		"reason": "A by-reference closure passed to array_filter() is visible, but the runtimes show only a new warning from 8.0 and the same result, which no finding level describes, hence the empty claim."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "The HTTP stream wrapper as used by functions like file_get_contents() now advertises HTTP/1.1 rather than HTTP/1.0 by default.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Only a server can see the protocol version, and the runtimes may not touch the network."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Calling crypt() without an explicit salt is no longer supported.",
+		"disposition": "rule",
+		"rule": "call.crypt_without_salt",
+		"fixtures": [
+			"call.crypt_without_salt~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtCallArguments reports crypt() with one argument (a notice on 7.4, ArgumentCountError from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "substr(), mb_substr(), iconv_substr() and grapheme_substr() now consistently clamp out-of-bounds offsets to the string boundary.",
+		"disposition": "runtime-only",
+		"rule": "runtime.substr_out_of_bounds",
+		"fixtures": [
+			"runtime.substr_out_of_bounds~8.0-bic-ext.fixture"
+		],
+		"reason": "Offsets are usually run-time values; substr( 'abc', 5 ) returned false on 7.4 and '' from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Standard",
+		"quote": "Populating $http_response_header variable by the HTTP stream wrapper doesn't force rebuilding of symbol table anymore.",
+		"disposition": "not-detectable",
+		"rule": null,
+		"fixtures": [],
+		"reason": "An internal optimisation with no visible effect on what a program prints."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sysvmsg",
+		"quote": "msg_get_queue() will now return an SysvMessageQueue object rather than a resource.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sysvmsg extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sysvsem",
+		"quote": "sem_get() will now return an SysvSemaphore object rather than a resource.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sysvsem extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sysvsem",
+		"quote": "The $auto_release parameter of sem_get() was changed to accept bool values rather than int.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sysvsem extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Sysvshm",
+		"quote": "shm_attach() will now return an SysvSharedMemory object rather than a resource.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The Sysvshm extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "tidy",
+		"quote": "The $use_include_path parameter, which was not used internally, has been removed from tidy_repair_string().",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The tidy extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "tidy",
+		"quote": "tidy::repairString() and tidy::repairFile() became static methods",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "The tidy extension is not in any of the PHP 7.4 to 8.5 runtimes here, so nothing about it can be verified."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Tokenizer",
+		"quote": "T_COMMENT tokens will no longer include a trailing newline.",
+		"disposition": "runtime-only",
+		"rule": "runtime.token_comment_newline",
+		"fixtures": [
+			"runtime.token_comment_newline~8.0-bic-ext.fixture"
+		],
+		"reason": "Only code that inspects token_get_all() output is affected; a // comment token ended in a newline on 7.4 and does not from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Tokenizer",
+		"quote": "Namespaced names are now represented using the T_NAME_QUALIFIED (Foo\\Bar), T_NAME_FULLY_QUALIFIED (\\Foo\\Bar) and T_NAME_RELATIVE (namespace\\Foo\\Bar) tokens.",
+		"disposition": "runtime-only",
+		"rule": "runtime.token_name_qualified",
+		"fixtures": [
+			"runtime.token_name_qualified~8.0-bic-ext.fixture"
+		],
+		"reason": "Only code that inspects token_get_all() output is affected; Plugin\\Admin starts with T_STRING on 7.4 and is one T_NAME_QUALIFIED from 8.0."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "XML",
+		"quote": "xml_parser_create(_ns) will now return an XMLParser object rather than a resource.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-xml_parser_create.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on xml_parser_create() results (true on 7.4, false from 8.0); xml_parser_free() having no effect changes no output."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "XMLReader",
+		"quote": "XMLReader::open() and XMLReader::xml() are now static methods.",
+		"disposition": "rule",
+		"rule": "class.xmlreader_static_method",
+		"fixtures": [
+			"class.xmlreader_static_method~8.0-bic-ext-open.fixture",
+			"class.xmlreader_static_method~8.0-bic-ext-xml.fixture"
+		],
+		"reason": "Php80BicExtInternalOverride reports a class extending XMLReader with a non-static open() or xml() (compile error from 8.0; a static one fails on 7.4, so no fix is offered); calls are unaffected."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "XMLWriter",
+		"quote": "The XMLWriter functions now accept and return, respectively, XMLWriter objects instead of resources.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-xmlwriter_open_memory.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on xmlwriter_open_memory() and xmlwriter_open_uri() results (true on 7.4, false from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Zip",
+		"quote": "ZipArchive::OPSYS_Z_CPM has been removed (this name was a typo).",
+		"disposition": "rule",
+		"rule": "constant.ziparchive_opsys_z_cpm",
+		"fixtures": [
+			"constant.ziparchive_opsys_z_cpm~8.0-bic-ext.fixture"
+		],
+		"reason": "Php80BicExtRemovedClasses reports ZipArchive::OPSYS_Z_CPM (Error from 8.0) with the verified fix OPSYS_CPM, the same value on 7.4."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Zlib",
+		"quote": "gzgetss() has been removed.",
+		"disposition": "catalog",
+		"rule": "function.removed",
+		"fixtures": [],
+		"reason": "gzgetss() is in data/catalog/functions.php (deprecated 7.3, removed 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Zlib",
+		"quote": "inflate_init() will now return an InflateContext object rather than a resource.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-inflate_init.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on inflate_init() results (true on 7.4, false from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Zlib",
+		"quote": "deflate_init() will now return a DeflateContext object rather than a resource.",
+		"disposition": "rule",
+		"rule": "call.is_resource_on_object",
+		"fixtures": [
+			"call.is_resource_on_object~8.0-bic-ext-deflate_init.fixture"
+		],
+		"reason": "Php80BicExtIsResource reports is_resource() on deflate_init() results (true on 7.4, false from 8.0)."
+	},
+	{
+		"version": "8.0",
+		"section": "Backward Incompatible Changes",
+		"area": "Zlib",
+		"quote": "zlib.output_compression is no longer automatically disabled for Content-Type: image/*.",
+		"disposition": "out-of-scope",
+		"rule": null,
+		"fixtures": [],
+		"reason": "Output compression is an INI and SAPI matter, not something PHP source shows."
+	}
+]

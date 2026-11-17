@@ -1,0 +1,10 @@
+--RULE--
+constant.ziparchive_opsys_z_cpm
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+echo ZipArchive::OPSYS_Z_CPM, "\n";
+--FIXED--
+<?php
+echo ZipArchive::OPSYS_CPM, "\n";

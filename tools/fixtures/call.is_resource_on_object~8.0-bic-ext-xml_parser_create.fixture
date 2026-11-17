@@ -1,0 +1,52 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function count_elements( $xml ) {
+	$parser = xml_parser_create();
+
+	if ( ! is_resource( $parser ) ) {
+		return 'no parser';
+	}
+
+	$count = 0;
+	xml_set_element_handler(
+		$parser,
+		function ( $parser, $name ) use ( &$count ) {
+			$count++;
+		},
+		function ( $parser, $name ) {
+		}
+	);
+	xml_parse( $parser, $xml, true );
+
+	return $count . ' elements';
+}
+
+echo count_elements( '<feed><item/><item/></feed>' ), "\n";
+--FIXED--
+<?php
+function count_elements( $xml ) {
+	$parser = xml_parser_create();
+
+	if ( ! ( false !== $parser ) ) {
+		return 'no parser';
+	}
+
+	$count = 0;
+	xml_set_element_handler(
+		$parser,
+		function ( $parser, $name ) use ( &$count ) {
+			$count++;
+		},
+		function ( $parser, $name ) {
+		}
+	);
+	xml_parse( $parser, $xml, true );
+
+	return $count . ' elements';
+}
+
+echo count_elements( '<feed><item/><item/></feed>' ), "\n";

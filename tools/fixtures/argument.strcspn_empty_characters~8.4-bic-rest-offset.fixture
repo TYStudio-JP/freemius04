@@ -1,0 +1,9 @@
+--RULE--
+argument.strcspn_empty_characters
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// The same with an offset: the count starts at the offset, and up to 8.3 it
+// stopped at the NUL byte after it.
+var_dump( strcspn( "ab\0cd", "", 1 ) );

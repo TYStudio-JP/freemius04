@@ -1,0 +1,14 @@
+--RULE--
+runtime.mb_substr_sjis_mac
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// 0x85AB in SJIS-mac (Roman numeral XIII) converts to several Unicode code
+// points. mb_substr() now counts those code points, so index 1 is no longer
+// the "A" after it. The notes list this under 8.4; the 8.3 runtime (8.3.36)
+// already behaves the new way.
+$text = "\x85\xAB" . 'AB';
+
+var_dump( bin2hex( mb_substr( $text, 1, 1, 'SJIS-mac' ) ) );
+var_dump( mb_strlen( $text, 'SJIS-mac' ) );

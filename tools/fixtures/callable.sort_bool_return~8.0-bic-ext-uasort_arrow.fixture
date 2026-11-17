@@ -1,0 +1,9 @@
+--RULE--
+callable.sort_bool_return
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+$numbers = array( 'c' => 3, 'a' => 1, 'b' => 2 );
+uasort( $numbers, fn( $a, $b ) => $a > $b );
+echo implode( ',', array_keys( $numbers ) ), "\n";

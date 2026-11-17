@@ -1,0 +1,7 @@
+--RULE--
+runtime.mb_ereg_replace_e_option
+--CLAIM--
+{ "deprecated_in": "7.1", "breaks_in": "8.0" }
+--CODE--
+<?php
+echo mb_ereg_replace( '[a-z]+', 'strtoupper("\\0")', 'plugin 2', 'e' ), "\n";

@@ -1,0 +1,9 @@
+--RULE--
+argument.strcspn_empty_characters
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// With an empty $characters, strcspn() stopped at the first NUL byte up to
+// 8.3. From 8.4 it returns the length of the string.
+var_dump( strcspn( "ab\0cd", '' ) );

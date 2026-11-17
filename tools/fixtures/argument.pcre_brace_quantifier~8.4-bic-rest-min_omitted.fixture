@@ -1,0 +1,10 @@
+--RULE--
+argument.pcre_brace_quantifier
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// PHP 8.4 bundles PCRE2 10.44, which reads {,3} as the quantifier {0,3}.
+// Before, it was the literal text "{,3}".
+var_dump( preg_match( '/^a{,3}$/', 'aa' ) );
+var_dump( preg_match( '/^a{,3}$/', 'a{,3}' ) );

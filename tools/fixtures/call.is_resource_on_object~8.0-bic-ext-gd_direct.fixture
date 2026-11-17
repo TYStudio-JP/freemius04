@@ -1,0 +1,10 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+echo is_resource( imagecreatetruecolor( 2, 2 ) ) ? 'image created' : 'no image', "\n";
+--FIXED--
+<?php
+echo ( false !== imagecreatetruecolor( 2, 2 ) ) ? 'image created' : 'no image', "\n";

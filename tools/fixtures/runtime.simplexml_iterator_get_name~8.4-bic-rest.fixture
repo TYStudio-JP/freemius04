@@ -1,0 +1,21 @@
+--RULE--
+runtime.simplexml_iterator_get_name
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// The same with a get method, getName(), called on the list being walked.
+$xml   = simplexml_load_string( '<r><a>1</a><a>2</a><a>3</a></r>' );
+$items = $xml->a;
+$round = 0;
+
+foreach ( $items as $item ) {
+	echo (string) $item, '/', $items->getName(), ' ';
+
+	if ( ++$round >= 6 ) {
+		echo 'stopped';
+		break;
+	}
+}
+
+echo "\n";

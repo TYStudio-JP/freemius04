@@ -1,0 +1,12 @@
+--RULE--
+runtime.reflection_interface_constructor
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+interface Has_Constructor {
+	public function __construct();
+}
+
+$method = new ReflectionMethod( 'Has_Constructor', '__construct' );
+var_dump( $method->isConstructor() );

@@ -1,0 +1,15 @@
+--RULE--
+argument.pcre_brace_quantifier
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// The patterns of preg_replace_callback_array() are the keys of its array.
+echo preg_replace_callback_array(
+	array(
+		'/b{,2}c/' => function ( $match ) {
+			return '[' . $match[0] . ']';
+		},
+	),
+	'abbc ab{,2}c'
+), "\n";

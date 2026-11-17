@@ -1,0 +1,7 @@
+--RULE--
+argument.length_null
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( iconv_substr( 'wp-content', 3, null ) );

@@ -1,0 +1,11 @@
+--RULE--
+runtime.reflection_type_to_string
+--CLAIM--
+{ "deprecated_in": "7.4", "changed_in": "8.0" }
+--CODE--
+<?php
+function find_post( ?int $id ) {
+}
+
+$parameter = new ReflectionParameter( 'find_post', 0 );
+echo (string) $parameter->getType(), "\n";

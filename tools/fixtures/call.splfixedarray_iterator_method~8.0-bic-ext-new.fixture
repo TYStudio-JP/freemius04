@@ -1,0 +1,15 @@
+--RULE--
+call.splfixedarray_iterator_method
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+function first_slot( $size ) {
+	$slots    = new SplFixedArray( $size );
+	$slots[0] = 'first';
+	$slots->rewind();
+
+	return $slots->valid() ? $slots->current() : 'empty';
+}
+
+echo first_slot( 3 ), "\n";

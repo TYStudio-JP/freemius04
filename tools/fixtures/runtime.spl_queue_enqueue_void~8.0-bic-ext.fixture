@@ -1,0 +1,8 @@
+--RULE--
+runtime.spl_queue_enqueue_void
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$queue = new SplQueue();
+var_dump( $queue->enqueue( 1 ) );

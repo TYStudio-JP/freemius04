@@ -1,0 +1,7 @@
+--RULE--
+runtime.mb_regex_iso8859_alias
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+var_dump( mb_regex_encoding( 'ISO8859_1' ) );

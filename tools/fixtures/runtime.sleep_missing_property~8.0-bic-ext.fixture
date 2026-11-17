@@ -1,0 +1,15 @@
+--RULE--
+runtime.sleep_missing_property
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+class Plugin_Settings {
+	public $color = 'red';
+
+	public function __sleep() {
+		return array( 'color', 'size' );
+	}
+}
+
+echo serialize( new Plugin_Settings() ), "\n";

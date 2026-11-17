@@ -1,0 +1,15 @@
+--RULE--
+runtime.mb_substr_invalid_string
+--CLAIM--
+{ "changed_in": "8.3" }
+--CODE--
+<?php
+// "a", a truncated UTF-8 sequence, "bc". mb_strpos() counts the broken
+// sequence as one character, so "b" is at 2. mb_substr() from 2 used to count
+// differently and returned "c"; now it returns "bc". The notes list this under
+// 8.4; the 8.3 runtime (8.3.36) already behaves the new way.
+$text     = "a\xE3\x81bc";
+$position = mb_strpos( $text, 'b', 0, 'UTF-8' );
+
+var_dump( $position );
+var_dump( bin2hex( mb_substr( $text, $position, null, 'UTF-8' ) ) );

@@ -1,0 +1,7 @@
+--RULE--
+runtime.substr_out_of_bounds
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( substr( 'abc', 5 ) );

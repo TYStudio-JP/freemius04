@@ -1,0 +1,10 @@
+--RULE--
+argument.mb_iso8859_alias
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+echo bin2hex( mb_convert_encoding( "caf\xC3\xA9", 'ISO_8859-1', 'UTF-8' ) ), "\n";
+--FIXED--
+<?php
+echo bin2hex( mb_convert_encoding( "caf\xC3\xA9", 'ISO-8859-1', 'UTF-8' ) ), "\n";

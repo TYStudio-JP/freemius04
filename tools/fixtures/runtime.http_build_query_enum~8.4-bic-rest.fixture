@@ -1,0 +1,21 @@
+--RULE--
+runtime.http_build_query_enum
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// Up to 8.3 http_build_query() encoded a backed enum like any object, by its
+// public properties name and value. From 8.4 it uses the backing value.
+// Enums do not parse before 8.1: there an object with the same two public
+// properties stands in, which is what 8.1 to 8.3 did with the enum.
+if ( PHP_VERSION_ID >= 80100 ) {
+	eval( 'enum Upgw_Size: string { case Large = "xl"; }' );
+	$size = constant( 'Upgw_Size::Large' );
+} else {
+	$size = (object) array(
+		'name'  => 'Large',
+		'value' => 'xl',
+	);
+}
+
+echo http_build_query( array( 'size' => $size ) ), "\n";

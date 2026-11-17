@@ -1,0 +1,8 @@
+--RULE--
+runtime.parse_url_empty_query
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( parse_url( 'https://example.org/page?', PHP_URL_QUERY ) );
+var_dump( parse_url( 'https://example.org/page#', PHP_URL_FRAGMENT ) );

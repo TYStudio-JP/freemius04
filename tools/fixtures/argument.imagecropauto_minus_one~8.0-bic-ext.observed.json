@@ -1,0 +1,38 @@
+{
+	"runtimes": {
+		"7.4": "7.4.33",
+		"8.0": "8.0.30",
+		"8.1": "8.1.34",
+		"8.2": "8.2.35",
+		"8.3": "8.3.36",
+		"8.4": "8.4.27",
+		"8.5": "8.5.12"
+	},
+	"rule": "argument.imagecropauto_minus_one",
+	"claim": {
+		"deprecated_in": "7.4",
+		"breaks_in": "8.0"
+	},
+	"verdict": "verified",
+	"observed": {
+		"7.4": "deprecated",
+		"8.0": "fatal",
+		"8.1": "fatal",
+		"8.2": "fatal",
+		"8.3": "fatal",
+		"8.4": "fatal",
+		"8.5": "fatal"
+	},
+	"messages": {
+		"7.4": "E_DEPRECATED: imagecropauto(): Crop mode -1 is deprecated. Use IMG_CROP_DEFAULT instead.",
+		"8.0": "ValueError: imagecropauto(): Argument #2 ($mode) must be a valid mode",
+		"8.1": "ValueError: imagecropauto(): Argument #2 ($mode) must be a valid mode",
+		"8.2": "ValueError: imagecropauto(): Argument #2 ($mode) must be a valid mode",
+		"8.3": "ValueError: imagecropauto(): Argument #2 ($mode) must be a valid mode",
+		"8.4": "ValueError: imagecropauto(): Argument #2 ($mode) must be a valid mode",
+		"8.5": "ValueError: imagecropauto(): Argument #2 ($mode) must be a valid mode"
+	},
+	"fix": "same output on every version",
+	"not_checked": [],
+	"problems": []
+}

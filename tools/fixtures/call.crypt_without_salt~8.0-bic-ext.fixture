@@ -1,0 +1,7 @@
+--RULE--
+call.crypt_without_salt
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+echo strlen( crypt( 'secret' ) ) > 0 ? "hashed\n" : "not hashed\n";

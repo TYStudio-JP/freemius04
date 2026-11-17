@@ -1,0 +1,26 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function make_key( $config ) {
+	$key = openssl_pkey_new( array( 'config' => $config, 'private_key_bits' => 1024 ) );
+
+	return is_resource( $key ) ? 'key created' : 'no key';
+}
+
+$config = sys_get_temp_dir() . '/upgw-8-0-bic-ext-openssl.cnf';
+file_put_contents( $config, "[req]\ndistinguished_name = dn\n[dn]\n" );
+echo make_key( $config ), "\n";
+--FIXED--
+<?php
+function make_key( $config ) {
+	$key = openssl_pkey_new( array( 'config' => $config, 'private_key_bits' => 1024 ) );
+
+	return ( false !== $key ) ? 'key created' : 'no key';
+}
+
+$config = sys_get_temp_dir() . '/upgw-8-0-bic-ext-openssl.cnf';
+file_put_contents( $config, "[req]\ndistinguished_name = dn\n[dn]\n" );
+echo make_key( $config ), "\n";

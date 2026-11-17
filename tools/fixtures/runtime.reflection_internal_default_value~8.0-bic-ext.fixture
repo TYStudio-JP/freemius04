@@ -1,0 +1,8 @@
+--RULE--
+runtime.reflection_internal_default_value
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$parameter = new ReflectionParameter( 'str_pad', 2 );
+var_dump( $parameter->isDefaultValueAvailable() );

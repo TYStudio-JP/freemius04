@@ -1,0 +1,32 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function make_certificate( $config ) {
+	$options     = array( 'config' => $config, 'private_key_bits' => 1024 );
+	$key         = openssl_pkey_new( $options );
+	$request     = openssl_csr_new( array( 'commonName' => 'example.org' ), $key, $options );
+	$certificate = openssl_csr_sign( $request, null, $key, 1, $options );
+
+	return is_resource( $certificate ) ? 'certificate signed' : 'no certificate';
+}
+
+$config = sys_get_temp_dir() . '/upgw-8-0-bic-ext-openssl.cnf';
+file_put_contents( $config, "[req]\ndistinguished_name = dn\n[dn]\n" );
+echo make_certificate( $config ), "\n";
+--FIXED--
+<?php
+function make_certificate( $config ) {
+	$options     = array( 'config' => $config, 'private_key_bits' => 1024 );
+	$key         = openssl_pkey_new( $options );
+	$request     = openssl_csr_new( array( 'commonName' => 'example.org' ), $key, $options );
+	$certificate = openssl_csr_sign( $request, null, $key, 1, $options );
+
+	return ( false !== $certificate ) ? 'certificate signed' : 'no certificate';
+}
+
+$config = sys_get_temp_dir() . '/upgw-8-0-bic-ext-openssl.cnf';
+file_put_contents( $config, "[req]\ndistinguished_name = dn\n[dn]\n" );
+echo make_certificate( $config ), "\n";

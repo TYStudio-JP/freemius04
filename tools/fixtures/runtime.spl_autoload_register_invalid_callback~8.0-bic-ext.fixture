@@ -1,0 +1,8 @@
+--RULE--
+runtime.spl_autoload_register_invalid_callback
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$callback = 'plugin_autoloader_not_defined';
+var_dump( spl_autoload_register( $callback, false ) );

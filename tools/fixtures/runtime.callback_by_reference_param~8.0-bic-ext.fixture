@@ -1,0 +1,13 @@
+--RULE--
+runtime.callback_by_reference_param
+--CLAIM--
+{}
+--CODE--
+<?php
+$kept = array_filter(
+	array( 1, 2, 3 ),
+	function ( &$value ) {
+		return $value > 1;
+	}
+);
+echo implode( ',', $kept ), "\n";

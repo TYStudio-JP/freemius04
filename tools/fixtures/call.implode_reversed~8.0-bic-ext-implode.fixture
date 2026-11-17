@@ -1,0 +1,12 @@
+--RULE--
+call.implode_reversed
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+$parts = array( 'red', 'green' );
+echo implode( $parts, ', ' ), "\n";
+--FIXED--
+<?php
+$parts = array( 'red', 'green' );
+echo implode( ', ', $parts ), "\n";

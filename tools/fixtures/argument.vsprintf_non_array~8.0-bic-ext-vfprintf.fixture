@@ -1,0 +1,12 @@
+--RULE--
+argument.vsprintf_non_array
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$out = fopen( 'php://output', 'w' );
+vfprintf( $out, "Hello %s\n", 'world' );
+--FIXED--
+<?php
+$out = fopen( 'php://output', 'w' );
+vfprintf( $out, "Hello %s\n", array( 'world' ) );

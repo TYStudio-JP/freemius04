@@ -1,0 +1,17 @@
+--RULE--
+class.splheap_compare_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Task_Queue extends SplPriorityQueue {
+	#[\ReturnTypeWillChange]
+	public function compare( int $priority1, int $priority2 ) {
+		return $priority1 - $priority2;
+	}
+}
+
+$queue = new Task_Queue();
+$queue->insert( 'low', 1 );
+$queue->insert( 'high', 3 );
+echo $queue->top(), "\n";

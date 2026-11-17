@@ -1,0 +1,9 @@
+--RULE--
+argument.length_null
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$items = array( 'a', 'b', 'c' );
+array_splice( $items, 1, null );
+echo implode( ',', $items ), "\n";

@@ -1,0 +1,8 @@
+--RULE--
+call.openssl_seal_without_method
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$opened = openssl_open( 'sealed data', $data, 'envelope key', 'not a key' );
+echo false === $opened ? "not opened\n" : "opened\n";

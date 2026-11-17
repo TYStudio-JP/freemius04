@@ -1,0 +1,7 @@
+--RULE--
+argument.strip_tags_filter
+--CLAIM--
+{ "deprecated_in": "7.3", "changed_in": "8.0" }
+--CODE--
+<?php
+echo file_get_contents( 'php://filter/read=string.strip_tags/resource=data://text/plain,<b>bold</b> text' ), "\n";

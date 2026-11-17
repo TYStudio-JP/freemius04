@@ -1,0 +1,10 @@
+--RULE--
+runtime.curl_postfields_object
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$fields       = new stdClass();
+$fields->name = 'value';
+$handle       = curl_init();
+var_dump( curl_setopt( $handle, CURLOPT_POSTFIELDS, $fields ) );

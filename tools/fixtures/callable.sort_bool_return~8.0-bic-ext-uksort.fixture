@@ -1,0 +1,14 @@
+--RULE--
+callable.sort_bool_return
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+$numbers = array( 'c' => 3, 'a' => 1, 'b' => 2 );
+uksort(
+	$numbers,
+	function ( $a, $b ) {
+		return strcmp( $a, $b ) > 0;
+	}
+);
+echo implode( ',', array_keys( $numbers ) ), "\n";

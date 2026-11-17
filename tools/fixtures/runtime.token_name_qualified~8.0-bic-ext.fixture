@@ -1,0 +1,8 @@
+--RULE--
+runtime.token_name_qualified
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$tokens = token_get_all( '<?php Plugin\Admin;' );
+echo token_name( $tokens[1][0] ), "\n";

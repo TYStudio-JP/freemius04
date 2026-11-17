@@ -1,0 +1,7 @@
+--RULE--
+runtime.mb_ereg_replace_int_pattern
+--CLAIM--
+{ "deprecated_in": "7.4", "changed_in": "8.0" }
+--CODE--
+<?php
+echo mb_ereg_replace( 97, '*', 'a97' ), "\n";

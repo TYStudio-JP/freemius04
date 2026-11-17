@@ -1,0 +1,13 @@
+--RULE--
+call.parse_str_without_result
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+function requested_page( $query ) {
+	mb_parse_str( $query );
+
+	return isset( $page ) ? 'page ' . $page : 'no page';
+}
+
+echo requested_page( 'page=2' ), "\n";

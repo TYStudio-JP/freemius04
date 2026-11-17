@@ -1,0 +1,7 @@
+--RULE--
+argument.needle_not_string
+--CLAIM--
+{ "deprecated_in": "7.3", "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( strstr( 'a-1-2', 45 ) );

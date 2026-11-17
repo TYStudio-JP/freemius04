@@ -24,11 +24,11 @@
 	},
 	"messages": {
 		"7.4": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4001",
-		"8.0": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4056",
-		"8.1": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4129",
-		"8.2": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4213",
-		"8.3": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4329",
-		"8.4": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4474",
+		"8.0": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4095",
+		"8.1": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4209",
+		"8.2": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4334",
+		"8.3": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4491",
+		"8.4": "E_WARNING: mysqli::__construct(): Error while reading greeting packet. PID=4677",
 		"8.5": "Error: Cannot call constructor twice"
 	},
 	"fix": "none",

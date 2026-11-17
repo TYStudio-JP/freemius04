@@ -1,0 +1,8 @@
+--RULE--
+runtime.mb_ereg_returns_true
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( mb_ereg( 'b', 'abc' ) );
+var_dump( mb_ereg( 'bc', 'abc', $matches ) );

@@ -1,0 +1,7 @@
+--RULE--
+argument.pcre_invalid_escape
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+var_dump( preg_match( '/^\i\d+$/', 'i42' ) );

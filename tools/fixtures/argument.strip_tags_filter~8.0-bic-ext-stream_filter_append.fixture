@@ -1,0 +1,11 @@
+--RULE--
+argument.strip_tags_filter
+--CLAIM--
+{ "deprecated_in": "7.3", "changed_in": "8.0" }
+--CODE--
+<?php
+$stream = fopen( 'php://memory', 'w+' );
+fwrite( $stream, '<b>bold</b> text' );
+rewind( $stream );
+stream_filter_append( $stream, 'string.strip_tags' );
+echo stream_get_contents( $stream ), "\n";

@@ -1,0 +1,10 @@
+--RULE--
+argument.pcre_brace_quantifier
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// With nothing in front of it to repeat, {,3} was literal text up to 8.3. From
+// 8.4 it is a quantifier, the pattern no longer compiles, and preg_match()
+// warns and returns false.
+var_dump( preg_match( '/^{,3}$/', '{,3}' ) );

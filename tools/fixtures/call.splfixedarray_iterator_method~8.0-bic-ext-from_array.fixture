@@ -1,0 +1,18 @@
+--RULE--
+call.splfixedarray_iterator_method
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+function count_by_hand( array $values ) {
+	$fixed = SplFixedArray::fromArray( $values );
+	$count = 0;
+
+	for ( $fixed->rewind(); $fixed->valid(); $fixed->next() ) {
+		$count++;
+	}
+
+	return $count;
+}
+
+echo count_by_hand( array( 1, 2, 3 ) ), "\n";

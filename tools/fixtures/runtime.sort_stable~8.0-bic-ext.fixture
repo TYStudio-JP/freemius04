@@ -1,0 +1,19 @@
+--RULE--
+runtime.sort_stable
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+$items = array();
+
+foreach ( str_split( 'abcdefghijklmnopqr' ) as $index => $letter ) {
+	$items[] = array( $index % 2, $letter );
+}
+
+usort(
+	$items,
+	function ( $a, $b ) {
+		return $a[0] - $b[0];
+	}
+);
+echo implode( '', array_column( $items, 1 ) ), "\n";

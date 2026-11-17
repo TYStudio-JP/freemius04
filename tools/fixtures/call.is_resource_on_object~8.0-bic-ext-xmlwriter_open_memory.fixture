@@ -1,0 +1,38 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function sitemap_entry( $url ) {
+	$writer = xmlwriter_open_memory();
+
+	if ( ! is_resource( $writer ) ) {
+		return 'no writer';
+	}
+
+	xmlwriter_start_element( $writer, 'loc' );
+	xmlwriter_text( $writer, $url );
+	xmlwriter_end_element( $writer );
+
+	return xmlwriter_output_memory( $writer );
+}
+
+echo sitemap_entry( 'https://example.org/' ), "\n";
+--FIXED--
+<?php
+function sitemap_entry( $url ) {
+	$writer = xmlwriter_open_memory();
+
+	if ( ! ( false !== $writer ) ) {
+		return 'no writer';
+	}
+
+	xmlwriter_start_element( $writer, 'loc' );
+	xmlwriter_text( $writer, $url );
+	xmlwriter_end_element( $writer );
+
+	return xmlwriter_output_memory( $writer );
+}
+
+echo sitemap_entry( 'https://example.org/' ), "\n";

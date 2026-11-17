@@ -1,0 +1,17 @@
+--RULE--
+class.xmlreader_static_method
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Feed_Reader extends XMLReader {
+	#[\ReturnTypeWillChange]
+	public function xml( $source, $encoding = null, $options = 0 ) {
+		return parent::xml( $source, $encoding, $options );
+	}
+}
+
+$reader = new Feed_Reader();
+$reader->xml( '<feed/>' );
+$reader->read();
+echo $reader->name, "\n";

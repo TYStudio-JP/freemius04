@@ -1,0 +1,9 @@
+--RULE--
+runtime.pdo_default_errmode_exception
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$pdo    = new PDO( 'sqlite::memory:' );
+$result = $pdo->query( 'SELECT * FROM missing_table' );
+echo false === $result ? "query failed quietly\n" : "query ran\n";

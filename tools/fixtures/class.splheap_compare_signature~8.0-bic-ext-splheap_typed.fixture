@@ -1,0 +1,17 @@
+--RULE--
+class.splheap_compare_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Priority_Heap extends SplHeap {
+	#[\ReturnTypeWillChange]
+	protected function compare( int $a, int $b ) {
+		return $a - $b;
+	}
+}
+
+$heap = new Priority_Heap();
+$heap->insert( 1 );
+$heap->insert( 3 );
+echo $heap->top(), "\n";

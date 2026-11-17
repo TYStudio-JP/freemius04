@@ -1,0 +1,10 @@
+--RULE--
+argument.mb_strrpos_encoding
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+var_dump( mb_strrpos( 'abcb', 'b', 'UTF-8' ) );
+--FIXED--
+<?php
+var_dump( mb_strrpos( 'abcb', 'b', 0, 'UTF-8' ) );

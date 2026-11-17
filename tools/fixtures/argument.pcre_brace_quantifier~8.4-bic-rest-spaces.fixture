@@ -1,0 +1,10 @@
+--RULE--
+argument.pcre_brace_quantifier
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// Not in the notes, seen on the runtimes: PCRE2 10.44 also allows spaces and
+// tabs inside the braces of a quantifier, so "{ 1,3 }" became {1,3}. Before
+// 8.4 it was literal text.
+echo preg_replace( '/x{ 1,3 }/', '-', 'xx x{ 1,3 }' ), "\n";

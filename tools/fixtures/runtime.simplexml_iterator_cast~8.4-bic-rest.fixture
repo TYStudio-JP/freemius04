@@ -1,0 +1,24 @@
+--RULE--
+runtime.simplexml_iterator_cast
+--CLAIM--
+{ "changed_in": "8.4" }
+--CODE--
+<?php
+// Casting the element list that a foreach walks to a string reset its
+// iterator, so the loop never ended (stopped here after six rounds). From 8.4
+// the loop sees each element once. Which variable holds a SimpleXMLElement is
+// not in the source.
+$xml   = simplexml_load_string( '<r><a>1</a><a>2</a><a>3</a></r>' );
+$items = $xml->a;
+$round = 0;
+
+foreach ( $items as $item ) {
+	echo (string) $item, '/', (string) $items, ' ';
+
+	if ( ++$round >= 6 ) {
+		echo 'stopped';
+		break;
+	}
+}
+
+echo "\n";

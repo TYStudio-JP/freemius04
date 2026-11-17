@@ -1,0 +1,24 @@
+--RULE--
+call.openssl_seal_without_method
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$pem = <<<PEM
+-----BEGIN CERTIFICATE-----
+MIICAjCCAWugAwIBAgIUZWvOgTxUsfd2FwdotLf3/uSYx6AwDQYJKoZIhvcNAQEL
+BQAwEjEQMA4GA1UEAwwHZXhhbXBsZTAgFw0yNjExMTcxMDI3MjdaGA8yMTI2MTAy
+NDEwMjcyN1owEjEQMA4GA1UEAwwHZXhhbXBsZTCBnzANBgkqhkiG9w0BAQEFAAOB
+jQAwgYkCgYEAvro8PguB8zinE7Y11TDcJVAjSks9oZ4uO6+jEKp1AiF2J2SPJDVu
+sD4Gp1rVW0gJT7n5QnPPfK9EqWnXr0qZEO27f35JmIiwqr1nF7UYzDeobaPnrDO2
+eZiRdBUgElQPI+xsWN9V9q2iZXeHuZk09JA3lIrbhBOfkpgMGihvKo0CAwEAAaNT
+MFEwHQYDVR0OBBYEFCY8oWjkcZI+UgCYRcHCgJsrlhdSMB8GA1UdIwQYMBaAFCY8
+oWjkcZI+UgCYRcHCgJsrlhdSMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEL
+BQADgYEAX9ybURNKXJUdBQ6wB9h/Ext5VxfcBSarXpcOHJ5HpXITG/ryr1+Fg9SX
+/UReVtA0ACcGFYPZ2mC3eC6kh6bb7rQQyShOheo50mtXDEiX0rlQSY1Y1LiiApdz
+bcdmp7QnyAqjjDWlSyfJqMiX7s+rdTebmInSdYCUPlVoPz6rOf8=
+-----END CERTIFICATE-----
+PEM;
+
+$length = openssl_seal( 'secret', $sealed, $keys, array( $pem ) );
+echo false === $length ? "not sealed\n" : "sealed\n";

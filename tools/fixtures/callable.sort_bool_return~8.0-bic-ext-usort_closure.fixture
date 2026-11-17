@@ -1,0 +1,14 @@
+--RULE--
+callable.sort_bool_return
+--CLAIM--
+{ "deprecated_in": "8.0" }
+--CODE--
+<?php
+$numbers = array( 3, 1, 2 );
+usort(
+	$numbers,
+	function ( $a, $b ) {
+		return $a > $b;
+	}
+);
+echo implode( ',', $numbers ), "\n";

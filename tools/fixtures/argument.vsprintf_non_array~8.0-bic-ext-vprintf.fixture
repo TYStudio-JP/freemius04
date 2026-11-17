@@ -1,0 +1,10 @@
+--RULE--
+argument.vsprintf_non_array
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+vprintf( "%d items\n", 3 );
+--FIXED--
+<?php
+vprintf( "%d items\n", array( 3 ) );

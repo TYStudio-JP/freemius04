@@ -1,0 +1,7 @@
+--RULE--
+runtime.crypt_rounds_out_of_range
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+echo crypt( 'secret', '$5$rounds=10$plugin$' ), "\n";

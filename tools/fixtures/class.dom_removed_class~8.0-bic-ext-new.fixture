@@ -1,0 +1,8 @@
+--RULE--
+class.dom_removed_class
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$configuration = new DOMConfiguration();
+echo get_class( $configuration ), "\n";

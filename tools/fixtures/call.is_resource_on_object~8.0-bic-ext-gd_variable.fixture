@@ -1,0 +1,34 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function thumbnail_canvas( $width, $height ) {
+	$canvas = imagecreatetruecolor( $width, $height );
+
+	if ( ! is_resource( $canvas ) ) {
+		return 'could not create the canvas';
+	}
+
+	imagefill( $canvas, 0, 0, imagecolorallocate( $canvas, 255, 255, 255 ) );
+
+	return 'canvas ' . imagesx( $canvas ) . 'x' . imagesy( $canvas );
+}
+
+echo thumbnail_canvas( 4, 3 ), "\n";
+--FIXED--
+<?php
+function thumbnail_canvas( $width, $height ) {
+	$canvas = imagecreatetruecolor( $width, $height );
+
+	if ( ! ( false !== $canvas ) ) {
+		return 'could not create the canvas';
+	}
+
+	imagefill( $canvas, 0, 0, imagecolorallocate( $canvas, 255, 255, 255 ) );
+
+	return 'canvas ' . imagesx( $canvas ) . 'x' . imagesy( $canvas );
+}
+
+echo thumbnail_canvas( 4, 3 ), "\n";

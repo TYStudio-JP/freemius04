@@ -1,0 +1,8 @@
+--RULE--
+call.reflection_export
+--CLAIM--
+{ "deprecated_in": "7.4", "breaks_in": "8.0" }
+--CODE--
+<?php
+$text = ReflectionMethod::export( 'ArrayObject', 'count', true );
+echo '' !== $text ? "exported\n" : "not exported\n";

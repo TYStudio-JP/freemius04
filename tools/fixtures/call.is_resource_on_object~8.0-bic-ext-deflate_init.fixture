@@ -1,0 +1,30 @@
+--RULE--
+call.is_resource_on_object
+--CLAIM--
+{ "changed_in": "8.0" }
+--CODE--
+<?php
+function pack_chunk( $data ) {
+	$context = deflate_init( ZLIB_ENCODING_DEFLATE );
+
+	if ( ! is_resource( $context ) ) {
+		return 'no context';
+	}
+
+	return strlen( deflate_add( $context, $data, ZLIB_FINISH ) ) > 0 ? 'packed' : 'empty';
+}
+
+echo pack_chunk( 'hello' ), "\n";
+--FIXED--
+<?php
+function pack_chunk( $data ) {
+	$context = deflate_init( ZLIB_ENCODING_DEFLATE );
+
+	if ( ! ( false !== $context ) ) {
+		return 'no context';
+	}
+
+	return strlen( deflate_add( $context, $data, ZLIB_FINISH ) ) > 0 ? 'packed' : 'empty';
+}
+
+echo pack_chunk( 'hello' ), "\n";

@@ -1,0 +1,14 @@
+--RULE--
+class.internal_variadic_signature
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+class Logging_Statement extends PDOStatement {
+	#[\ReturnTypeWillChange]
+	public function setFetchMode( $mode, $arg = null, $args = array() ) {
+		return true;
+	}
+}
+
+echo "declared\n";

@@ -1,0 +1,10 @@
+--RULE--
+call.mb_decode_numericentity_is_hex
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+echo mb_decode_numericentity( '&#65;&#66;', array( 0x0, 0xffff, 0, 0xffff ), 'UTF-8', false ), "\n";
+--FIXED--
+<?php
+echo mb_decode_numericentity( '&#65;&#66;', array( 0x0, 0xffff, 0, 0xffff ), 'UTF-8' ), "\n";

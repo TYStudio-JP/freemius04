@@ -1,0 +1,10 @@
+--RULE--
+call.splfileobject_fgetss
+--CLAIM--
+{ "deprecated_in": "7.3", "breaks_in": "8.0" }
+--CODE--
+<?php
+$file = new SplTempFileObject();
+$file->fwrite( "<b>bold</b> line\n" );
+$file->rewind();
+echo $file->fgetss();
