@@ -28,7 +28,7 @@ final class Page {
 	 * Outputs the screen.
 	 */
 	public static function render() {
-		if ( ! current_user_can( Plugin::CAPABILITY ) ) {
+		if ( ! current_user_can( Plugin::capability() ) ) {
 			return;
 		}
 

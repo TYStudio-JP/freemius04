@@ -21,8 +21,18 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Plugin {
 
-	const CAPABILITY = 'manage_options';
-	const SLUG       = 'upgrade-warden';
+	const SLUG = 'upgrade-warden';
+
+	/**
+	 * Who may use the plugin. On a network, the plugins and themes belong to
+	 * every site and Pro rewrites their files, so only the network's
+	 * administrators may, not the administrator of one site.
+	 *
+	 * @return string
+	 */
+	public static function capability() {
+		return is_multisite() ? 'manage_network_plugins' : 'manage_options';
+	}
 
 	/**
 	 * Registers the hooks.
@@ -67,10 +77,25 @@ final class Plugin {
 
 	/**
 	 * Stops what the plugin scheduled. The data stays until the plugin is deleted.
+	 *
+	 * @param bool $network_wide Whether the plugin is deactivated for the whole network.
 	 */
-	public static function deactivate() {
-		foreach ( Tables::SCHEDULED as $hook ) {
-			wp_clear_scheduled_hook( $hook );
+	public static function deactivate( $network_wide = false ) {
+		if ( ! $network_wide || ! is_multisite() ) {
+			Tables::unschedule();
+
+			return;
+		}
+
+		foreach ( get_sites(
+			array(
+				'fields' => 'ids',
+				'number' => 0,
+			)
+		) as $site ) {
+			switch_to_blog( (int) $site );
+			Tables::unschedule();
+			restore_current_blog();
 		}
 	}
 
@@ -110,7 +135,7 @@ final class Plugin {
 		add_management_page(
 			__( 'Upgrade Warden', 'upgrade-warden' ),
 			__( 'Upgrade Warden', 'upgrade-warden' ),
-			self::CAPABILITY,
+			self::capability(),
 			self::SLUG,
 			array( Page::class, 'render' )
 		);
@@ -167,7 +192,7 @@ final class Plugin {
 	private static function guard() {
 		check_ajax_referer( 'upgw_scan', 'nonce' );
 
-		if ( ! current_user_can( self::CAPABILITY ) ) {
+		if ( ! current_user_can( self::capability() ) ) {
 			wp_send_json_error( null, 403 );
 		}
 	}

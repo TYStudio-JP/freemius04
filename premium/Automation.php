@@ -138,7 +138,7 @@ final class Automation {
 	public static function save() {
 		check_admin_referer( 'upgw_auto' );
 
-		if ( ! current_user_can( Plugin::CAPABILITY ) ) {
+		if ( ! current_user_can( Plugin::capability() ) ) {
 			wp_die( esc_html__( 'You are not allowed to do this.', 'upgrade-warden' ), 403 );
 		}
 

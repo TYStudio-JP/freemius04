@@ -35,7 +35,7 @@ final class Bootstrap {
 	public static function handle() {
 		check_admin_referer( 'upgw_fix' );
 
-		if ( ! current_user_can( Plugin::CAPABILITY ) ) {
+		if ( ! current_user_can( Plugin::capability() ) ) {
 			wp_die( esc_html__( 'You are not allowed to do this.', 'upgrade-warden' ), 403 );
 		}
 

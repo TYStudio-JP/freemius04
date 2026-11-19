@@ -208,6 +208,13 @@ final class Tables {
 			delete_option( $option );
 		}
 
+		self::unschedule();
+	}
+
+	/**
+	 * Removes the scheduled events of the current site.
+	 */
+	public static function unschedule() {
 		foreach ( self::SCHEDULED as $hook ) {
 			wp_clear_scheduled_hook( $hook );
 		}

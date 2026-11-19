@@ -102,16 +102,16 @@ bash ../dev/upgw/start.sh 9460 free        # または pro。http://127.0.0.1:94
 
 | # | 事項 | 補足 |
 |---|---|---|
-| 1 | **GitHub への push** | 仕上げ分は手元のコミットだけ。外部に出る操作なので確認待ち |
+| 1 | GitHub への push | 済み（2026-11-19、ブランチ `claude/nifty-mayer-tcwf37`） |
 | 2 | **Freemius への製品登録** | 手順は `docs/release-guide.ja.md` の第2章。登録するとキー3つが決まり、`upgrade-warden.php` に入れる |
 | 3 | **WordPress.org への申請** | Kessai Guard の審査が終わってから（1アカウント1件）。Freemius が生成した無料版で申請する |
-| 4 | アイコン・バナー・スクリーンショット | まだ作っていません。申請の承認後に SVN に置くもの |
+| 4 | アイコン・バナー・スクリーンショット | 作成済み（2026-11-19）：`Desktop\TY-Studio\Freemius\dev\brand\upgw\wporg-assets\`。申請の承認後に SVN の `assets/` に置く |
 | 5 | Elementor の不具合を報告するか | 同梱の画像ライブラリの回転処理が PHP 8 以降で必ず失敗する（実機で再現済み、`docs/product-design.ja.md` 5.5）。外部への公開にあたるため未報告 |
 | 6 | `main` へのマージ | まだしていません |
 
 ### 5.2 未検証（`docs/release-guide.ja.md` 1.2）
 
-MySQL、Freemius が生成する無料版そのもの、SDK を有効にした状態、レンタルサーバーの PHP、PHP 8.6、エラーを扱う他のプラグインとの併用、実際のメール配信、マルチサイト、大きなサイト。
+MySQL、Freemius が生成する無料版そのもの、SDK を有効にした状態、レンタルサーバーの PHP、PHP 8.6、Query Monitor 以外のエラーを扱うプラグインとの併用、実際のメール配信、大きなサイト。マルチサイトと Query Monitor との併用は 2026-11-19 に Playground で確認済み（`docs/release-guide.ja.md` 1.1）。
 
 ### 5.3 次の版の候補
 

@@ -90,6 +90,13 @@ final class Monitor {
 		if ( $on ) {
 			self::keep_pruning();
 
+			// Other plugins can reorder the list as it is saved (Query Monitor
+			// puts itself first). Taking part in the same filter from now on
+			// gives the order that every later save of the list will give.
+			if ( false === has_filter( 'pre_update_option_active_plugins', array( __CLASS__, 'load_first' ) ) ) {
+				add_filter( 'pre_update_option_active_plugins', array( __CLASS__, 'load_first' ) );
+			}
+
 			$active = get_option( 'active_plugins' );
 			$first  = self::load_first( $active );
 
@@ -97,6 +104,7 @@ final class Monitor {
 				update_option( 'active_plugins', $first );
 			}
 		} else {
+			remove_filter( 'pre_update_option_active_plugins', array( __CLASS__, 'load_first' ) );
 			wp_clear_scheduled_hook( self::CRON );
 		}
 	}
@@ -107,7 +115,7 @@ final class Monitor {
 	public static function handle() {
 		check_admin_referer( 'upgw_monitor' );
 
-		if ( ! current_user_can( Plugin::CAPABILITY ) ) {
+		if ( ! current_user_can( Plugin::capability() ) ) {
 			wp_die( esc_html__( 'You are not allowed to do this.', 'upgrade-warden' ), 403 );
 		}
 

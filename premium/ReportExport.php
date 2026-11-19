@@ -37,7 +37,7 @@ final class ReportExport {
 	public static function download() {
 		check_admin_referer( 'upgw_report' );
 
-		if ( ! current_user_can( Plugin::CAPABILITY ) ) {
+		if ( ! current_user_can( Plugin::capability() ) ) {
 			wp_die( esc_html__( 'You are not allowed to do this.', 'upgrade-warden' ), 403 );
 		}
 
