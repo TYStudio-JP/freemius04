@@ -79,11 +79,11 @@ final class Log {
 		$stamp  = gmdate( 'Y-m-d H:i:s', $now );
 		$errors = $wpdb->suppress_errors( true );
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own table; the name comes from the prefix.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own table.
 		foreach ( $todo as $fingerprint => $item ) {
 			list( $event, $file ) = $item;
 
-			$id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE fingerprint = %s", $fingerprint ) );
+			$id = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM %i WHERE fingerprint = %s', $table, $fingerprint ) );
 
 			if ( $id ) {
 				$wpdb->update( $table, array( 'last_seen' => $stamp ), array( 'id' => $id ) );
@@ -136,11 +136,11 @@ final class Log {
 
 		$table = Tables::events();
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own table.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own table.
 		if ( '' !== $component ) {
-			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE component = %s ORDER BY last_seen DESC, id DESC LIMIT %d", $component, $limit ) );
+			$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE component = %s ORDER BY last_seen DESC, id DESC LIMIT %d', $table, $component, $limit ) );
 		} else {
-			$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} ORDER BY last_seen DESC, id DESC LIMIT %d", $limit ) );
+			$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY last_seen DESC, id DESC LIMIT %d', $table, $limit ) );
 		}
 		// phpcs:enable
 
@@ -158,8 +158,8 @@ final class Log {
 
 		$table = Tables::events();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own table.
-		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE first_seen > %s ORDER BY first_seen, id LIMIT 200", gmdate( 'Y-m-d H:i:s', $since ) ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Own table.
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE first_seen > %s ORDER BY first_seen, id LIMIT 200', $table, gmdate( 'Y-m-d H:i:s', $since ) ) );
 
 		return is_array( $rows ) ? $rows : array();
 	}
@@ -175,8 +175,8 @@ final class Log {
 		$table  = Tables::events();
 		$counts = array();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own table.
-		foreach ( (array) $wpdb->get_results( "SELECT component, COUNT(*) AS found FROM {$table} GROUP BY component" ) as $row ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Own table.
+		foreach ( (array) $wpdb->get_results( $wpdb->prepare( 'SELECT component, COUNT(*) AS found FROM %i GROUP BY component', $table ) ) as $row ) {
 			$counts[ $row->component ] = (int) $row->found;
 		}
 
@@ -191,8 +191,8 @@ final class Log {
 
 		$table = Tables::events();
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own table.
-		$wpdb->query( "DELETE FROM {$table}" );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Own table.
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i', $table ) );
 		delete_option( self::SEEN );
 	}
 
@@ -225,17 +225,14 @@ final class Log {
 		 */
 		$most = max( 10, (int) apply_filters( 'upgw_monitor_rows', self::ROWS ) );
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own table.
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE last_seen < %s", gmdate( 'Y-m-d H:i:s', time() - self::days() * DAY_IN_SECONDS ) ) );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own table.
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE last_seen < %s', $table, gmdate( 'Y-m-d H:i:s', time() - self::days() * DAY_IN_SECONDS ) ) );
 
-		$edge = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} ORDER BY last_seen DESC, id DESC LIMIT 1 OFFSET %d", $most ) );
+		// The first row beyond the limit, newest first: it and everything older goes.
+		$edge = $wpdb->get_row( $wpdb->prepare( 'SELECT id, last_seen FROM %i ORDER BY last_seen DESC, id DESC LIMIT 1 OFFSET %d', $table, $most ) );
 
 		if ( $edge ) {
-			$keep = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$table} ORDER BY last_seen DESC, id DESC LIMIT %d", $most ) );
-
-			if ( $keep ) {
-				$wpdb->query( "DELETE FROM {$table} WHERE id NOT IN (" . implode( ',', array_map( 'intval', $keep ) ) . ')' );
-			}
+			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE last_seen < %s OR ( last_seen = %s AND id <= %d )', $table, $edge->last_seen, $edge->last_seen, $edge->id ) );
 		}
 		// phpcs:enable
 	}

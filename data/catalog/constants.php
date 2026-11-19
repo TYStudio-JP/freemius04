@@ -12,7 +12,7 @@
  * @package UpgradeWarden
  */
 
-defined( 'ABSPATH' ) || defined( 'UPGW_STANDALONE' ) || exit;
+defined( 'ABSPATH' ) || exit;
 
 return array(
 	'ASSERT_ACTIVE' => array( 'deprecated' => '8.3', 'removed' => null, 'ext' => 'standard', 'evidence' => 'verified' ),

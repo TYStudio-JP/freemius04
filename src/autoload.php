@@ -2,9 +2,10 @@
 /**
  * Class autoloader.
  *
- * Maps TYStudio\UpgradeWarden\Foo\Bar to src/Foo/Bar.php,
- * TYStudio\UpgradeWarden\Pro\Foo to premium/Foo.php and
- * TYStudio\UpgradeWarden\Vendor\PhpParser\Foo to lib/php-parser/PhpParser/Foo.php.
+ * Maps TYStudio\UpgradeWarden\Foo\Bar to src/Foo/Bar.php and
+ * TYStudio\UpgradeWarden\Vendor\PhpParser\Foo to vendor/php-parser/PhpParser/Foo.php.
+ * The classes of the Pro edition have a loader of their own, which only the
+ * Pro edition contains.
  *
  * @package UpgradeWarden
  */
@@ -23,11 +24,8 @@ spl_autoload_register(
 		$root     = dirname( __DIR__ );
 
 		if ( 0 === strpos( $relative, 'Vendor\\PhpParser\\' ) ) {
-			$base     = $root . '/lib/php-parser/PhpParser/';
+			$base     = $root . '/vendor/php-parser/PhpParser/';
 			$relative = substr( $relative, 17 );
-		} elseif ( 0 === strpos( $relative, 'Pro\\' ) ) {
-			$base     = $root . '/premium/';
-			$relative = substr( $relative, 4 );
 		} else {
 			$base = $root . '/src/';
 		}

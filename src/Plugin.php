@@ -9,6 +9,7 @@ namespace TYStudio\UpgradeWarden;
 
 use TYStudio\UpgradeWarden\Admin\Page;
 use TYStudio\UpgradeWarden\Engine\Versions;
+use TYStudio\UpgradeWarden\Licensing\DevLicense;
 use TYStudio\UpgradeWarden\Monitor\Monitor;
 use TYStudio\UpgradeWarden\Scan\Job;
 use TYStudio\UpgradeWarden\Store\Tables;
@@ -28,6 +29,7 @@ final class Plugin {
 	 */
 	public static function boot() {
 		add_action( 'admin_init', array( Tables::class, 'maybe_upgrade' ) );
+		add_filter( 'wpmu_drop_tables', array( Tables::class, 'site_tables' ), 10, 2 );
 		add_action( 'admin_menu', array( __CLASS__, 'menu' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'assets' ) );
 		add_action( 'wp_ajax_upgw_start', array( __CLASS__, 'ajax_start' ) );
@@ -35,9 +37,32 @@ final class Plugin {
 
 		Monitor::boot();
 
-		if ( self::is_pro() ) {
-			\TYStudio\UpgradeWarden\Pro\Bootstrap::boot();
+		// Freemius reports the removal and then calls this. In development mode
+		// there is no Freemius, so WordPress's own hook is used.
+		upgw_fs()->add_action( 'after_uninstall', array( Tables::class, 'uninstall' ) );
+
+		if ( upgw_fs() instanceof DevLicense && is_admin() ) {
+			register_uninstall_hook( UPGW_FILE, array( Tables::class, 'uninstall' ) );
 		}
+
+		if ( upgw_fs()->is__premium_only() ) {
+			// Pro is not hosted on WordPress.org, so it brings its own translations.
+			// The free edition gets them from translate.wordpress.org.
+			add_action( 'init', array( __CLASS__, 'load_textdomain__premium_only' ) );
+			// The licence screen comes before any licence, so this cannot wait for Pro\Bootstrap.
+			Pro\FreemiusJapanese::register();
+
+			if ( upgw_fs()->can_use_premium_code() ) {
+				Pro\Bootstrap::boot();
+			}
+		}
+	}
+
+	/**
+	 * Loads the translations bundled with Pro.
+	 */
+	public static function load_textdomain__premium_only() {
+		load_plugin_textdomain( 'upgrade-warden', false, dirname( plugin_basename( UPGW_FILE ) ) . '/languages' );
 	}
 
 	/**
@@ -55,7 +80,11 @@ final class Plugin {
 	 * @return bool
 	 */
 	public static function is_pro() {
-		return class_exists( '\\TYStudio\\UpgradeWarden\\Pro\\Bootstrap' ) && upgw_fs()->can_use_premium_code();
+		if ( upgw_fs()->is__premium_only() ) {
+			return (bool) upgw_fs()->can_use_premium_code();
+		}
+
+		return false;
 	}
 
 	/**

@@ -72,3 +72,53 @@
 .upgw .upgw-fixable {
 	color: #005c12;
 }
+
+.upgw .upgw-likely {
+	background: #fcf9e8;
+	color: #6e4e00;
+}
+
+.upgw .upgw-unknown {
+	background: #f0f6fc;
+	color: #0a4b78;
+}
+
+.upgw .upgw-subject {
+	font-size: 12px;
+}
+
+.upgw .upgw-type,
+.upgw .upgw-first {
+	margin-left: 0;
+	font-size: 12px;
+}
+
+.upgw .nav-tab-wrapper {
+	margin-bottom: 12px;
+}
+
+.upgw .upgw-pro-note {
+	margin-top: 16px;
+	padding: 10px 14px;
+	background: #fff;
+	border-left: 4px solid #2271b1;
+	max-width: 900px;
+}
+
+.upgw .upgw-auto {
+	margin-top: 20px;
+	max-width: 900px;
+}
+
+.upgw .upgw-bar h2 {
+	margin: 12px 0 4px;
+	font-size: 15px;
+}
+
+.upgw .upgw-diff .upgw-hunk {
+	padding: 6px 10px;
+	background: #f0f0f1;
+	color: #50575e;
+	font-size: 12px;
+	border-top: 1px solid #c3c4c7;
+}

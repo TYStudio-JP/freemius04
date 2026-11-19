@@ -101,7 +101,8 @@ final class Capture {
 		}
 
 		self::$installed = true;
-		self::$previous  = set_error_handler( array( __CLASS__, 'on_error' ) );
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler -- The run-time log is this handler. It only listens and passes every message on.
+		self::$previous = set_error_handler( array( __CLASS__, 'on_error' ) );
 
 		register_shutdown_function( array( __CLASS__, 'on_shutdown' ) );
 	}

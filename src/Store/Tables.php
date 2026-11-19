@@ -134,6 +134,28 @@ final class Tables {
 	}
 
 	/**
+	 * Adds the plugin's tables of a site to the tables WordPress drops when
+	 * that site is deleted from a network.
+	 *
+	 * @param mixed $tables  Tables WordPress will drop.
+	 * @param int   $site_id Site being deleted.
+	 * @return mixed
+	 */
+	public static function site_tables( $tables, $site_id = 0 ) {
+		global $wpdb;
+
+		if ( is_array( $tables ) && $site_id > 0 ) {
+			$prefix = $wpdb->get_blog_prefix( $site_id );
+
+			foreach ( array( 'upgw_files', 'upgw_findings', 'upgw_events' ) as $table ) {
+				$tables[] = $prefix . $table;
+			}
+		}
+
+		return $tables;
+	}
+
+	/**
 	 * Makes sure the tables match this version of the plugin.
 	 */
 	public static function maybe_upgrade() {
@@ -148,10 +170,10 @@ final class Tables {
 	public static function uninstall() {
 		global $wpdb;
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table names are built from the prefix; dropping tables has no API.
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::events() );
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::findings() );
-		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::files() );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Own tables; dropping tables has no API.
+		foreach ( array( self::events(), self::findings(), self::files() ) as $table ) {
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table ) );
+		}
 		// phpcs:enable
 
 		foreach ( array( 'upgw_schema', 'upgw_job', 'upgw_target', 'upgw_last_scan', 'upgw_monitor', 'upgw_monitor_seen', 'upgw_auto', 'upgw_auto_state' ) as $option ) {

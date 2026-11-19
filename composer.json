@@ -1,0 +1,17 @@
+{
+	"name": "tystudio/upgrade-warden",
+	"description": "Finds what a newer PHP version will reject, change or warn about in the plugins and themes of a WordPress site.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=7.4",
+		"freemius/wordpress-sdk": "^2.13"
+	},
+	"scripts": {
+		"test": "php tests/run.php",
+		"i18n": [
+			"php bin/i18n.php pot",
+			"php bin/i18n.php ja"
+		]
+	}
+}

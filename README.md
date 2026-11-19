@@ -1,19 +1,24 @@
-# Upgrade Warden (working title)
+# Upgrade Warden
 
 Finds what a newer PHP version will reject, change or warn about in the
 plugins and themes of a WordPress site, and fixes what can be fixed safely.
-To be sold through Freemius: a free edition that scans, a Pro edition that
-fixes.
+To be sold through Freemius: a free edition that scans and records, a Pro
+edition that fixes and keeps watch.
 
-**Status: 0.1.0, not released.** The plugin runs in WordPress (Tools >
-Upgrade Warden): stepwise scan, results per plugin and theme for PHP 8.0 to
-8.6, and in Pro a preview of the fixes, apply with backup, and undo. All 602
+**Status: 1.0.0, ready to register and submit; not released yet.** The plugin
+runs in WordPress (Tools > Upgrade Warden): stepwise scan, results per plugin
+and theme for PHP 8.0 to 8.6, and a run-time log of what PHP says on the live
+site. Pro adds the fixes (preview, apply with backup, undo), a weekly scan
+and a scan after updates with e-mails, 90 days of log, and a report. All 602
 items of the PHP 8.0-8.6 upgrade notes have a recorded verdict in
-`tools/ledger/`; 152 rules; 899 fixtures run on seven real PHP versions.
-Not done: the run-time monitor, Freemius keys, translations, MySQL and
-browser checks, PHP 8.6 on a real runtime.
+`tools/ledger/`; 152 rules, each with a sentence in English and Japanese; 933
+fixtures run on seven real PHP versions; 426 messages of PHP the log can
+explain. Checked in a real WordPress on PHP 7.4, 8.2 and 8.5, in a browser,
+and with Plugin Check (no errors, no warnings).
+Not done: the Freemius product and its keys, MySQL, PHP 8.6 on a real runtime.
 
 - **Picking this up elsewhere (Japanese): `docs/HANDOFF.ja.md`. Setup: `bash tools/setup.sh`.**
+- From here to selling it (Japanese): `docs/release-guide.ja.md`
 - Why this product, and the evidence for and against (Japanese): `docs/market-research.ja.md`
 - Design, current state, limits and open decisions (Japanese): `docs/product-design.ja.md`
 
@@ -30,18 +35,24 @@ notes, quoted word for word, and is labelled as such all the way to the result.
 | Path | Contents |
 |---|---|
 | `src/Engine/` | The scanner. Plain PHP with no WordPress calls. `Scanner` parses a file, `Walker` tracks guards and loops, `Rules/` hold one kind of finding each, `Finding` knows its level for any target version. |
+| `src/Monitor/` | The run-time log. `Capture` listens to PHP's messages, `Signatures` explains them from `data/catalog/messages.php`; both without WordPress calls. `Log` and `Monitor` are the WordPress side. |
 | `premium/Fix/` | The fixer (Pro): small text edits at the positions the scanner reports. |
-| `data/catalog/` | Internal functions and constants that PHP deprecates or removes. **Generated**, do not edit. |
-| `lib/php-parser/` | nikic/PHP-Parser 5.9.0 (BSD-3-Clause) under this plugin's own namespace. **Copied by a script**, do not edit. |
+| `data/catalog/` | Internal functions and constants that PHP deprecates or removes, and the messages of PHP the run-time log can explain. **Generated**, do not edit. |
+| `vendor/php-parser/` | nikic/PHP-Parser 5.9.0 (BSD-3-Clause) under this plugin's own namespace. **Copied by a script**, do not edit. |
 | `tools/` | Development only, never shipped. Runs PHP 7.4 to 8.5 through php-wasm, builds the catalog, checks the fixtures. |
 | `tools/fixtures/` | One file per verified claim, each with `<name>.observed.json`, the record of what the runtimes did. |
 | `tools/ledger/` | One entry per bullet of the PHP 8.0-8.6 upgrade notes: rule, catalog, run-time only, not detectable or out of scope, with the reason. |
-| `src/Scan/`, `src/Admin/`, `src/Store/` | WordPress side: stepwise scan job, stored results, the screen. |
-| `premium/` | Pro: the fixer, preview/apply/undo. Removed from the free build by Freemius. |
+| `src/Scan/`, `src/Admin/`, `src/Store/` | WordPress side: stepwise scan job, stored results, the screen. `Admin/RuleText.php` is **generated** from `tools/catalog-src/rule-text.json`. |
+| `premium/` | Pro: the fixer with preview/apply/undo, the automatic checks and e-mails, the report. Removed from the free build by Freemius. |
+| `languages/` | The translation template and Japanese. Shipped with Pro only; the free edition is translated on translate.wordpress.org. |
+| `vendor/freemius/` | The Freemius SDK. Not in the repository: `composer install --no-dev`, or copy it. |
 | `tests/` | PHP tests. They tie the engine to the fixtures. |
 | `bin/` | Command-line scripts. |
 
 ## Trying it
+
+Without PHP on the command line, put `node tools/php.mjs` where the examples
+say `php`: it runs the script on a real PHP 8.3 (`--php=7.4` for another one).
 
 ```
 php bin/scan.php path/to/plugin --target=8.5          # every finding
@@ -65,7 +76,10 @@ cd tools && npm ci
 node fetch-upgrading.mjs     # official UPGRADING notes of PHP 7.0 to 8.6, into out/
 node dump-runtimes.mjs       # what each runtime contains, into out/
 node build-catalog.mjs       # writes data/catalog/, lists what needs review
-node verify-fixtures.mjs     # runs every fixture on every runtime, writes fixtures/observed.json
+node verify-fixtures.mjs     # runs every fixture on every runtime, writes fixtures/*.observed.json
+php build-messages.php       # writes data/catalog/messages.php from those records
+node verify-monitor.mjs      # runs every fixture again with the run-time log listening
+node build-ruletext.mjs      # writes src/Admin/RuleText.php and its Japanese from catalog-src/rule-text.json
 node lint-tree.mjs <folder>  # compiles a code base on real PHP without running it
 ```
 
@@ -83,8 +97,17 @@ cd tools
 node wp-check.mjs <wordpress-release-folder> <sqlite-database-integration-checkout> 7.4 8.5
 ```
 
-Installs WordPress on SQLite inside each runtime and drives the plugin: 31
-checks covering activation, scan, results, screens, fix, undo.
+Installs WordPress on SQLite inside each runtime and drives the plugin, built
+exactly as a release ships it: about 70 checks covering activation, scan,
+results, screens, fix, undo, the run-time log on a page where another plugin
+does what PHP 8 refuses, the e-mails, the report, deactivation and deletion.
+With `--free` in front of the folders it checks the free edition instead.
+
+## Building
+
+```
+node tools/build-zip.mjs     # build/upgrade-warden.zip (Pro, for Freemius) and a preview of the free edition
+```
 
 ## Adding a rule
 

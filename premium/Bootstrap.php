@@ -94,7 +94,9 @@ final class Bootstrap {
 		echo '<div class="upgw-bar">';
 		echo '<h3>' . esc_html__( 'Automatic fixes', 'upgrade-warden' ) . '</h3>';
 
-		if ( ! $previewing ) {
+		if ( ! $previewing && 0 === $fixable ) {
+			echo '<p>' . esc_html__( 'There is nothing to fix automatically.', 'upgrade-warden' ) . '</p>';
+		} elseif ( ! $previewing ) {
 			/* translators: %d: number of findings. */
 			echo '<p>' . esc_html( sprintf( _n( '%d finding listed below can be fixed automatically.', '%d findings listed below can be fixed automatically.', $fixable, 'upgrade-warden' ), $fixable ) ) . '</p>';
 
@@ -115,7 +117,7 @@ final class Bootstrap {
 
 			foreach ( $changes as $relative => $change ) {
 				echo '<h4><code>' . esc_html( '' === $relative ? basename( $component['path'] ) : $relative ) . '</code></h4>';
-				echo wp_text_diff( $change['before'], $change['after'], array( 'show_split_view' => true ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_text_diff() escapes.
+				echo Fix\DiffView::render( $change['before'], $change['after'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The diff renderer of WordPress escapes every line.
 			}
 
 			self::form( $component['id'], 'apply', '', __( 'Apply these fixes', 'upgrade-warden' ), true );

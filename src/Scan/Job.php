@@ -188,8 +188,8 @@ final class Job {
 		$path_hash = md5( $relative );
 		$hash      = md5( $code );
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own tables; table names come from the prefix.
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT id, content_hash, catalog FROM {$files} WHERE component = %s AND path_hash = %s", $component, $path_hash ) );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own tables.
+		$row = $wpdb->get_row( $wpdb->prepare( 'SELECT id, content_hash, catalog FROM %i WHERE component = %s AND path_hash = %s', $files, $component, $path_hash ) );
 
 		if ( $row && $row->content_hash === $hash && UPGW_VERSION === $row->catalog ) {
 			return false;
@@ -255,8 +255,8 @@ final class Job {
 		$findings = Tables::findings();
 		$seen     = array_flip( $seen );
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own tables.
-		foreach ( $wpdb->get_results( $wpdb->prepare( "SELECT id, path_hash FROM {$files} WHERE component = %s", $component ) ) as $row ) {
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own tables.
+		foreach ( $wpdb->get_results( $wpdb->prepare( 'SELECT id, path_hash FROM %i WHERE component = %s', $files, $component ) ) as $row ) {
 			if ( ! isset( $seen[ $row->path_hash ] ) ) {
 				$wpdb->delete( $findings, array( 'file_id' => $row->id ) );
 				$wpdb->delete( $files, array( 'id' => $row->id ) );

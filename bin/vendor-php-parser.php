@@ -1,6 +1,6 @@
 <?php
 /**
- * Copies nikic/PHP-Parser into lib/php-parser/ under this plugin's own namespace.
+ * Copies nikic/PHP-Parser into vendor/php-parser/ under this plugin's own namespace.
  *
  *   php bin/vendor-php-parser.php /path/to/PHP-Parser v5.9.0
  *
@@ -29,7 +29,7 @@ if ( $argc < 3 ) {
 $upstream = rtrim( $argv[1], '/' );
 $tag      = $argv[2];
 $source   = $upstream . '/lib/PhpParser';
-$target   = dirname( __DIR__ ) . '/lib/php-parser';
+$target   = dirname( __DIR__ ) . '/vendor/php-parser';
 $prefix   = 'TYStudio\\UpgradeWarden\\Vendor\\';
 
 if ( ! is_dir( $source ) || ! is_file( $upstream . '/LICENSE' ) ) {
@@ -152,7 +152,7 @@ file_put_contents(
 	"Nothing else is changed. Do not edit these files by hand; run the script again to update.\n"
 );
 
-echo "Copied {$count} files from {$tag} into lib/php-parser/.\n";
+echo "Copied {$count} files from {$tag} into vendor/php-parser/.\n";
 
 if ( $left ) {
 	echo "References to the original namespace remain:\n  " . implode( "\n  ", $left ) . "\n";

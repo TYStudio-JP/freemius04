@@ -283,7 +283,7 @@ function writePhp(file, title, entries) {
 		' * @package UpgradeWarden',
 		' */',
 		'',
-		"defined( 'ABSPATH' ) || defined( 'UPGW_STANDALONE' ) || exit;",
+		"defined( 'ABSPATH' ) || exit;",
 		'',
 		'return array(',
 	];

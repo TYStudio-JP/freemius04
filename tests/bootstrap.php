@@ -9,6 +9,7 @@ define( 'ABSPATH', __DIR__ . '/' );
 define( 'UPGW_ROOT', dirname( __DIR__ ) );
 
 require UPGW_ROOT . '/src/autoload.php';
+require UPGW_ROOT . '/premium/autoload.php';
 
 use TYStudio\UpgradeWarden\Engine\Catalog;
 use TYStudio\UpgradeWarden\Engine\Scanner;

@@ -19,6 +19,7 @@ if ( 'cli' !== PHP_SAPI ) {
 define( 'ABSPATH', __DIR__ . '/' );
 
 require dirname( __DIR__ ) . '/src/autoload.php';
+require dirname( __DIR__ ) . '/premium/autoload.php';
 
 use TYStudio\UpgradeWarden\Engine\Catalog;
 use TYStudio\UpgradeWarden\Engine\Scanner;

@@ -4,8 +4,11 @@
 #
 #   bash tools/setup.sh            everything (about 1.5 GB of downloads)
 #   bash tools/setup.sh --minimal  only what the tests and fixtures need
+#   bash tools/setup.sh --wp       the above plus WordPress and its SQLite
+#                                  integration, for tools/wp-check.mjs
 #
-# Needs: PHP 7.4 or later on the command line, Node.js 20 or later, git, and
+# Needs: Node.js 20 or later, git, and PHP 7.4 or later on the command line
+# (without PHP, run the scripts through "node tools/php.mjs"), and
 # network access to registry.npmjs.org, raw.githubusercontent.com and
 # github.com. Everything goes under tools/node_modules and tools/out/, which
 # git ignores.
@@ -18,7 +21,9 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TOOLS="$ROOT/tools"
 OUT="$TOOLS/out"
 MINIMAL=0
+ONLY_WP=0
 [ "${1:-}" = "--minimal" ] && MINIMAL=1
+[ "${1:-}" = "--wp" ] && ONLY_WP=1
 
 echo "== PHP runtimes 7.4 to 8.5 (php-wasm from npm)"
 cd "$TOOLS"
@@ -52,6 +57,8 @@ pin() {
 	rm -rf "$dir"
 	mkdir -p "$dir"
 	git -C "$dir" init -q
+	# Keep the files byte for byte as they are in the repository, on Windows too.
+	git -C "$dir" config core.autocrlf false
 	git -C "$dir" remote add origin "https://github.com/$repo"
 
 	if [ "$#" -gt 0 ]; then
@@ -66,8 +73,14 @@ pin() {
 echo "== Code bases for false-positive checks (pinned)"
 mkdir -p "$OUT/corpus"
 pin wp-latest            WordPress/WordPress               db96f5eaa77a8d3e8eec8923a518fa2326f0d46a
-pin wp-4.0               WordPress/WordPress               4.0
 pin sqlite-database-integration WordPress/sqlite-database-integration 973810cc16570b9df0be379981bf1c751e157a09
+
+if [ "$ONLY_WP" = "1" ]; then
+	echo "Done. Run: cd tools && node wp-check.mjs out/corpus/wp-latest out/corpus/sqlite-database-integration 7.4 8.5"
+	exit 0
+fi
+
+pin wp-4.0               WordPress/WordPress               4.0
 pin plugins/action-scheduler   woocommerce/action-scheduler e63a83ce717a452d059028b90e9736812abeebd4
 pin plugins/classic-editor     WordPress/classic-editor bb8d0cc7bfafa7458d90503c44e3c7723cb7324c
 pin plugins/contact-form-7     takayukister/contact-form-7 e7a80fdc17afc3d2bbc63d6833567a01d1b9573b
@@ -79,7 +92,7 @@ pin plugins/wordpress-seo      Yoast/wordpress-seo 9683c1b75b58097ba6ac715e23d68
 pin plugins/wp-cli             wp-cli/wp-cli 5ec3c05d8b46bb50a6179bc722b97ede35fbd86f
 pin plugins/woocommerce        woocommerce/woocommerce 64d3c26a1318b4320af94b414a90c040770a0701 '/plugins/woocommerce/includes/' '/plugins/woocommerce/src/'
 
-echo "== PHP-Parser source (only needed to update lib/php-parser)"
+echo "== PHP-Parser source (only needed to update vendor/php-parser)"
 pin php-parser nikic/PHP-Parser v5.9.0
 
 cat <<EOF

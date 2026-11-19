@@ -11,7 +11,11 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Answers the few questions the plugin asks Freemius. In development mode the
- * Pro edition is on when the premium folder is present and UPGW_DEV_PRO is true.
+ * Pro edition is on when this build contains it and UPGW_DEV_PRO is true.
+ *
+ * When Freemius builds the free edition it removes the methods and the blocks
+ * that are marked as belonging to Pro. The plugin therefore asks
+ * can_use_premium_code() only inside such a block.
  */
 final class DevLicense {
 
@@ -53,7 +57,7 @@ final class DevLicense {
 	 * @return bool
 	 */
 	public function can_use_premium_code() {
-		return defined( 'UPGW_DEV_PRO' ) && true === UPGW_DEV_PRO && is_dir( $this->dir . 'premium' );
+		return defined( 'UPGW_DEV_PRO' ) && true === UPGW_DEV_PRO;
 	}
 
 	/**

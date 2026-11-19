@@ -1,5 +1,9 @@
 /build/
-/vendor/
+# The Freemius SDK is not part of this repository (composer install, or a copy).
+/vendor/freemius/
+/vendor/composer/
+/vendor/bin/
+/vendor/autoload.php
 /node_modules/
 /freemius/
 /tools/node_modules

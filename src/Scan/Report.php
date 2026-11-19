@@ -36,11 +36,13 @@ final class Report {
 		$files_table    = Tables::files();
 		$findings_table = Tables::findings();
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Own tables; table names come from the prefix.
-		$files = $wpdb->get_results( $wpdb->prepare( "SELECT id, path, grammar, parse_error, declared FROM {$files_table} WHERE component = %s ORDER BY path", $component ) );
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own tables.
+		$files = $wpdb->get_results( $wpdb->prepare( 'SELECT id, path, grammar, parse_error, declared FROM %i WHERE component = %s ORDER BY path', $files_table, $component ) );
 		$rows  = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT f.*, p.path FROM {$findings_table} f INNER JOIN {$files_table} p ON p.id = f.file_id WHERE p.component = %s ORDER BY p.path, f.line, f.id",
+				'SELECT f.*, p.path FROM %i f INNER JOIN %i p ON p.id = f.file_id WHERE p.component = %s ORDER BY p.path, f.line, f.id',
+				$findings_table,
+				$files_table,
 				$component
 			)
 		);

@@ -22,6 +22,7 @@ require_once ABSPATH . 'wp-admin/includes/plugin.php';
 require_once ABSPATH . 'wp-admin/includes/template.php';
 
 use TYStudio\UpgradeWarden\Admin\Page;
+use TYStudio\UpgradeWarden\Monitor\Monitor;
 use TYStudio\UpgradeWarden\Plugin;
 use TYStudio\UpgradeWarden\Pro\Fix\Service;
 use TYStudio\UpgradeWarden\Scan\Components;
@@ -48,7 +49,10 @@ $check( 'the plugin activates', null === $activated, is_wp_error( $activated ) ?
 
 global $wpdb;
 $tables = $wpdb->get_col( 'SHOW TABLES' );
-$check( 'both tables exist', in_array( Tables::files(), $tables, true ) && in_array( Tables::findings(), $tables, true ), $tables );
+$check( 'the three tables exist', in_array( Tables::files(), $tables, true ) && in_array( Tables::findings(), $tables, true ) && in_array( Tables::events(), $tables, true ), $tables );
+
+$edition_is_free = ! is_dir( WP_PLUGIN_DIR . '/upgrade-warden/premium' );
+$out['edition']  = $edition_is_free ? 'free' : 'pro';
 
 $components = Components::all();
 $check( 'the legacy sample plugin is listed', isset( $components['plugin:legacy-sample'] ), array_keys( $components ) );
@@ -112,8 +116,23 @@ $check( 'detail shows the source line', false !== strpos( $detail, 'legacy-sampl
 $check( 'detail escapes code', false === strpos( $detail, '<?php' ) );
 $out['html_bytes'] = array( 'overview' => strlen( $overview ), 'detail' => strlen( $detail ) );
 
+$check( 'the detail says what each finding is, in a sentence', false === strpos( $detail, 'Rule <code>' ) && false !== strpos( $detail, 'curly braces' ) );
+$check( 'the overview has the two tabs and the log column', false !== strpos( $overview, 'nav-tab' ) && false !== strpos( $overview, 'view=log' ) );
+
+$log_view = $render( array( 'page' => 'upgrade-warden', 'view' => 'log' ) );
+$check( 'the log view offers to start recording, and has no scan button', false !== strpos( $log_view, 'value="on"' ) && false === strpos( $log_view, 'id="upgw-scan"' ) );
+
 // Pro: preview, apply, undo.
-$check( 'Pro is on in this test', Plugin::is_pro() );
+$check( $edition_is_free ? 'the free edition has no Pro' : 'Pro is on in this test', $edition_is_free ? ! Plugin::is_pro() : Plugin::is_pro() );
+
+if ( $edition_is_free ) {
+	$check( 'free: the overview names Pro in one line', false !== strpos( $overview, 'upgw-pro-note' ) );
+	$check( 'free: the findings offer no fixing', false === strpos( $detail, 'upgw_fix' ) && false !== strpos( $detail, 'with Upgrade Warden Pro' ) );
+	$check( 'free: no class of Pro can be loaded', ! class_exists( 'TYStudio\\UpgradeWarden\\Pro\\Bootstrap' ) );
+	$check( 'free: no translation files are shipped', ! is_dir( WP_PLUGIN_DIR . '/upgrade-warden/languages' ) );
+} else {
+	$check( 'Pro: the overview has the automatic checks and no upsell line', false !== strpos( $overview, 'upgw-auto' ) && false === strpos( $overview, 'upgw-pro-note' ) );
+}
 
 if ( Plugin::is_pro() ) {
 	$legacy   = $components['plugin:legacy-sample'];
@@ -154,6 +173,14 @@ if ( Plugin::is_pro() ) {
 	$check( 'undo leaves a file alone that changed after the fix', 0 === $kept['restored'] && array( 'legacy-sample.php' ) === $kept['kept'], $kept );
 	file_put_contents( $file, $original );
 }
+
+// The run-time log: switch it on for the requests that follow.
+$check( 'recording is off until it is switched on', ! Monitor::enabled() );
+activate_plugin( 'runtime-sample/runtime-sample.php' );
+Monitor::set( true );
+$active = get_option( 'active_plugins' );
+$check( 'recording on: the plugin loads first', Monitor::enabled() && 'upgrade-warden/upgrade-warden.php' === $active[0], $active );
+$check( 'recording on: the clean-up is scheduled', false !== wp_next_scheduled( Monitor::CRON ) );
 
 $check( 'the plugin raised no notice of its own', ! $upgw_notices, $upgw_notices );
 

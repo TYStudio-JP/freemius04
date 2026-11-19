@@ -1,0 +1,1214 @@
+# Copyright (C) TYStudio
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Upgrade Warden 1.0.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: upgrade-warden\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: premium/Automation.php:135
+#: premium/Bootstrap.php:39
+#: premium/ReportExport.php:41
+#: src/Monitor/Monitor.php:102
+msgid "You are not allowed to do this."
+msgstr ""
+
+#. translators: 1: plugin or theme name, 2: number of places that will break, 3: number of places that behave differently.
+#: premium/Automation.php:255
+msgid "%1$s: %2$d will break, %3$d will behave differently"
+msgstr ""
+
+#. translators: 1: site name, 2: PHP version.
+#: premium/Automation.php:266
+msgid "[%1$s] New PHP %2$s problems found"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: premium/Automation.php:268
+msgid "Upgrade Warden scanned the plugins and themes of this site. Since the scan before, these have more code that PHP %s will not run as before:"
+msgstr ""
+
+#: premium/Automation.php:270
+msgid "File, line and what can be fixed automatically:"
+msgstr ""
+
+#. translators: 1: site name, 2: number of messages.
+#: premium/Automation.php:308
+msgid "[%1$s] PHP recorded %2$d new problem"
+msgid_plural "[%1$s] PHP recorded %2$d new problems"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: PHP version.
+#: premium/Automation.php:310
+msgid "While the site ran, PHP raised messages that stop a page now or will on PHP %s. Each is listed once, where it was first seen:"
+msgstr ""
+
+#: premium/Automation.php:333
+msgid "Automatic checks"
+msgstr ""
+
+#: premium/Automation.php:337
+msgid "Saved."
+msgstr ""
+
+#: premium/Automation.php:345
+msgid "Scan every week, and e-mail me when a plugin or theme has more code that will break than the week before."
+msgstr ""
+
+#: premium/Automation.php:346
+msgid "Scan again a minute after a plugin or theme is installed or updated."
+msgstr ""
+
+#: premium/Automation.php:347
+msgid "E-mail me once a day when the run-time log recorded something new that stops a page."
+msgstr ""
+
+#: premium/Automation.php:356
+msgid "Send e-mails to:"
+msgstr ""
+
+#: premium/Automation.php:360
+msgid "No e-mail is sent when nothing got worse. E-mails are sent by this site, the way WordPress sends its own."
+msgstr ""
+
+#: premium/Automation.php:361
+msgid "Save"
+msgstr ""
+
+#: premium/Automation.php:365
+msgid "Download the report"
+msgstr ""
+
+#: premium/Bootstrap.php:95
+msgid "Automatic fixes"
+msgstr ""
+
+#. translators: %d: number of findings.
+#: premium/Bootstrap.php:99
+msgid "%d finding listed below can be fixed automatically."
+msgid_plural "%d findings listed below can be fixed automatically."
+msgstr[0] ""
+msgstr[1] ""
+
+#: premium/Bootstrap.php:110
+msgid "Show what would change"
+msgstr ""
+
+#: premium/Bootstrap.php:112
+msgid "There is nothing to fix automatically."
+msgstr ""
+
+#: premium/Bootstrap.php:114
+msgid "These are the exact changes. Only the marked characters change; everything else in the files stays as it is. The fixed code also runs on the PHP version this site uses now, so you can fix first and switch PHP afterwards. The originals are kept, and the change can be undone below."
+msgstr ""
+
+#: premium/Bootstrap.php:121
+msgid "Apply these fixes"
+msgstr ""
+
+#. translators: 1: date and time, 2: number of files.
+#: premium/Bootstrap.php:127
+msgid "Fixed on %1$s: %2$d files."
+msgstr ""
+
+#: premium/Bootstrap.php:128
+msgid "Undo"
+msgstr ""
+
+#. translators: 1: number of fixes, 2: number of files.
+#: premium/Bootstrap.php:166
+msgid "%1$d fixes made in %2$d files. The originals are kept; use Undo to put them back."
+msgstr ""
+
+#. translators: %d: number of files.
+#: premium/Bootstrap.php:169
+msgid "%d files put back as they were."
+msgstr ""
+
+#. translators: %s: list of file paths.
+#: premium/Bootstrap.php:173
+msgid "Left alone because they changed after the fix: %s"
+msgstr ""
+
+#. translators: %d: line number.
+#: premium/Fix/HunkRenderer.php:40
+msgid "From line %d"
+msgstr ""
+
+#. translators: %s: file path.
+#: premium/Fix/Service.php:90
+msgid "The file %s is not writable. Nothing was changed."
+msgstr ""
+
+#: premium/Fix/Service.php:100
+msgid "The backup folder could not be created. Nothing was changed."
+msgstr ""
+
+#: premium/Fix/Service.php:122
+msgid "A backup copy could not be written. Nothing was changed."
+msgstr ""
+
+#: premium/Fix/Service.php:193
+msgid "That backup does not exist."
+msgstr ""
+
+#. translators: %s: user's first name.
+#: premium/FreemiusJapanese.php:67
+msgid "Thanks %s!"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: premium/ReportExport.php:71
+msgid "PHP %s compatibility report"
+msgstr ""
+
+#. translators: 1: PHP version the site runs, 2: date and time.
+#: premium/ReportExport.php:84
+msgid "The site runs PHP %1$s. Report made on %2$s."
+msgstr ""
+
+#. translators: %s: date and time.
+#: premium/ReportExport.php:88
+#: src/Admin/Page.php:173
+msgid "Last scan: %s."
+msgstr ""
+
+#: premium/ReportExport.php:92
+msgid "How to read this: \"Will break\" means PHP no longer runs the code. \"Will behave differently\" means it runs and does something else, without a warning. \"Deprecation notices\" means it still works and PHP announces that it will stop. Each statement about a PHP version was checked by running code on real PHP 7.4 to 8.5; what could only be taken from the official upgrade notes is marked."
+msgstr ""
+
+#. translators: %s: PHP version.
+#: premium/ReportExport.php:97
+#: src/Admin/Page.php:152
+msgid "What is new in PHP %s comes from the official upgrade notes. It was not run on a real PHP of that version yet, and is marked as such below."
+msgstr ""
+
+#: premium/ReportExport.php:100
+msgid "Summary"
+msgstr ""
+
+#: premium/ReportExport.php:102
+#: src/Admin/Page.php:214
+msgid "Plugin or theme"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: premium/ReportExport.php:102
+#: src/Admin/Page.php:216
+msgid "On PHP %s"
+msgstr ""
+
+#: premium/ReportExport.php:102
+#: src/Admin/Messages.php:143
+#: src/Admin/Page.php:217
+msgid "Will break"
+msgstr ""
+
+#: premium/ReportExport.php:102
+#: src/Admin/Page.php:218
+msgid "Behaves differently"
+msgstr ""
+
+#: premium/ReportExport.php:102
+#: src/Admin/Page.php:219
+msgid "Deprecated"
+msgstr ""
+
+#: premium/ReportExport.php:102
+msgid "Can be fixed automatically"
+msgstr ""
+
+#: premium/ReportExport.php:110
+#: src/Admin/Page.php:252
+msgid "inactive"
+msgstr ""
+
+#. translators: 1: file path, 2: parser message.
+#: premium/ReportExport.php:135
+#: src/Admin/Page.php:297
+msgid "%1$s could not be read as PHP, so it was not checked: %2$s"
+msgstr ""
+
+#: premium/ReportExport.php:142
+#: premium/ReportExport.php:177
+#: src/Admin/LogView.php:66
+#: src/Admin/Page.php:311
+msgid "Where"
+msgstr ""
+
+#: premium/ReportExport.php:142
+#: src/Admin/Page.php:311
+msgid "What"
+msgstr ""
+
+#: premium/ReportExport.php:142
+#: src/Admin/Page.php:311
+msgid "What happens"
+msgstr ""
+
+#. translators: %s: code to use instead.
+#: premium/ReportExport.php:154
+#: src/Admin/Page.php:340
+msgid "Use %s instead."
+msgstr ""
+
+#: premium/ReportExport.php:160
+#: src/Admin/Page.php:348
+msgid "From the official upgrade notes; not yet run on a real PHP of this version."
+msgstr ""
+
+#: premium/ReportExport.php:164
+#: src/Admin/Page.php:352
+msgid "Can be fixed automatically."
+msgstr ""
+
+#: premium/ReportExport.php:176
+msgid "What PHP said while the site ran"
+msgstr ""
+
+#: premium/ReportExport.php:177
+#: src/Admin/LogView.php:66
+msgid "Last seen"
+msgstr ""
+
+#: premium/ReportExport.php:177
+#: src/Admin/LogView.php:66
+msgid "What PHP said"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: premium/ReportExport.php:177
+#: src/Admin/LogView.php:66
+msgid "What it means on PHP %s"
+msgstr ""
+
+#: premium/ReportExport.php:181
+#: src/Admin/LogView.php:99
+msgid "WordPress itself"
+msgstr ""
+
+#: src/Admin/LogView.php:34
+msgid "What PHP says while the site runs"
+msgstr ""
+
+#: src/Admin/LogView.php:35
+msgid "A scan reads code. It cannot see a problem that depends on the data a page handles, such as counting something that turns out to be empty. PHP 7 answers many of those with a warning and carries on; PHP 8 stops the page. While recording is on, Upgrade Warden notes these messages as they happen, so you can see them before you switch PHP, and see what stopped a page after you did."
+msgstr ""
+
+#. translators: %d: number of days.
+#: src/Admin/LogView.php:38
+msgid "Recorded: deprecation notices and fatal errors of PHP itself, and the warnings known to become errors on a newer PHP. Kept: the message, the file and the line, for %d day after it was last seen. Not recorded: visitors, addresses, form data or page content. Nothing leaves your site."
+msgid_plural "Recorded: deprecation notices and fatal errors of PHP itself, and the warnings known to become errors on a newer PHP. Kept: the message, the file and the line, for %d days after it was last seen. Not recorded: visitors, addresses, form data or page content. Nothing leaves your site."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Admin/LogView.php:42
+msgid "Recording is on"
+msgstr ""
+
+#: src/Admin/LogView.php:43
+msgid "Stop recording"
+msgstr ""
+
+#: src/Admin/LogView.php:45
+msgid "Recording is off"
+msgstr ""
+
+#: src/Admin/LogView.php:46
+msgid "Start recording"
+msgstr ""
+
+#: src/Admin/LogView.php:51
+msgid "Empty the log"
+msgstr ""
+
+#: src/Admin/LogView.php:59
+msgid "Nothing recorded yet. Use the site as usual; messages appear here as PHP raises them."
+msgstr ""
+
+#: src/Admin/LogView.php:59
+msgid "Nothing recorded."
+msgstr ""
+
+#. translators: %s: date and time.
+#: src/Admin/LogView.php:82
+msgid "first: %s"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/LogView.php:130
+msgid "This stopped the page on PHP %s."
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/LogView.php:134
+msgid "PHP made it an error in version %s; older versions let it pass."
+msgstr ""
+
+#: src/Admin/LogView.php:135
+#: src/Admin/LogView.php:188
+msgid "Checked on real PHP versions."
+msgstr ""
+
+#: src/Admin/LogView.php:137
+msgid "Not one of the PHP changes on record here; it may have another cause."
+msgstr ""
+
+#: src/Admin/LogView.php:142
+msgid "Fatal error"
+msgstr ""
+
+#: src/Admin/LogView.php:151
+msgid "Likely to break"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/LogView.php:153
+msgid "PHP %s turns warnings of this kind into errors that stop the page, for almost every function."
+msgstr ""
+
+#: src/Admin/LogView.php:154
+msgid "This particular function was not run on real PHP versions for this plugin, so this is not certain."
+msgstr ""
+
+#: src/Admin/LogView.php:161
+msgid "Deprecation notice"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/LogView.php:163
+msgid "PHP %s marks this as deprecated. It still works; a later PHP version will stop accepting it."
+msgstr ""
+
+#: src/Admin/LogView.php:164
+msgid "Not among the messages on record here, so the versions are not known."
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/LogView.php:186
+msgid "No change on PHP %s"
+msgstr ""
+
+#. translators: %s: function name.
+#: src/Admin/Messages.php:33
+msgid "Calls %s(), a function PHP no longer has."
+msgstr ""
+
+#. translators: %s: function name.
+#: src/Admin/Messages.php:36
+msgid "Calls %s(), which PHP has deprecated."
+msgstr ""
+
+#. translators: %s: constant name.
+#: src/Admin/Messages.php:39
+msgid "Uses the constant %s, which PHP no longer has."
+msgstr ""
+
+#. translators: %s: constant name.
+#: src/Admin/Messages.php:42
+msgid "Uses the constant %s, which PHP has deprecated."
+msgstr ""
+
+#: src/Admin/Messages.php:44
+msgid "Reads an array or string offset with curly braces, as in $text{0}."
+msgstr ""
+
+#: src/Admin/Messages.php:46
+msgid "Uses the (real) cast."
+msgstr ""
+
+#: src/Admin/Messages.php:48
+msgid "Uses the (unset) cast."
+msgstr ""
+
+#: src/Admin/Messages.php:50
+msgid "Uses a long cast name such as (integer) or (boolean)."
+msgstr ""
+
+#: src/Admin/Messages.php:52
+msgid "Chains ternary operators without parentheses."
+msgstr ""
+
+#. translators: %s: class name.
+#: src/Admin/Messages.php:55
+msgid "The class %s has a constructor named after the class. PHP no longer calls it when an object is created, and gives no warning."
+msgstr ""
+
+#. translators: %s: name.
+#: src/Admin/Messages.php:58
+msgid "Uses %s as a function name; it is now a reserved word."
+msgstr ""
+
+#. translators: %s: "break" or "continue".
+#: src/Admin/Messages.php:61
+msgid "Has a %s statement with no loop or switch around it. The whole file fails to load."
+msgstr ""
+
+#: src/Admin/Messages.php:63
+msgid "Runs a command with the backtick operator."
+msgstr ""
+
+#: src/Admin/Messages.php:65
+msgid "Ends a case with a semicolon instead of a colon."
+msgstr ""
+
+#. translators: %s: parameter name.
+#: src/Admin/Messages.php:68
+msgid "The parameter %s has a type and a null default, but the type does not say it may be null."
+msgstr ""
+
+#. translators: %s: parameter name.
+#: src/Admin/Messages.php:71
+msgid "The optional parameter %s comes before a required one."
+msgstr ""
+
+#: src/Admin/Messages.php:73
+msgid "Writes a variable inside a string as ${name}."
+msgstr ""
+
+#. translators: 1: rule id, 2: what it is about.
+#: src/Admin/Messages.php:84
+msgid "Rule %1$s %2$s"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/Messages.php:123
+msgid "Stops working from PHP %s."
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/Messages.php:126
+msgid "Behaves differently from PHP %s, without a warning."
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/Messages.php:129
+msgid "Deprecated from PHP %s: still works, raises a notice, and will be removed later."
+msgstr ""
+
+#: src/Admin/Messages.php:132
+msgid "Behind a check, so it should not run on the newer PHP."
+msgstr ""
+
+#: src/Admin/Messages.php:144
+msgid "Will behave differently"
+msgstr ""
+
+#: src/Admin/Messages.php:145
+msgid "Deprecation notices"
+msgstr ""
+
+#: src/Admin/Messages.php:146
+#: src/Admin/Page.php:220
+msgid "Behind a check"
+msgstr ""
+
+#: src/Admin/Messages.php:147
+msgid "Could not be read"
+msgstr ""
+
+#: src/Admin/Messages.php:148
+msgid "Not scanned yet"
+msgstr ""
+
+#: src/Admin/Messages.php:149
+msgid "Nothing found"
+msgstr ""
+
+#: src/Admin/Page.php:53
+#: src/Plugin.php:111
+#: src/Plugin.php:112
+msgid "Upgrade Warden"
+msgstr ""
+
+#: src/Admin/Page.php:83
+#: src/Admin/Page.php:222
+msgid "Run-time log"
+msgstr ""
+
+#: src/Admin/Page.php:88
+msgid "recording"
+msgstr ""
+
+#: src/Admin/Page.php:92
+msgid "Scan"
+msgstr ""
+
+#: src/Admin/Page.php:104
+msgid "Upgrade Warden Pro fixes what can be fixed automatically, with a preview, a backup and an undo. It also scans every week and after updates, e-mails you when something new will break, keeps the run-time log for 90 days and exports a report."
+msgstr ""
+
+#: src/Admin/Page.php:107
+msgid "See Upgrade Warden Pro"
+msgstr ""
+
+#. translators: %s: PHP version.
+#: src/Admin/Page.php:126
+msgid "This site runs PHP %s."
+msgstr ""
+
+#: src/Admin/Page.php:127
+msgid "Show what happens on:"
+msgstr ""
+
+#: src/Admin/Page.php:166
+msgid "Scan plugins and themes"
+msgstr ""
+
+#: src/Admin/Page.php:178
+msgid "A scan reads the PHP files of your plugins and themes. It changes nothing, and nothing leaves your site. It cannot see problems that depend on the data a page handles; those only show when the code runs, and the run-time log is there for them."
+msgstr ""
+
+#: src/Admin/Page.php:221
+msgid "Files"
+msgstr ""
+
+#: src/Admin/Page.php:243
+msgid "Theme"
+msgstr ""
+
+#: src/Admin/Page.php:243
+msgid "Plugin"
+msgstr ""
+
+#: src/Admin/Page.php:288
+msgid "All plugins and themes"
+msgstr ""
+
+#. translators: 1: plugin or theme name, 2: PHP version.
+#: src/Admin/Page.php:290
+msgid "%1$s on PHP %2$s"
+msgstr ""
+
+#: src/Admin/Page.php:302
+msgid "Not scanned yet."
+msgstr ""
+
+#: src/Admin/Page.php:302
+msgid "Nothing found for this PHP version."
+msgstr ""
+
+#: src/Admin/Page.php:352
+msgid "Can be fixed automatically with Upgrade Warden Pro."
+msgstr ""
+
+#: src/Admin/RuleText.php:43
+msgid "Passes null as the key to array_key_exists() or key_exists(); it is looked up as an empty string."
+msgstr ""
+
+#: src/Admin/RuleText.php:44
+msgid "Calls an array pointer function such as current(), key() or next() on an object instead of an array."
+msgstr ""
+
+#: src/Admin/RuleText.php:45
+msgid "Creates an ArrayObject or an array iterator from an object instead of an array."
+msgstr ""
+
+#: src/Admin/RuleText.php:46
+msgid "Calls chr() with a number outside 0 to 255; PHP wraps it around to fit that range."
+msgstr ""
+
+#: src/Admin/RuleText.php:47
+msgid "Passes a value that is not a string, such as a number, true or null, to a ctype function such as ctype_digit()."
+msgstr ""
+
+#: src/Admin/RuleText.php:48
+msgid "Calls readdir(), rewinddir() or closedir() without a directory handle, relying on the directory opened last."
+msgstr ""
+
+#: src/Admin/RuleText.php:49
+msgid "Searches a string for an empty string; this used to return false with a warning and now returns a result."
+msgstr ""
+
+#: src/Admin/RuleText.php:50
+msgid "Passes FILE_APPEND to file(), where the flag has never had any effect."
+msgstr ""
+
+#: src/Admin/RuleText.php:51
+msgid "Calls htmlspecialchars() or a related function without flags, so the default decides how single quotes are handled, and that default changed."
+msgstr ""
+
+#: src/Admin/RuleText.php:52
+msgid "Passes -1 as the crop mode to imagecropauto()."
+msgstr ""
+
+#: src/Admin/RuleText.php:53
+msgid "Passes a mode number that array_filter(), array_change_key_case() or scandir() does not define; it used to be accepted silently."
+msgstr ""
+
+#: src/Admin/RuleText.php:54
+msgid "Passes null as a length, as in substr( $text, 1, null ); null used to be read as 0 and now means up to the end."
+msgstr ""
+
+#: src/Admin/RuleText.php:55
+msgid "Calls mb_check_encoding() without a value to check."
+msgstr ""
+
+#: src/Admin/RuleText.php:56
+msgid "Names an encoding with an underscore, as in ISO_8859-1, in an mbstring function."
+msgstr ""
+
+#: src/Admin/RuleText.php:57
+msgid "Asks an mbstring function to treat Base64, Quoted-Printable, Uuencode or HTML entities as a text encoding."
+msgstr ""
+
+#: src/Admin/RuleText.php:58
+msgid "Passes a negative width to mb_strimwidth(), which counts the width back from the end of the string."
+msgstr ""
+
+#: src/Admin/RuleText.php:59
+msgid "Passes the encoding as the third argument of mb_strrpos(), where the offset belongs."
+msgstr ""
+
+#: src/Admin/RuleText.php:60
+msgid "Passes a connection to mysqli_get_client_info(), which does not need one."
+msgstr ""
+
+#: src/Admin/RuleText.php:61
+msgid "Passes a number as the text to search for, as in strpos( $text, 7 ); it used to mean the character with that code and now means the digits."
+msgstr ""
+
+#: src/Admin/RuleText.php:62
+msgid "Passes null to a built-in function where it expects a string, a number or true/false."
+msgstr ""
+
+#: src/Admin/RuleText.php:63
+msgid "Passes an object instead of an array to http_build_query(), deflate_init() or inflate_init()."
+msgstr ""
+
+#: src/Admin/RuleText.php:64
+msgid "Calls openssl_pkcs7_encrypt() without naming a cipher, so the default cipher is used, and that default changed."
+msgstr ""
+
+#: src/Admin/RuleText.php:65
+msgid "Calls ord() with a string that is not exactly one byte long."
+msgstr ""
+
+#: src/Admin/RuleText.php:66
+msgid "Passes its own salt to password_hash(); the salt is ignored and a generated one is used."
+msgstr ""
+
+#: src/Admin/RuleText.php:67
+msgid "Has a regular expression with braces such as {,3} or { 1,3 }; they used to be plain text and are now read as a repeat count."
+msgstr ""
+
+#: src/Admin/RuleText.php:68
+msgid "Has a regular expression with a backslash before an ordinary letter, such as \\i; it used to match the letter and now the pattern is invalid."
+msgstr ""
+
+#: src/Admin/RuleText.php:69
+msgid "Has a regular expression with \\K inside a lookahead or lookbehind; the pattern is now rejected and the function returns false or null."
+msgstr ""
+
+#: src/Admin/RuleText.php:70
+msgid "Passes the number of points as a separate argument to imagepolygon() or a related function."
+msgstr ""
+
+#: src/Admin/RuleText.php:71
+msgid "Formats a number with a dot but no digits after it, as in %.f; this used to mean a precision of 6 and now means 0."
+msgstr ""
+
+#: src/Admin/RuleText.php:72
+msgid "Calls range() between a digit and a letter, as in range( '5', 'z' ); the result used to be numbers and is now characters."
+msgstr ""
+
+#: src/Admin/RuleText.php:73
+msgid "Calls range() with whole numbers and a step written as a float, such as 2.0; the result used to be floats and is now integers."
+msgstr ""
+
+#: src/Admin/RuleText.php:74
+msgid "Calls range() with a negative step on a range that counts upward; the minus sign used to be ignored."
+msgstr ""
+
+#: src/Admin/RuleText.php:75
+msgid "Passes an array of locales to setlocale() together with further locale arguments."
+msgstr ""
+
+#: src/Admin/RuleText.php:76
+msgid "Gives SoapClient or SoapServer a classmap that mixes text keys with number keys, or one that is not an array."
+msgstr ""
+
+#: src/Admin/RuleText.php:77
+msgid "Sets the ssl_method option when creating a SoapClient."
+msgstr ""
+
+#: src/Admin/RuleText.php:78
+msgid "Calls strcspn() with an empty character list; the count used to stop at the first NUL byte and now runs to the end of the string."
+msgstr ""
+
+#: src/Admin/RuleText.php:79
+msgid "Uses the string.strip_tags stream filter to remove HTML tags from a stream."
+msgstr ""
+
+#: src/Admin/RuleText.php:80
+msgid "Has an unpack() format with < or > right after a format code, as in s<value; the sign used to be part of the name and is now a byte-order option."
+msgstr ""
+
+#: src/Admin/RuleText.php:81
+msgid "Passes a one-letter or empty operator, such as 'l' or 'e', to version_compare()."
+msgstr ""
+
+#: src/Admin/RuleText.php:82
+msgid "Passes a single value instead of an array as the values of vsprintf(), vprintf() or vfprintf()."
+msgstr ""
+
+#: src/Admin/RuleText.php:83
+msgid "Gives ZipArchive::addGlob() or addPattern() an option of the wrong type, such as 1 for remove_all_path or text for comp_method."
+msgstr ""
+
+#: src/Admin/RuleText.php:84
+msgid "Starts an array with a negative key and then adds items without a key; those items now get different keys than before."
+msgstr ""
+
+#: src/Admin/RuleText.php:85
+msgid "Calls a sorting, flags or serialize method on an ArrayIterator, such as asort() or getFlags()."
+msgstr ""
+
+#: src/Admin/RuleText.php:86
+msgid "Passes code as a string to assert(); the string is no longer run, so the check always passes."
+msgstr ""
+
+#: src/Admin/RuleText.php:87
+msgid "Passes an array with text keys to call_user_func_array(); the keys are now read as parameter names and do not fit the function."
+msgstr ""
+
+#: src/Admin/RuleText.php:88
+msgid "Passes an array with text keys to call_user_func_array(); the keys are now read as parameter names, so values reach different parameters."
+msgstr ""
+
+#: src/Admin/RuleText.php:89
+msgid "Creates a class alias named array or callable with class_alias()."
+msgstr ""
+
+#: src/Admin/RuleText.php:90
+msgid "Calls crypt() without a salt."
+msgstr ""
+
+#: src/Admin/RuleText.php:91
+msgid "Calls fgetcsv(), fputcsv() or str_getcsv() without the escape argument, relying on a default that is going to change."
+msgstr ""
+
+#: src/Admin/RuleText.php:92
+msgid "Creates a DatePeriod from a single ISO 8601 string such as R2/2012-07-01T00:00:00Z/P7D."
+msgstr ""
+
+#: src/Admin/RuleText.php:93
+msgid "Defines a constant as case-insensitive and then uses it in a different case than it was defined in."
+msgstr ""
+
+#: src/Admin/RuleText.php:94
+msgid "Passes a third argument to define(), where it no longer has any effect."
+msgstr ""
+
+#: src/Admin/RuleText.php:95
+msgid "Compares error_reporting() with 0 inside an error handler to detect errors silenced with @; that test no longer sees them."
+msgstr ""
+
+#: src/Admin/RuleText.php:96
+msgid "Passes something other than a string or a whole number to exit() or die(), such as true, null, 1.5 or an array."
+msgstr ""
+
+#: src/Admin/RuleText.php:97
+msgid "Passes a context to finfo_buffer() or finfo::buffer(), where it has no effect."
+msgstr ""
+
+#: src/Admin/RuleText.php:98
+msgid "Calls get_class() or get_parent_class() without an argument inside a class."
+msgstr ""
+
+#: src/Admin/RuleText.php:99
+msgid "Passes an argument to get_defined_functions(), where it no longer has any effect."
+msgstr ""
+
+#: src/Admin/RuleText.php:100
+msgid "Calls implode() or join() with the array first and the separator second."
+msgstr ""
+
+#: src/Admin/RuleText.php:101
+msgid "Passes a value outside what the function documents, such as an image quality that is too high or an unknown mode; PHP used to tolerate it."
+msgstr ""
+
+#: src/Admin/RuleText.php:102
+msgid "Gives is_a() or is_subclass_of() a class name instead of an object while class names are not allowed, so the result is always false."
+msgstr ""
+
+#: src/Admin/RuleText.php:103
+msgid "Asks is_callable() about a non-static method named by its class instead of an object; the answer changed from true to false."
+msgstr ""
+
+#: src/Admin/RuleText.php:104
+msgid "Checks the result of finfo_open() with is_resource(); it is now an object, so the check fails even when the call worked."
+msgstr ""
+
+#: src/Admin/RuleText.php:105
+msgid "Checks with is_resource() a value that is now an object, such as an image or an XML parser, so the check fails even when the call worked."
+msgstr ""
+
+#: src/Admin/RuleText.php:106
+msgid "Passes a fourth argument to mb_decode_numericentity(), which takes only three."
+msgstr ""
+
+#: src/Admin/RuleText.php:107
+msgid "Calls mktime() or gmmktime() without arguments to get the current time."
+msgstr ""
+
+#: src/Admin/RuleText.php:108
+msgid "Calls get_charset() or stmt_init() on a mysqli connection."
+msgstr ""
+
+#: src/Admin/RuleText.php:109
+msgid "Calls mysqli::init() from a class that extends mysqli, usually as parent::init()."
+msgstr ""
+
+#: src/Admin/RuleText.php:110
+msgid "Creates a mysqli_stmt object without giving it a query."
+msgstr ""
+
+#: src/Admin/RuleText.php:111
+msgid "Passes a mode as the second argument to mysqli_store_result()."
+msgstr ""
+
+#: src/Admin/RuleText.php:112
+msgid "Calls a non-static method as Class::method(), without an object."
+msgstr ""
+
+#: src/Admin/RuleText.php:113
+msgid "Passes a key length to openssl_pkey_derive(); it is either ignored or cuts the key short."
+msgstr ""
+
+#: src/Admin/RuleText.php:114
+msgid "Calls openssl_seal() or openssl_open() without naming the cipher."
+msgstr ""
+
+#: src/Admin/RuleText.php:115
+msgid "Calls parse_str() or mb_parse_str() without a result array, so the values are created as variables in the current scope."
+msgstr ""
+
+#: src/Admin/RuleText.php:116
+msgid "Calls an SQLite-only method such as sqliteCreateFunction() on a PDO object."
+msgstr ""
+
+#: src/Admin/RuleText.php:117
+msgid "Creates a PDO connection with a uri: prefix, so the connection string is loaded from a file or URL."
+msgstr ""
+
+#: src/Admin/RuleText.php:118
+msgid "Calls the static export() method of a Reflection class, as in ReflectionClass::export()."
+msgstr ""
+
+#: src/Admin/RuleText.php:119
+msgid "Calls isDisabled() on a ReflectionFunction, which now always returns false."
+msgstr ""
+
+#: src/Admin/RuleText.php:120
+msgid "Calls getClass(), isArray() or isCallable() on a ReflectionParameter to find out its type."
+msgstr ""
+
+#: src/Admin/RuleText.php:121
+msgid "Calls setAccessible() on a reflection method or property, where it no longer has any effect."
+msgstr ""
+
+#: src/Admin/RuleText.php:122
+msgid "Creates a ReflectionMethod from a single string of the form Class::method."
+msgstr ""
+
+#: src/Admin/RuleText.php:123
+msgid "Passes separate callback functions to session_set_save_handler() instead of one handler object."
+msgstr ""
+
+#: src/Admin/RuleText.php:124
+msgid "Runs an XPath expression that returns a number, a string or true/false, such as count(...), through xpath(); the result used to be an empty array and is now false."
+msgstr ""
+
+#: src/Admin/RuleText.php:125
+msgid "Passes 'spl_autoload_call' to spl_autoload_unregister() to remove every autoloader at once."
+msgstr ""
+
+#: src/Admin/RuleText.php:126
+msgid "Calls a CSV method of SplFileObject, such as fgetcsv() or setCsvControl()."
+msgstr ""
+
+#: src/Admin/RuleText.php:127
+msgid "Calls fgetss() on a file object to read a line with the HTML tags stripped out."
+msgstr ""
+
+#: src/Admin/RuleText.php:128
+msgid "Steps through an SplFixedArray by calling rewind(), valid(), current(), key() or next() on it."
+msgstr ""
+
+#: src/Admin/RuleText.php:129
+msgid "Calls attach(), detach() or contains() on an SplObjectStorage."
+msgstr ""
+
+#: src/Admin/RuleText.php:130
+msgid "Turns exceptions off on an SQLite3 connection with enableExceptions(), so errors are reported as warnings."
+msgstr ""
+
+#: src/Admin/RuleText.php:131
+msgid "Calls a static method or uses a static property directly on a trait, not on a class that uses the trait."
+msgstr ""
+
+#: src/Admin/RuleText.php:132
+msgid "Calls stream_context_set_option() with two arguments, passing all options as one array."
+msgstr ""
+
+#: src/Admin/RuleText.php:133
+msgid "Raises a fatal error with trigger_error() or user_error() and the E_USER_ERROR level."
+msgstr ""
+
+#: src/Admin/RuleText.php:134
+msgid "Gives an XML parser a handler as a bare method name, relying on xml_set_object() to say which object it belongs to."
+msgstr ""
+
+#: src/Admin/RuleText.php:135
+msgid "Registers an error handler whose fifth parameter is required; newer PHP passes only four arguments, so the handler fails as soon as an error is raised."
+msgstr ""
+
+#: src/Admin/RuleText.php:136
+msgid "Passes call_user_func() or call_user_func_array() a callback that names a non-static method by class name only, with no object to run it on."
+msgstr ""
+
+#: src/Admin/RuleText.php:137
+msgid "Passes a callback that names self, parent or static as text, such as 'self::method' or array( 'parent', 'method' ), or an array whose second item is 'Class::method'."
+msgstr ""
+
+#: src/Admin/RuleText.php:138
+msgid "Gives usort(), uasort() or uksort() a comparison callback that returns true or false instead of a negative, zero or positive number."
+msgstr ""
+
+#: src/Admin/RuleText.php:139
+msgid "Implements an abstract method of a trait with a different parameter list or return type than the trait declares."
+msgstr ""
+
+#: src/Admin/RuleText.php:140
+msgid "Gives an alias to a trait method that exists in more than one of the traits the class uses, without saying which trait is meant."
+msgstr ""
+
+#: src/Admin/RuleText.php:141
+msgid "Puts #[Attribute] on an abstract class, interface, trait or enum, none of which can be created as an object."
+msgstr ""
+
+#: src/Admin/RuleText.php:142
+msgid "Declares, in a class that extends a DOM class, a method without a return type or a property without a type under a name the DOM class now uses itself."
+msgstr ""
+
+#: src/Admin/RuleText.php:143
+msgid "Creates or extends a DOM class that never did anything and that PHP no longer has, such as DOMConfiguration or DOMLocator."
+msgstr ""
+
+#: src/Admin/RuleText.php:144
+msgid "Overrides a method of its parent class with a parameter list that does not fit the parent's, for example more required parameters or fewer parameters."
+msgstr ""
+
+#: src/Admin/RuleText.php:145
+msgid "Redeclares a constant that comes from an interface as private or protected; interface constants have to stay public."
+msgstr ""
+
+#: src/Admin/RuleText.php:146
+msgid "Overrides a built-in method that takes any number of extra arguments, such as PDO::query(), without a ...$args parameter of its own."
+msgstr ""
+
+#: src/Admin/RuleText.php:147
+msgid "Declares a magic method such as __get() or __isset() with a parameter type or return type that PHP does not accept for that method."
+msgstr ""
+
+#: src/Admin/RuleText.php:148
+msgid "Overrides mysqli_stmt::execute() with a method that takes no parameters, while the built-in method accepts an optional one."
+msgstr ""
+
+#: src/Admin/RuleText.php:149
+msgid "Uses the keyword parent in a class that has no parent class."
+msgstr ""
+
+#: src/Admin/RuleText.php:150
+msgid "Redeclares one of Phar's own constants, such as GZ, without a type in a class that extends Phar."
+msgstr ""
+
+#: src/Admin/RuleText.php:151
+msgid "Implements the Serializable interface without having both __serialize() and __unserialize()."
+msgstr ""
+
+#: src/Admin/RuleText.php:152
+msgid "Implements SessionHandlerInterface but leaves out create_sid() or validateId(), two methods the interface is going to require."
+msgstr ""
+
+#: src/Admin/RuleText.php:153
+msgid "Overrides SoapClient::__doRequest() with five parameters, while the built-in method gains a sixth."
+msgstr ""
+
+#: src/Admin/RuleText.php:154
+msgid "Overrides fwrite() of SplFileObject or SplTempFileObject with a second parameter (the length) whose type does not accept null."
+msgstr ""
+
+#: src/Admin/RuleText.php:155
+msgid "Overrides compare() of SplHeap or SplPriorityQueue with typed parameters, with fewer than two parameters, or with more than two required ones."
+msgstr ""
+
+#: src/Admin/RuleText.php:156
+msgid "Uses a trait with a static property that the parent class also has; the child class then gets its own copy, so a value set through one class is not seen through the other."
+msgstr ""
+
+#: src/Admin/RuleText.php:157
+msgid "Redeclares a constant of a built-in class without a type in a class that extends it, for example const FETCH_ASSOC in a class that extends PDO."
+msgstr ""
+
+#: src/Admin/RuleText.php:158
+msgid "Overrides XMLReader::open() or XMLReader::xml(), which newer PHP declares static, with a method that is not static."
+msgstr ""
+
+#: src/Admin/RuleText.php:159
+msgid "Clones a DOMXPath object, whose copy was never usable."
+msgstr ""
+
+#: src/Admin/RuleText.php:160
+msgid "Uses a MySQL or SQLite constant through the general PDO class, such as PDO::MYSQL_ATTR_INIT_COMMAND, or the date format constant RFC7231."
+msgstr ""
+
+#: src/Admin/RuleText.php:161
+msgid "Passes PDO::FETCH_SERIALIZE together with PDO::FETCH_CLASS as a fetch mode."
+msgstr ""
+
+#: src/Admin/RuleText.php:162
+msgid "Combines PDO::FETCH_PROPS_LATE with a fetch mode other than PDO::FETCH_CLASS, where the flag has no effect."
+msgstr ""
+
+#: src/Admin/RuleText.php:163
+msgid "Compares PHP_DEBUG or PHP_ZTS strictly (=== or !==) with 0 or false; newer PHP stores them as true/false instead of 1/0, so the answer flips."
+msgstr ""
+
+#: src/Admin/RuleText.php:164
+msgid "Reads the SID constant, which holds the session name and ID for adding to URLs."
+msgstr ""
+
+#: src/Admin/RuleText.php:165
+msgid "Uses the flag ZipArchive::FL_RECOMPRESS, which the zip library no longer supports."
+msgstr ""
+
+#: src/Admin/RuleText.php:166
+msgid "Uses the constant ZipArchive::OPSYS_Z_CPM, which PHP no longer has."
+msgstr ""
+
+#: src/Admin/RuleText.php:167
+msgid "Writes a number with a fraction, such as 1.5, as an array key or in a %, bitwise or shift operation, where PHP silently cuts off the fraction."
+msgstr ""
+
+#: src/Admin/RuleText.php:168
+msgid "Declares a global function named __autoload() to load classes."
+msgstr ""
+
+#: src/Admin/RuleText.php:169
+msgid "Switches on the auto_detect_line_endings setting with ini_set() or ini_alter()."
+msgstr ""
+
+#: src/Admin/RuleText.php:170
+msgid "Sets a session setting such as session.use_trans_sid, session.sid_length or session.referer_check to a value other than its default."
+msgstr ""
+
+#: src/Admin/RuleText.php:171
+msgid "Returns null, or returns without a value, from __debugInfo(), which is expected to return an array."
+msgstr ""
+
+#: src/Admin/RuleText.php:172
+msgid "Sets a property on $this that the class does not declare, so PHP creates it on the fly."
+msgstr ""
+
+#: src/Admin/RuleText.php:173
+msgid "Declares __debugInfo() with the return type ?array or array|null."
+msgstr ""
+
+#: src/Admin/RuleText.php:174
+msgid "Overrides DOMImplementation::createDocument() without declaring a return type."
+msgstr ""
+
+#: src/Admin/RuleText.php:175
+msgid "Gives a parameter the default value null but places it before a required parameter, so it is treated as required anyway."
+msgstr ""
+
+#: src/Admin/RuleText.php:176
+msgid "Declares a function that returns by reference (&) but has the return type void, so there is nothing to return."
+msgstr ""
+
+#: src/Admin/RuleText.php:177
+msgid "Declares validateId() without a return type in a class that extends SessionHandler, which gets a validateId() of its own that returns bool."
+msgstr ""
+
+#: src/Admin/RuleText.php:178
+msgid "Overrides a built-in method whose return type has changed, and declares a type that fits only the old one, as in createFromImmutable(): DateTime."
+msgstr ""
+
+#: src/Admin/RuleText.php:179
+msgid "Declares a method of a built-in class or interface, such as Countable::count(), without the return type the built-in one has."
+msgstr ""
+
+#: src/Admin/RuleText.php:180
+msgid "Names a class constant or enum case namespace, in any letter case, such as NAMESPACE."
+msgstr ""
+
+#: src/Admin/RuleText.php:181
+msgid "Mixes . with +, -, << or >> without parentheses, as in 'Total: ' . $a + $b; newer PHP does the arithmetic first, so the result differs."
+msgstr ""
+
+#: src/Admin/RuleText.php:182
+msgid "Uses yield or yield from directly in __construct() or __destruct(), which makes the method a generator."
+msgstr ""
+
+#: src/Admin/RuleText.php:183
+msgid "Returns a value from __construct() or __destruct()."
+msgstr ""
+
+#: src/Admin/RuleText.php:184
+msgid "Declares a function named readonly."
+msgstr ""
+
+#: src/Admin/RuleText.php:185
+msgid "Writes to the $GLOBALS array as a whole instead of one entry, for example by assigning to it, appending with $GLOBALS[] or passing it to a function that changes it."
+msgstr ""
+
+#: src/Admin/RuleText.php:186
+msgid "Uses let or is as the name of a class, function or constant, or as an alias."
+msgstr ""
+
+#: src/Admin/RuleText.php:187
+msgid "Declares a class, interface or trait named Match; match is now a reserved word."
+msgstr ""
+
+#: src/Admin/RuleText.php:188
+msgid "Uses null as an array key, as in $array[null] or null => value; PHP treats it as the empty string ''."
+msgstr ""
+
+#: src/Admin/RuleText.php:189
+msgid "Has a return statement inside a finally block, which overrides whatever the try block was about to return."
+msgstr ""
+
+#: src/Admin/RuleText.php:190
+msgid "Declares a class, interface, trait or enum named _ (a single underscore)."
+msgstr ""
+
+#: src/Admin/RuleText.php:191
+msgid "Uses _ (a single underscore) as a constant name or as an alias in a use declaration."
+msgstr ""
+
+#: src/Admin/RuleText.php:192
+msgid "Reads $http_response_header, the variable PHP fills in by itself with the response headers after an HTTP request."
+msgstr ""
+
+#: src/Admin/RuleText.php:193
+msgid "Reads $php_errormsg after silencing an error with @; newer PHP never fills in that variable, so it stays undefined."
+msgstr ""
+
+#. translators: 1: number of plugins and themes finished, 2: total number.
+#: src/Plugin.php:139
+msgid "Scanning… %1$d of %2$d plugins and themes done."
+msgstr ""
+
+#: src/Plugin.php:140
+msgid "The scan stopped. Reload the page and start it again; files already scanned are not scanned twice."
+msgstr ""
+
+#: src/Scan/Components.php:59
+msgid "Must-use plugins"
+msgstr ""
