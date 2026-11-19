@@ -22,6 +22,12 @@ final class Tables {
 	const SCHEMA = 2;
 
 	/**
+	 * Every scheduled event of the plugin, free and Pro. Cleared on
+	 * deactivation and removal.
+	 */
+	const SCHEDULED = array( 'upgw_monitor_prune', 'upgw_auto_weekly', 'upgw_auto_after_update', 'upgw_auto_continue', 'upgw_auto_daily' );
+
+	/**
 	 * Table of scanned files.
 	 *
 	 * @return string
@@ -165,9 +171,31 @@ final class Tables {
 	}
 
 	/**
-	 * Removes the tables and the plugin's options.
+	 * Removes the tables and the plugin's options, on every site of a network.
 	 */
 	public static function uninstall() {
+		if ( ! is_multisite() ) {
+			self::uninstall_site();
+
+			return;
+		}
+
+		foreach ( get_sites(
+			array(
+				'fields' => 'ids',
+				'number' => 0,
+			)
+		) as $site ) {
+			switch_to_blog( (int) $site );
+			self::uninstall_site();
+			restore_current_blog();
+		}
+	}
+
+	/**
+	 * Removes the tables and the options of the current site.
+	 */
+	private static function uninstall_site() {
 		global $wpdb;
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Own tables; dropping tables has no API.
@@ -180,7 +208,7 @@ final class Tables {
 			delete_option( $option );
 		}
 
-		foreach ( array( 'upgw_monitor_prune', 'upgw_auto_weekly', 'upgw_auto_continue', 'upgw_auto_daily' ) as $hook ) {
+		foreach ( self::SCHEDULED as $hook ) {
 			wp_clear_scheduled_hook( $hook );
 		}
 	}

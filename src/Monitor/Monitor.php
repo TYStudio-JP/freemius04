@@ -31,6 +31,17 @@ final class Monitor {
 			Capture::install( new Signatures( UPGW_DIR . 'data/catalog' ), array( Log::class, 'record' ) );
 
 			add_filter( 'pre_update_option_active_plugins', array( __CLASS__, 'load_first' ) );
+			add_action( 'admin_init', array( __CLASS__, 'keep_pruning' ) );
+		}
+	}
+
+	/**
+	 * Schedules the clean-up again when it went missing while recording is on,
+	 * for example after the plugin was deactivated and activated again.
+	 */
+	public static function keep_pruning() {
+		if ( self::enabled() && ! wp_next_scheduled( self::CRON ) ) {
+			wp_schedule_event( time() + DAY_IN_SECONDS, 'daily', self::CRON );
 		}
 	}
 
@@ -77,9 +88,7 @@ final class Monitor {
 		update_option( self::OPTION, $on ? '1' : '0' );
 
 		if ( $on ) {
-			if ( ! wp_next_scheduled( self::CRON ) ) {
-				wp_schedule_event( time() + DAY_IN_SECONDS, 'daily', self::CRON );
-			}
+			self::keep_pruning();
 
 			$active = get_option( 'active_plugins' );
 			$first  = self::load_first( $active );

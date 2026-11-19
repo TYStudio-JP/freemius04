@@ -234,12 +234,40 @@ final class Capture {
 	 * @param int    $line    Line.
 	 */
 	private static function note( $type, $message, $file, $line ) {
+		// error_reporting() and the @ operator are not consulted on purpose. A
+		// live site usually hides deprecations, and @ hides the message only:
+		// when PHP turns the deprecation into an error, @ does not stop it.
 		// 8192 is E_DEPRECATED, 2 is E_WARNING, 8 is E_NOTICE.
 		if ( 8192 === $type ) {
 			self::add( 'E_DEPRECATED', $message, $file, $line, true );
 		} elseif ( 2 === $type || 8 === $type ) {
 			self::add( Signatures::TYPE_NAMES[ $type ], $message, $file, $line, false );
 		}
+	}
+
+	/**
+	 * Shortens a long message without splitting a UTF-8 character, which the
+	 * database would refuse to store. A message that is not valid UTF-8 at all
+	 * has its bytes outside ASCII replaced.
+	 *
+	 * @param string $message Message.
+	 * @return string
+	 */
+	public static function cut( $message ) {
+		if ( strlen( $message ) > self::MAX_MESSAGE ) {
+			$message = substr( $message, 0, self::MAX_MESSAGE );
+
+			// Drop the bytes of a character that the cut left incomplete.
+			for ( $i = 0; $i < 3 && ! preg_match( '//u', $message ); $i++ ) {
+				$message = substr( $message, 0, -1 );
+			}
+		}
+
+		if ( ! preg_match( '//u', $message ) ) {
+			$message = (string) preg_replace( '/[\x80-\xFF]/', '?', $message );
+		}
+
+		return $message;
 	}
 
 	/**
@@ -266,7 +294,7 @@ final class Capture {
 
 		self::$events[ $key ] = array(
 			'type'    => $type,
-			'message' => strlen( $message ) > self::MAX_MESSAGE ? substr( $message, 0, self::MAX_MESSAGE ) : $message,
+			'message' => self::cut( $message ),
 			'file'    => $file,
 			'line'    => $line,
 			'match'   => $match,

@@ -232,4 +232,17 @@ $tests['the handler keeps deprecations and known warnings, once, and passes ever
 	Capture::reset();
 };
 
+$tests['a long message is cut without splitting a character'] = static function () {
+	// "あ" is three bytes, so 600 bytes end in the middle of one for every offset but one.
+	foreach ( array( 0, 1, 2 ) as $offset ) {
+		$cut = Capture::cut( str_repeat( 'x', $offset ) . str_repeat( 'あ', 400 ) );
+
+		upgw_true( 1 === preg_match( '//u', $cut ), 'Valid UTF-8 after cutting at offset ' . $offset . '.' );
+		upgw_true( strlen( $cut ) <= Capture::MAX_MESSAGE && strlen( $cut ) > Capture::MAX_MESSAGE - 3, 'Only the broken character is dropped.' );
+	}
+
+	upgw_same( 'short', Capture::cut( 'short' ) );
+	upgw_same( 'Undefined array key "?"', Capture::cut( "Undefined array key \"\xFF\"" ), 'Bytes that are not UTF-8 are replaced.' );
+};
+
 return $tests;

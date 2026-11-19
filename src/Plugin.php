@@ -69,7 +69,7 @@ final class Plugin {
 	 * Stops what the plugin scheduled. The data stays until the plugin is deleted.
 	 */
 	public static function deactivate() {
-		foreach ( array( Monitor::CRON, 'upgw_auto_weekly', 'upgw_auto_continue', 'upgw_auto_daily' ) as $hook ) {
+		foreach ( Tables::SCHEDULED as $hook ) {
 			wp_clear_scheduled_hook( $hook );
 		}
 	}

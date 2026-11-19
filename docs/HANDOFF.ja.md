@@ -49,6 +49,7 @@
 | 審査ツール | Plugin Check 2.2.0 を無料版の見本に実行して、エラー0・警告0 |
 | ブラウザ | 本物の WordPress（Playground、PHP 8.3）で、検査ボタン・進み具合・結果・記録の画面を実際に操作して確認 |
 | Windows 対応 | 改行コードの固定（`.gitattributes`）、大文字小文字だけ違うファイル名3組の改名、PHP なしでも動かせる `tools/php.mjs`、Node の複製処理が落ちる問題の回避（`tools/lib/copy.mjs`） |
+| 独立レビュー | 別のエージェントが変更を読み直して7件を指摘。直したもの：更新後の検査が毎週の検査オフのときに予定から消える（専用の予定 `upgw_auto_after_update` に分離）／無効化→再有効化で記録の掃除が止まる（管理画面で予定を戻す）／600バイトで切ると日本語の文字が割れて保存されず、1時間記録されない（文字の途中で切らない・保存できたときだけ間隔をあける）／ネットワーク削除で他サイトのテーブルが残る（全サイト分消す）／1日のメールが200件で打ち切られる（続きから読む）／メッセージにサーバーの絶対パスが残る（取り除く）。直さなかったもの：`@` や `error_reporting` で隠したメッセージも記録する点は意図どおり（`@` は PHP がエラーに変えたときには効かない）。それぞれ `tools/wp/driver-log.php` とテストに確認を足した |
 | 版 | 0.1.0 → **1.0.0** |
 | 製品名の確認 | WordPress.org の公開 API とウェブ検索で、同じ名前のプラグイン・製品が見当たらないことを確認 |
 
@@ -66,12 +67,12 @@ bash tools/setup.sh             # 加えて、誤報の確認に使った実在�
 
 | 確認 | コマンド | 2026-11-19 の結果 |
 |---|---|---|
-| テスト（1つの版） | `node tools/php.mjs tests/run.php`（PHP があれば `php tests/run.php`） | 860件すべて通過 |
-| テスト（7つの版） | `cd tools && node run-tests.mjs` | PHP 7.4〜8.5 の7版とも 860件すべて通過 |
-| 検証用プログラム | `cd tools && node verify-fixtures.mjs` | 933件。今回足した34件は不一致0。**以前の899件は今回流し直していません**（記録 `*.observed.json` は前回のまま。約20分） |
+| テスト（1つの版） | `node tools/php.mjs tests/run.php`（PHP があれば `php tests/run.php`） | 861件すべて通過 |
+| テスト（7つの版） | `cd tools && node run-tests.mjs` | PHP 7.4〜8.5 の7版とも 861件すべて通過 |
+| 検証用プログラム | `cd tools && node verify-fixtures.mjs` | 933件すべてを 7つの版で流し直して不一致0（2026-11-19、この PC で約20分）。記録 `*.observed.json` は2件だけ文面が変わりますが、Windows のパス表記とプロセス番号の違いだけなので、元のまま残しています |
 | 実行時の記録 | `cd tools && node verify-monitor.mjs` | 1,890メッセージ、不一致0（約15分） |
-| 本物の WordPress・Pro | `cd tools && node wp-check.mjs out/corpus/wp-latest out/corpus/sqlite-database-integration 7.4 8.2 8.5` | PHP 7.4：70項目、8.2：69項目、8.5：69項目、すべて通過 |
-| 本物の WordPress・無料版 | 同じコマンドに `--free` を付ける | PHP 7.4：52項目、8.2：51項目、8.5：51項目、すべて通過 |
+| 本物の WordPress・Pro | `cd tools && node wp-check.mjs out/corpus/wp-latest out/corpus/sqlite-database-integration 7.4 8.2 8.5` | PHP 7.4：76項目、8.2：75項目、8.5：75項目、すべて通過 |
+| 本物の WordPress・無料版 | 同じコマンドに `--free` を付ける | PHP 7.4：55項目、8.2：54項目、8.5：54項目、すべて通過 |
 | 日本語訳 | `node tools/php.mjs bin/i18n.php check` | 281件、問題0 |
 | 配布 ZIP | `node tools/build-zip.mjs` | Pro 650ファイル、無料版の見本 637ファイル。無料版に Pro への言及なし |
 | 審査ツール | 下の「ブラウザと審査ツール」 | Plugin Check 2.2.0：エラー0・警告0（無料版の見本、SDK 同梱） |

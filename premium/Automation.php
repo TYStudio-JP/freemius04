@@ -31,6 +31,7 @@ final class Automation {
 	const STATE    = 'upgw_auto_state';
 	const WEEKLY   = 'upgw_auto_weekly';
 	const CONTINUE = 'upgw_auto_continue';
+	const UPDATED  = 'upgw_auto_after_update';
 	const DAILY    = 'upgw_auto_daily';
 
 	/**
@@ -44,6 +45,11 @@ final class Automation {
 	const LOG_ROWS = 5000;
 
 	/**
+	 * Most new messages one daily e-mail looks at.
+	 */
+	const DIGEST_ROWS = 200;
+
+	/**
 	 * Registers the hooks.
 	 */
 	public static function boot() {
@@ -53,6 +59,7 @@ final class Automation {
 		add_action( 'admin_post_upgw_auto', array( __CLASS__, 'save' ) );
 		add_action( 'admin_init', array( __CLASS__, 'schedule' ) );
 		add_action( self::WEEKLY, array( __CLASS__, 'start_scan' ) );
+		add_action( self::UPDATED, array( __CLASS__, 'start_scan' ) );
 		add_action( self::CONTINUE, array( __CLASS__, 'continue_scan' ) );
 		add_action( self::DAILY, array( __CLASS__, 'daily' ) );
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'after_update' ), 20, 2 );
@@ -202,8 +209,10 @@ final class Automation {
 			return;
 		}
 
-		if ( ! wp_next_scheduled( self::WEEKLY ) || wp_next_scheduled( self::WEEKLY ) > time() + 120 ) {
-			wp_schedule_single_event( time() + 60, self::WEEKLY );
+		// A hook of its own: schedule() keeps WEEKLY in line with the weekly
+		// setting and would remove this one-off scan when that is off.
+		if ( ! wp_next_scheduled( self::UPDATED ) ) {
+			wp_schedule_single_event( time() + 60, self::UPDATED );
 		}
 	}
 
@@ -288,8 +297,9 @@ final class Automation {
 		$since  = isset( $state['log_notified'] ) ? (int) $state['log_notified'] : time() - DAY_IN_SECONDS;
 		$target = Plugin::target();
 		$lines  = array();
+		$rows   = Log::rows_since( $since, self::DIGEST_ROWS );
 
-		foreach ( Log::rows_since( $since ) as $row ) {
+		foreach ( $rows as $row ) {
 			$meaning = LogView::meaning( $row, $target );
 
 			if ( Finding::LEVEL_ERROR !== $meaning['level'] && 'likely' !== $meaning['level'] ) {
@@ -299,7 +309,9 @@ final class Automation {
 			$lines[] = $row->file . ':' . (int) $row->line . "\n  " . $row->type . ': ' . $row->message . "\n  " . $meaning['label'] . '. ' . $meaning['text'];
 		}
 
-		$state['log_notified'] = time();
+		// When the batch was full, the next e-mail goes on from its last row
+		// instead of skipping what did not fit.
+		$state['log_notified'] = count( $rows ) < self::DIGEST_ROWS ? time() : (int) strtotime( end( $rows )->first_seen . ' UTC' );
 
 		update_option( self::STATE, $state, false );
 

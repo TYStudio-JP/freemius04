@@ -24,6 +24,7 @@ require_once ABSPATH . 'wp-admin/includes/template.php';
 
 use TYStudio\UpgradeWarden\Admin\LogView;
 use TYStudio\UpgradeWarden\Admin\Page;
+use TYStudio\UpgradeWarden\Monitor\Capture;
 use TYStudio\UpgradeWarden\Monitor\Log;
 use TYStudio\UpgradeWarden\Monitor\Monitor;
 use TYStudio\UpgradeWarden\Plugin;
@@ -168,6 +169,34 @@ if ( Plugin::is_pro() ) {
 	$auto::daily();
 	$check( 'Pro: the next day, nothing new, no e-mail', ! $mails, $mails );
 
+	// A day with more new messages than one e-mail looks at.
+	$many = array();
+
+	for ( $i = 0; $i < $auto::DIGEST_ROWS + 5; $i++ ) {
+		$many[] = array( 'type' => 'E_DEPRECATED', 'message' => 'Digest filler ' . $i, 'file' => ABSPATH . 'wp-content/plugins/runtime-sample/runtime-sample.php', 'line' => 1000 + $i, 'match' => null );
+	}
+
+	$wpdb_rows = count( Log::rows( '', 1000 ) );
+	foreach ( array_chunk( $many, 40 ) as $chunk ) {
+		Log::record( $chunk );
+	}
+	$wpdb->query( $wpdb->prepare( 'UPDATE %i SET first_seen = %s WHERE message LIKE %s', Tables::events(), gmdate( 'Y-m-d H:i:s', time() - 60 ), 'Digest filler%' ) );
+	$wpdb->query( $wpdb->prepare( 'UPDATE %i SET first_seen = %s WHERE message = %s', Tables::events(), gmdate( 'Y-m-d H:i:s', time() - 30 ), 'Digest filler ' . ( $auto::DIGEST_ROWS + 4 ) ) );
+	update_option( $auto::STATE, array_merge( (array) get_option( $auto::STATE ), array( 'log_notified' => time() - 120 ) ), false );
+	$auto::daily();
+	$state = (array) get_option( $auto::STATE );
+	$check( 'Pro: a full digest goes on from its last row next time', $state['log_notified'] < time() - 50, $state['log_notified'] - time() );
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE message LIKE %s', Tables::events(), 'Digest filler%' ) );
+	$check( 'Pro: the filler is gone again', count( Log::rows( '', 1000 ) ) === $wpdb_rows, count( Log::rows( '', 1000 ) ) );
+
+	// "Scan after updates" alone: the one-off scan is not undone by the weekly setting.
+	update_option( $auto::OPTION, array( 'after_update' => true ), false );
+	$auto::schedule();
+	$auto::after_update( null, array( 'type' => 'plugin', 'action' => 'update' ) );
+	$auto::schedule();
+	$check( 'Pro: the scan after an update stays scheduled when the weekly scan is off', false !== wp_next_scheduled( $auto::UPDATED ) && false === wp_next_scheduled( $auto::WEEKLY ) );
+	wp_clear_scheduled_hook( $auto::UPDATED );
+
 	update_option( $auto::OPTION, array(), false );
 	$auto::schedule();
 	$check( 'Pro: switching the checks off removes the schedule', false === wp_next_scheduled( $auto::WEEKLY ) && false === wp_next_scheduled( $auto::DAILY ) );
@@ -195,14 +224,39 @@ Log::record(
 $core = Log::rows();
 $check( 'a message from WordPress itself is filed under core', 1 === count( $core ) && 'core' === $core[0]->component && 'wp-includes/post.php' === $core[0]->file, $core );
 Log::clear();
+
+// The server's folders do not reach the log, and a message the database refuses is tried again.
+Log::record(
+	array(
+		array( 'type' => 'E_DEPRECATED', 'message' => 'Called in ' . ABSPATH . 'wp-content/plugins/x/y.php on line 4', 'file' => ABSPATH . 'wp-includes/post.php', 'line' => 9, 'match' => null ),
+	)
+);
+$paths = Log::rows();
+$check( 'the folders of the server are taken out of a message', 1 === count( $paths ) && 'Called in wp-content/plugins/x/y.php on line 4' === $paths[0]->message, $paths );
+Log::clear();
+
+$long = str_repeat( 'x', 1 ) . str_repeat( 'あ', 400 );
+Capture::reset();
+Capture::on_error( 8192, $long, ABSPATH . 'wp-includes/post.php', 11 );
+Log::record( Capture::events() );
+Capture::reset();
+$cut = Log::rows();
+$check( 'a long Japanese message is stored', 1 === count( $cut ) && 1 === preg_match( '//u', $cut[0]->message ), count( $cut ) );
+Log::clear();
 $check( 'emptying the log empties it', 0 === count( Log::rows() ) );
 
 // Switching off, deactivating, deleting.
+// Deactivating clears the clean-up; activating again with recording on brings it back.
+Monitor::set( true );
+wp_clear_scheduled_hook( Monitor::CRON );
+Monitor::keep_pruning();
+$check( 'a missing clean-up is scheduled again while recording is on', false !== wp_next_scheduled( Monitor::CRON ) );
+
 Monitor::set( false );
 $check( 'recording off: nothing scheduled, and the order of plugins is left to WordPress', ! Monitor::enabled() && false === wp_next_scheduled( Monitor::CRON ) );
 
 deactivate_plugins( 'upgrade-warden/upgrade-warden.php' );
-$check( 'deactivating leaves no scheduled event', false === wp_next_scheduled( Monitor::CRON ) && false === wp_next_scheduled( 'upgw_auto_weekly' ) && false === wp_next_scheduled( 'upgw_auto_continue' ) && false === wp_next_scheduled( 'upgw_auto_daily' ) );
+$check( 'deactivating leaves no scheduled event', false === wp_next_scheduled( Monitor::CRON ) && false === wp_next_scheduled( 'upgw_auto_weekly' ) && false === wp_next_scheduled( 'upgw_auto_after_update' ) && false === wp_next_scheduled( 'upgw_auto_continue' ) && false === wp_next_scheduled( 'upgw_auto_daily' ) );
 
 Tables::uninstall();
 $tables = $wpdb->get_col( 'SHOW TABLES' );

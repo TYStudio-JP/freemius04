@@ -67,8 +67,7 @@ final class Log {
 				continue;
 			}
 
-			$seen[ $short ]       = $now;
-			$todo[ $fingerprint ] = array( $event, $file );
+			$todo[ $fingerprint ] = array( $event, $file, $short );
 		}
 
 		if ( ! $todo ) {
@@ -81,23 +80,26 @@ final class Log {
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- Own table.
 		foreach ( $todo as $fingerprint => $item ) {
-			list( $event, $file ) = $item;
+			list( $event, $file, $short ) = $item;
 
 			$id = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM %i WHERE fingerprint = %s', $table, $fingerprint ) );
 
 			if ( $id ) {
-				$wpdb->update( $table, array( 'last_seen' => $stamp ), array( 'id' => $id ) );
+				if ( false !== $wpdb->update( $table, array( 'last_seen' => $stamp ), array( 'id' => $id ) ) ) {
+					$seen[ $short ] = $now;
+				}
+
 				continue;
 			}
 
 			$match = is_array( $event['match'] ) ? $event['match'] : array();
 
-			$wpdb->insert(
+			$inserted = $wpdb->insert(
 				$table,
 				array(
 					'fingerprint' => $fingerprint,
 					'type'        => substr( $event['type'], 0, 60 ),
-					'message'     => $event['message'],
+					'message'     => self::without_roots( $event['message'] ),
 					'file'        => substr( $file, 0, 1000 ),
 					'line'        => (int) $event['line'],
 					'component'   => substr( Components::of_file( $event['file'] ), 0, 191 ),
@@ -111,6 +113,12 @@ final class Log {
 					'last_seen'   => $stamp,
 				)
 			);
+
+			// Only a stored message waits before it is written again; one the
+			// database refused is tried again on the next request.
+			if ( $inserted ) {
+				$seen[ $short ] = $now;
+			}
 		}
 		// phpcs:enable
 
@@ -151,15 +159,16 @@ final class Log {
 	 * Rows first seen after a point in time, oldest first.
 	 *
 	 * @param int $since Unix time.
+	 * @param int $limit Most rows to return.
 	 * @return object[]
 	 */
-	public static function rows_since( $since ) {
+	public static function rows_since( $since, $limit = 200 ) {
 		global $wpdb;
 
 		$table = Tables::events();
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- Own table.
-		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE first_seen > %s ORDER BY first_seen, id LIMIT 200', $table, gmdate( 'Y-m-d H:i:s', $since ) ) );
+		$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE first_seen > %s ORDER BY first_seen, id LIMIT %d', $table, gmdate( 'Y-m-d H:i:s', $since ), $limit ) );
 
 		return is_array( $rows ) ? $rows : array();
 	}
@@ -235,6 +244,27 @@ final class Log {
 			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE last_seen < %s OR ( last_seen = %s AND id <= %d )', $table, $edge->last_seen, $edge->last_seen, $edge->id ) );
 		}
 		// phpcs:enable
+	}
+
+	/**
+	 * A message without the server's folders in front of the paths it names
+	 * ("called in /home/…/wp-content/plugins/…" becomes "wp-content/plugins/…").
+	 *
+	 * @param string $message Message.
+	 * @return string
+	 */
+	public static function without_roots( $message ) {
+		$message = (string) $message;
+
+		foreach ( array( dirname( WP_CONTENT_DIR ), ABSPATH ) as $root ) {
+			foreach ( array_unique( array( trailingslashit( wp_normalize_path( $root ) ), trailingslashit( $root ) ) ) as $prefix ) {
+				if ( strlen( $prefix ) > 1 ) {
+					$message = str_replace( $prefix, '', $message );
+				}
+			}
+		}
+
+		return $message;
 	}
 
 	/**
