@@ -445,9 +445,9 @@
 		"disposition": "rule",
 		"rule": "argument.printf_empty_precision",
 		"fixtures": [
-			"argument.printf_empty_precision~8.5-bic-E.fixture",
-			"argument.printf_empty_precision~8.5-bic-F.fixture",
-			"argument.printf_empty_precision~8.5-bic-G.fixture",
+			"argument.printf_empty_precision~8.5-bic-upper-e.fixture",
+			"argument.printf_empty_precision~8.5-bic-upper-f.fixture",
+			"argument.printf_empty_precision~8.5-bic-upper-g.fixture",
 			"argument.printf_empty_precision~8.5-bic-e.fixture",
 			"argument.printf_empty_precision~8.5-bic-f.fixture",
 			"argument.printf_empty_precision~8.5-bic-fprintf.fixture",

@@ -1,0 +1,8 @@
+# Keep LF line endings on every machine. A Windows checkout with
+# core.autocrlf=true would otherwise turn the fixtures and the shipped PHP
+# files into CRLF, which changes byte offsets and the built ZIP.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.mo binary
+*.zip binary
