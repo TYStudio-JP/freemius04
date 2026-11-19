@@ -73,9 +73,40 @@ final class Messages {
 				return __( 'Writes a variable inside a string as ${name}.', 'upgrade-warden' );
 		}
 
+		$sentence = RuleText::sentence( $rule );
+
+		if ( '' !== $sentence ) {
+			return esc_html( $sentence );
+		}
+
 		// A rule without its own sentence yet: show its id rather than nothing.
 		/* translators: 1: rule id, 2: what it is about. */
 		return trim( sprintf( __( 'Rule %1$s %2$s', 'upgrade-warden' ), '<code>' . esc_html( $rule ) . '</code>', $code ) );
+	}
+
+	/**
+	 * Whether the sentence of a rule already names what the finding is about.
+	 * For the other rules the screen prints the subject next to the sentence.
+	 *
+	 * @param string $rule Rule id.
+	 * @return bool
+	 */
+	public static function names_subject( $rule ) {
+		return in_array(
+			$rule,
+			array(
+				'function.removed',
+				'function.deprecated',
+				'constant.removed',
+				'constant.deprecated',
+				'syntax.php4_constructor',
+				'syntax.reserved_name',
+				'syntax.break_outside_loop',
+				'signature.implicit_nullable',
+				'signature.required_after_optional',
+			),
+			true
+		) || '' === RuleText::sentence( $rule );
 	}
 
 	/**

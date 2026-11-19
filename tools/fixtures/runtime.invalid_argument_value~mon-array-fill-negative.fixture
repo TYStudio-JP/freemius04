@@ -1,0 +1,8 @@
+--RULE--
+runtime.invalid_argument_value
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$count = -1;
+var_dump( array_fill( 0, $count, "x" ) );

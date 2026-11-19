@@ -1,0 +1,8 @@
+--RULE--
+runtime.internal_argument_type
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$text = array( "abc" );
+var_dump( strpos( $text, "b" ) );

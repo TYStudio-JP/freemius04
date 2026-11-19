@@ -1,0 +1,8 @@
+--RULE--
+runtime.invalid_argument_value
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$separator = "";
+var_dump( explode( $separator, "a,b" ) );

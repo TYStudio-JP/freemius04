@@ -1,0 +1,8 @@
+--RULE--
+runtime.division_by_zero
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$count = "0";
+var_dump( 10 / $count );

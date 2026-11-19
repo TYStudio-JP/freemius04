@@ -9,6 +9,8 @@ namespace TYStudio\UpgradeWarden\Admin;
 
 use TYStudio\UpgradeWarden\Engine\Finding;
 use TYStudio\UpgradeWarden\Engine\Versions;
+use TYStudio\UpgradeWarden\Monitor\Log;
+use TYStudio\UpgradeWarden\Monitor\Monitor;
 use TYStudio\UpgradeWarden\Plugin;
 use TYStudio\UpgradeWarden\Scan\Components;
 use TYStudio\UpgradeWarden\Scan\Job;
@@ -17,7 +19,8 @@ use TYStudio\UpgradeWarden\Scan\Report;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Renders the overview and the findings of one plugin or theme.
+ * Renders the overview, the findings of one plugin or theme, and the
+ * run-time log.
  */
 final class Page {
 
@@ -39,31 +42,81 @@ final class Page {
 		}
 
 		$component = isset( $_GET['component'] ) ? sanitize_text_field( wp_unslash( $_GET['component'] ) ) : '';
+		$view      = isset( $_GET['view'] ) && 'log' === $_GET['view'] ? 'log' : 'scan';
 		// phpcs:enable
 
 		$target     = Plugin::target();
 		$components = Components::all();
+		$logged     = Log::counts();
 
 		echo '<div class="wrap upgw">';
 		echo '<h1>' . esc_html__( 'Upgrade Warden', 'upgrade-warden' ) . '</h1>';
 
-		self::header( $target );
+		self::tabs( $view, array_sum( $logged ) );
+		self::header( $target, $view );
 
-		if ( '' !== $component && isset( $components[ $component ] ) ) {
+		if ( 'log' === $view ) {
+			LogView::render( $components, $target, $component );
+		} elseif ( '' !== $component && isset( $components[ $component ] ) ) {
 			self::detail( $components[ $component ], $target );
 		} else {
-			self::overview( $components, $target );
+			self::overview( $components, $target, $logged );
+
+			do_action( 'upgw_overview_after', $components, $target );
+
+			if ( ! Plugin::is_pro() ) {
+				self::pro_note();
+			}
 		}
 
 		echo '</div>';
 	}
 
 	/**
+	 * The two views of the screen.
+	 *
+	 * @param string $view   "scan" or "log".
+	 * @param int    $logged Number of messages in the run-time log.
+	 */
+	private static function tabs( $view, $logged ) {
+		$base = add_query_arg( array( 'page' => Plugin::SLUG ), admin_url( 'tools.php' ) );
+		$log  = __( 'Run-time log', 'upgrade-warden' );
+
+		if ( $logged > 0 ) {
+			$log .= ' (' . number_format_i18n( $logged ) . ')';
+		} elseif ( Monitor::enabled() ) {
+			$log .= ' · ' . __( 'recording', 'upgrade-warden' );
+		}
+
+		echo '<h2 class="nav-tab-wrapper">';
+		printf( '<a class="nav-tab%s" href="%s">%s</a>', 'scan' === $view ? ' nav-tab-active' : '', esc_url( $base ), esc_html__( 'Scan', 'upgrade-warden' ) );
+		printf( '<a class="nav-tab%s" href="%s">%s</a>', 'log' === $view ? ' nav-tab-active' : '', esc_url( add_query_arg( 'view', 'log', $base ) ), esc_html( $log ) );
+		echo '</h2>';
+	}
+
+	/**
+	 * One line about the paid edition, shown in the free one.
+	 */
+	private static function pro_note() {
+		$url = (string) upgw_fs()->get_upgrade_url();
+
+		echo '<p class="upgw-pro-note">';
+		echo esc_html__( 'Upgrade Warden Pro fixes what can be fixed automatically, with a preview, a backup and an undo. It also scans every week and after updates, e-mails you when something new will break, keeps the run-time log for 90 days and exports a report.', 'upgrade-warden' );
+
+		if ( '' !== $url ) {
+			printf( ' <a href="%s">%s</a>', esc_url( $url ), esc_html__( 'See Upgrade Warden Pro', 'upgrade-warden' ) );
+		}
+
+		echo '</p>';
+	}
+
+	/**
 	 * Current PHP, target version and the scan button.
 	 *
 	 * @param string $target PHP version results are shown for.
+	 * @param string $view   "scan" or "log".
 	 */
-	private static function header( $target ) {
+	private static function header( $target, $view ) {
 		$progress = Job::progress();
 		$last     = (int) get_option( 'upgw_last_scan', 0 );
 
@@ -74,12 +127,19 @@ final class Page {
 		echo esc_html__( 'Show what happens on:', 'upgrade-warden' ) . ' ';
 
 		foreach ( Versions::TARGETS as $version ) {
-			$url = wp_nonce_url( add_query_arg( array( 'page' => Plugin::SLUG, 'target' => $version ), admin_url( 'tools.php' ) ), 'upgw_target' );
+			$args = array(
+				'page'   => Plugin::SLUG,
+				'target' => $version,
+			);
+
+			if ( 'log' === $view ) {
+				$args['view'] = 'log';
+			}
 
 			printf(
 				'<a class="button%s" href="%s">PHP %s</a> ',
 				$version === $target ? ' button-primary' : '',
-				esc_url( $url ),
+				esc_url( wp_nonce_url( add_query_arg( $args, admin_url( 'tools.php' ) ), 'upgw_target' ) ),
 				esc_html( $version )
 			);
 		}
@@ -91,6 +151,12 @@ final class Page {
 			/* translators: %s: PHP version. */
 			echo esc_html( sprintf( __( 'What is new in PHP %s comes from the official upgrade notes. It was not run on a real PHP of that version yet, and is marked as such below.', 'upgrade-warden' ), $target ) );
 			echo '</p>';
+		}
+
+		if ( 'log' === $view ) {
+			echo '</div>';
+
+			return;
 		}
 
 		echo '<p>';
@@ -109,7 +175,7 @@ final class Page {
 		}
 
 		echo '</p>';
-		echo '<p class="description">' . esc_html__( 'A scan reads the PHP files of your plugins and themes. It changes nothing, and nothing leaves your site. It cannot see problems that depend on the data a page handles; those only show when the code runs.', 'upgrade-warden' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'A scan reads the PHP files of your plugins and themes. It changes nothing, and nothing leaves your site. It cannot see problems that depend on the data a page handles; those only show when the code runs, and the run-time log is there for them.', 'upgrade-warden' ) . '</p>';
 		echo '</div>';
 	}
 
@@ -118,8 +184,9 @@ final class Page {
 	 *
 	 * @param array[] $components Components by id.
 	 * @param string  $target     PHP version.
+	 * @param int[]   $logged     Messages in the run-time log by component id.
 	 */
-	private static function overview( array $components, $target ) {
+	private static function overview( array $components, $target, array $logged ) {
 		$order = array(
 			Finding::LEVEL_ERROR      => 0,
 			Finding::LEVEL_CHANGED    => 1,
@@ -143,9 +210,21 @@ final class Page {
 			}
 		);
 
+		$headings = array(
+			__( 'Plugin or theme', 'upgrade-warden' ),
+			/* translators: %s: PHP version. */
+			sprintf( __( 'On PHP %s', 'upgrade-warden' ), $target ),
+			__( 'Will break', 'upgrade-warden' ),
+			__( 'Behaves differently', 'upgrade-warden' ),
+			__( 'Deprecated', 'upgrade-warden' ),
+			__( 'Behind a check', 'upgrade-warden' ),
+			__( 'Files', 'upgrade-warden' ),
+			__( 'Run-time log', 'upgrade-warden' ),
+		);
+
 		echo '<table class="widefat striped upgw-table"><thead><tr>';
 
-		foreach ( array( __( 'Plugin or theme', 'upgrade-warden' ), sprintf( /* translators: %s: PHP version. */ __( 'On PHP %s', 'upgrade-warden' ), $target ), __( 'Will break', 'upgrade-warden' ), __( 'Behaves differently', 'upgrade-warden' ), __( 'Deprecated', 'upgrade-warden' ), __( 'Behind a check', 'upgrade-warden' ), __( 'Files', 'upgrade-warden' ) ) as $heading ) {
+		foreach ( $headings as $heading ) {
 			echo '<th scope="col">' . esc_html( $heading ) . '</th>';
 		}
 
@@ -154,7 +233,13 @@ final class Page {
 		foreach ( $rows as $row ) {
 			list( $component, $summary ) = $row;
 
-			$url  = add_query_arg( array( 'page' => Plugin::SLUG, 'component' => $component['id'] ), admin_url( 'tools.php' ) );
+			$url  = add_query_arg(
+				array(
+					'page'      => Plugin::SLUG,
+					'component' => $component['id'],
+				),
+				admin_url( 'tools.php' )
+			);
 			$type = 'theme' === $component['type'] ? __( 'Theme', 'upgrade-warden' ) : __( 'Plugin', 'upgrade-warden' );
 
 			echo '<tr>';
@@ -168,6 +253,22 @@ final class Page {
 			);
 			printf( '<td><span class="upgw-verdict upgw-%s">%s</span></td>', esc_attr( $summary['verdict'] ), esc_html( Messages::label( $summary['verdict'] ) ) );
 			printf( '<td>%d</td><td>%d</td><td>%d</td><td>%d</td><td>%d</td>', (int) $summary[ Finding::LEVEL_ERROR ], (int) $summary[ Finding::LEVEL_CHANGED ], (int) $summary[ Finding::LEVEL_DEPRECATED ], (int) $summary[ Report::GUARDED ], (int) $summary['files'] );
+
+			if ( ! empty( $logged[ $component['id'] ] ) ) {
+				$log = add_query_arg(
+					array(
+						'page'      => Plugin::SLUG,
+						'view'      => 'log',
+						'component' => $component['id'],
+					),
+					admin_url( 'tools.php' )
+				);
+
+				printf( '<td><a href="%s">%d</a></td>', esc_url( $log ), (int) $logged[ $component['id'] ] );
+			} else {
+				echo '<td>0</td>';
+			}
+
 			echo '</tr>';
 		}
 
@@ -225,6 +326,10 @@ final class Page {
 			printf( '<td><code>%s:%d</code></td>', esc_html( '' === $finding['path'] ? basename( $component['path'] ) : $finding['path'] ), (int) $finding['line'] );
 
 			echo '<td>' . wp_kses( Messages::describe( $finding['rule'], $finding['subject'] ), array( 'code' => array() ) );
+
+			if ( '' !== $finding['subject'] && ! Messages::names_subject( $finding['rule'] ) ) {
+				echo ' <code class="upgw-subject">' . esc_html( $finding['subject'] ) . '</code>';
+			}
 
 			if ( '' !== trim( $line ) ) {
 				echo '<pre class="upgw-code">' . esc_html( mb_strimwidth( trim( $line ), 0, 200, '…' ) ) . '</pre>';

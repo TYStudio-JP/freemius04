@@ -1,0 +1,9 @@
+--RULE--
+runtime.string_offset_type
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$text = "abc";
+$text["first"] = "x";
+var_dump( $text );

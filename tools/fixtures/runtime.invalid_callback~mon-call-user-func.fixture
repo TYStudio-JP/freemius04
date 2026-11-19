@@ -1,0 +1,7 @@
+--RULE--
+runtime.invalid_callback
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+var_dump( call_user_func( "upgw_function_that_is_gone", 1 ) );

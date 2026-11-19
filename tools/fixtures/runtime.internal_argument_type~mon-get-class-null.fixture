@@ -1,0 +1,8 @@
+--RULE--
+runtime.internal_argument_type
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$object = null;
+var_dump( get_class( $object ) );

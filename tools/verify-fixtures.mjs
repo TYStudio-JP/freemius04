@@ -32,35 +32,11 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { VERSIONS, startPhp, runFixture, breaks } from './lib/runtimes.mjs';
+import { parseFixture } from './lib/fixture.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dir = join(here, 'fixtures');
 const filter = process.argv[2] || '';
-
-export function parseFixture(text) {
-	const sections = {};
-	let current = null;
-
-	for (const line of text.replace(/\r\n/g, '\n').split('\n')) {
-		const heading = /^--([A-Z]+)--$/.exec(line);
-
-		if (heading) {
-			current = heading[1];
-			sections[current] = [];
-		} else if (current) {
-			sections[current].push(line);
-		}
-	}
-
-	const get = (name) => (sections[name] ? sections[name].join('\n').trim() : null);
-
-	return {
-		rule: get('RULE'),
-		claim: JSON.parse(get('CLAIM') || '{}'),
-		code: get('CODE') + '\n',
-		fixed: get('FIXED') === null ? null : get('FIXED') + '\n',
-	};
-}
 
 const number = (version) => {
 	const [major, minor] = version.split('.').map(Number);

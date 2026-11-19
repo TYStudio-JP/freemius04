@@ -1,0 +1,8 @@
+--RULE--
+runtime.internal_argument_type
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$more = null;
+var_dump( array_merge( array( 1 ), $more ) );

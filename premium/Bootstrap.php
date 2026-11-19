@@ -24,6 +24,9 @@ final class Bootstrap {
 	public static function boot() {
 		add_action( 'upgw_detail_before', array( __CLASS__, 'panel' ), 10, 3 );
 		add_action( 'admin_post_upgw_fix', array( __CLASS__, 'handle' ) );
+
+		Automation::boot();
+		ReportExport::boot();
 	}
 
 	/**

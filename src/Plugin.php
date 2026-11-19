@@ -9,6 +9,7 @@ namespace TYStudio\UpgradeWarden;
 
 use TYStudio\UpgradeWarden\Admin\Page;
 use TYStudio\UpgradeWarden\Engine\Versions;
+use TYStudio\UpgradeWarden\Monitor\Monitor;
 use TYStudio\UpgradeWarden\Scan\Job;
 use TYStudio\UpgradeWarden\Store\Tables;
 
@@ -32,8 +33,19 @@ final class Plugin {
 		add_action( 'wp_ajax_upgw_start', array( __CLASS__, 'ajax_start' ) );
 		add_action( 'wp_ajax_upgw_step', array( __CLASS__, 'ajax_step' ) );
 
+		Monitor::boot();
+
 		if ( self::is_pro() ) {
 			\TYStudio\UpgradeWarden\Pro\Bootstrap::boot();
+		}
+	}
+
+	/**
+	 * Stops what the plugin scheduled. The data stays until the plugin is deleted.
+	 */
+	public static function deactivate() {
+		foreach ( array( Monitor::CRON, 'upgw_auto_weekly', 'upgw_auto_continue', 'upgw_auto_daily' ) as $hook ) {
+			wp_clear_scheduled_hook( $hook );
 		}
 	}
 

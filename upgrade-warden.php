@@ -99,6 +99,7 @@ if ( function_exists( 'upgw_fs' ) ) {
 	}
 
 	register_activation_hook( __FILE__, array( \TYStudio\UpgradeWarden\Store\Tables::class, 'install' ) );
+	register_deactivation_hook( __FILE__, array( \TYStudio\UpgradeWarden\Plugin::class, 'deactivate' ) );
 
 	\TYStudio\UpgradeWarden\Plugin::boot();
 }

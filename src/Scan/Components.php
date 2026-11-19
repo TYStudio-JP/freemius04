@@ -82,6 +82,55 @@ final class Components {
 	}
 
 	/**
+	 * The component a file belongs to.
+	 *
+	 * @param string $file Absolute path.
+	 * @return string Component id as in all(), "core" for WordPress itself, or
+	 *                an empty string for a file outside all of them.
+	 */
+	public static function of_file( $file ) {
+		$file = wp_normalize_path( $file );
+
+		$inside = static function ( $folder ) use ( $file ) {
+			$folder = trailingslashit( wp_normalize_path( $folder ) );
+
+			return 0 === strpos( $file, $folder ) ? substr( $file, strlen( $folder ) ) : null;
+		};
+
+		$relative = $inside( WP_PLUGIN_DIR );
+
+		if ( null !== $relative ) {
+			$first = strtok( $relative, '/' );
+
+			return 'plugin:' . $first;
+		}
+
+		if ( null !== $inside( WPMU_PLUGIN_DIR ) ) {
+			return 'mu:all';
+		}
+
+		$roots = array( WP_CONTENT_DIR . '/themes' );
+
+		if ( ! empty( $GLOBALS['wp_theme_directories'] ) && is_array( $GLOBALS['wp_theme_directories'] ) ) {
+			$roots = array_merge( $roots, $GLOBALS['wp_theme_directories'] );
+		}
+
+		foreach ( array_unique( $roots ) as $root ) {
+			$relative = $inside( $root );
+
+			if ( null !== $relative ) {
+				return 'theme:' . strtok( $relative, '/' );
+			}
+		}
+
+		if ( null !== $inside( ABSPATH . WPINC ) || null !== $inside( ABSPATH . 'wp-admin' ) ) {
+			return 'core';
+		}
+
+		return '';
+	}
+
+	/**
 	 * PHP files of a component, relative to its path, sorted.
 	 *
 	 * @param string $path Folder, or a single PHP file.

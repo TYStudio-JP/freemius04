@@ -1,0 +1,8 @@
+--RULE--
+runtime.printf_too_few_arguments
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+printf( "%s and %s", "one" );
+echo "\n";

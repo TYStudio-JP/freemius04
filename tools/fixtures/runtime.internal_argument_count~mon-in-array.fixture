@@ -1,0 +1,8 @@
+--RULE--
+runtime.internal_argument_count
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$call = "in_array";
+var_dump( $call( "a" ) );

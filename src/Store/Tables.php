@@ -10,7 +10,8 @@ namespace TYStudio\UpgradeWarden\Store;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Two tables: one row per scanned file, one row per finding.
+ * Three tables: one row per scanned file, one row per finding, and one row
+ * per message PHP raised while the site ran (the run-time log).
  *
  * A finding is stored without a level. The level depends on the PHP version
  * the site moves to and is worked out when the result is shown, so choosing
@@ -18,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Tables {
 
-	const SCHEMA = 1;
+	const SCHEMA = 2;
 
 	/**
 	 * Table of scanned files.
@@ -43,6 +44,17 @@ final class Tables {
 	}
 
 	/**
+	 * Table of the run-time log.
+	 *
+	 * @return string
+	 */
+	public static function events() {
+		global $wpdb;
+
+		return $wpdb->prefix . 'upgw_events';
+	}
+
+	/**
 	 * Creates or updates the tables.
 	 */
 	public static function install() {
@@ -53,6 +65,7 @@ final class Tables {
 		$charset  = $wpdb->get_charset_collate();
 		$files    = self::files();
 		$findings = self::findings();
+		$events   = self::events();
 
 		dbDelta(
 			"CREATE TABLE {$files} (
@@ -93,6 +106,30 @@ final class Tables {
 			) {$charset};"
 		);
 
+		dbDelta(
+			"CREATE TABLE {$events} (
+				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				fingerprint char(32) NOT NULL,
+				type varchar(60) NOT NULL,
+				message text NOT NULL,
+				file varchar(1000) NOT NULL,
+				line int(10) unsigned NOT NULL,
+				component varchar(191) NOT NULL,
+				php varchar(8) NOT NULL,
+				rule varchar(100) NOT NULL,
+				deprecated varchar(5) DEFAULT NULL,
+				changed varchar(5) DEFAULT NULL,
+				breaks varchar(5) DEFAULT NULL,
+				evidence varchar(12) NOT NULL,
+				first_seen datetime NOT NULL,
+				last_seen datetime NOT NULL,
+				PRIMARY KEY  (id),
+				UNIQUE KEY fingerprint (fingerprint),
+				KEY last_seen (last_seen),
+				KEY component (component)
+			) {$charset};"
+		);
+
 		update_option( 'upgw_schema', self::SCHEMA, false );
 	}
 
@@ -112,12 +149,17 @@ final class Tables {
 		global $wpdb;
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table names are built from the prefix; dropping tables has no API.
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::events() );
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::findings() );
 		$wpdb->query( 'DROP TABLE IF EXISTS ' . self::files() );
 		// phpcs:enable
 
-		foreach ( array( 'upgw_schema', 'upgw_job', 'upgw_target', 'upgw_last_scan' ) as $option ) {
+		foreach ( array( 'upgw_schema', 'upgw_job', 'upgw_target', 'upgw_last_scan', 'upgw_monitor', 'upgw_monitor_seen', 'upgw_auto', 'upgw_auto_state' ) as $option ) {
 			delete_option( $option );
+		}
+
+		foreach ( array( 'upgw_monitor_prune', 'upgw_auto_weekly', 'upgw_auto_continue', 'upgw_auto_daily' ) as $hook ) {
+			wp_clear_scheduled_hook( $hook );
 		}
 	}
 }

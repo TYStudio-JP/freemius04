@@ -1,0 +1,8 @@
+--RULE--
+runtime.internal_argument_type
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$list = null;
+var_dump( array_key_exists( "a", $list ) );

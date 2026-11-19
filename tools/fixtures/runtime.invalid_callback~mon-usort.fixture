@@ -1,0 +1,8 @@
+--RULE--
+runtime.invalid_callback
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$items = array( 2, 1 );
+var_dump( usort( $items, "upgw_function_that_is_gone" ) );

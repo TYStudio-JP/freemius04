@@ -1,0 +1,26 @@
+{
+	"about": "Fixtures whose warning or notice on the last version before the change is accepted as an early sign of that change (see tools/build-messages.php). Reviewed by hand: the warning has to come from the very thing that later fails, not from something the fixture happened to do. Patterns are matched against the fixture file name.",
+	"fixtures": [
+		"*~mon-*",
+		"runtime.engine_error~*",
+		"runtime.non_numeric_string_arithmetic~*",
+		"runtime.undefined_constant~*",
+		"runtime.arithmetic_on_object~*",
+		"runtime.assert_throws~*",
+		"runtime.dom_implementation_get_feature~*",
+		"runtime.pdo_fetchall_fetch_into~*",
+		"call.crypt_without_salt~*",
+		"call.invalid_literal_argument~8.4-bic-core-curl_multi_select",
+		"class.incompatible_method_signature~*",
+		"class.splheap_compare_signature~*",
+		"argument.empty_needle~*"
+	],
+	"rejected": {
+		"call.openssl_seal_without_method": "the 7.4 warning is about the key, which the fixture does not have; it says nothing about the missing argument",
+		"call.exit_argument_type": "the notice about an array turned into a string is raised by many other things",
+		"call.invalid_literal_argument (imagepng)": "a libpng message, not a check of PHP itself",
+		"runtime.mb_http_output_null_byte, runtime.xmlwriter_encoding_null_byte": "the warning about an unknown encoding is raised for any wrong encoding name, with or without a null byte",
+		"runtime.mysqli_construct_twice, runtime.phar_add_empty_dir_*": "the warning comes from the missing server or file of the fixture",
+		"runtime.array_key_exists_key_type, runtime.simplexml_import_dom_type, runtime.sleep_missing_property": "the later behaviour is a different result, not an error; not reviewed closely enough to state it to a site owner"
+	}
+}

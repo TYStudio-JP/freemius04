@@ -1,0 +1,7 @@
+--RULE--
+runtime.invalid_argument_value
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+var_dump( array_combine( array( "a", "b" ), array( 1 ) ) );

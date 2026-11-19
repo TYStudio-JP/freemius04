@@ -1,0 +1,8 @@
+--RULE--
+runtime.count_non_countable
+--CLAIM--
+{ "breaks_in": "8.0" }
+--CODE--
+<?php
+$items = "red";
+echo count( $items ), "\n";
